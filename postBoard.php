@@ -17,8 +17,8 @@
                 <label for="title">Title</label>
                 <input type="text" id="title" name="title" required>
 
-                    <label for="content">Content</label>
-                    <textarea id="content" name="content" required></textarea>
+                    <label for="subtitle">Subtitle</label>
+                    <textarea id="subtitle" name="subtitle" required></textarea>
                 </div>
                 <div id="headerZone"
                     style="margin-top:10px; border:2px dashed #ccc; padding:10px; text-align:center;"

@@ -72,8 +72,8 @@ function handleDrop(event) {
 // Add the text+images block to preview and state
 function addBlock() {
     const text = document.getElementById('extraText').value.trim();
-    if (!text && currentImageDataArray.length === 0) {
-        alert("Please provide text or image(s) for this block.");
+    if (!text) {
+        alert("Please provide text for this block.");
         return;
     }
 
