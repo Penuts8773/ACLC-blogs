@@ -6,7 +6,7 @@
     <title>Login - ACLC Blogs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
+<body class="login-body">
     <form class="login-container" method="post">
         <h2>Login</h2>
         <label for="username">Username</label>

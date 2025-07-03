@@ -1,41 +1,7 @@
-body { 
+.home-body { 
     font-family: Arial, sans-serif; 
     margin: 0; 
     padding: 0; 
-}
-
-.navbar {
-    background: #333;
-    color: #fff;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-logo{
-    display: flex;
-    align-items: center;
-}
-
-.nav-logo strong{
-    padding-top: 3px;
-    font-weight: bolder;
-    color: #f1fcff;
-}
-
-#aclc-logo{
-    height: 30px;
-}
-
-.navbar a {
-    color: #fff;
-    text-decoration: none;
-    margin-right: 15px;
-}
-
-.navbar a:last-child {
-    margin-right: 0;
 }
 
 .container {

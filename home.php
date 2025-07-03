@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/home.css">
+    <link rel="stylesheet" href="styles/navbar.css">
+
     <title>Homepage - ACLC Blogs</title>
 </head>
-<body>
+<body class="home-body">
     <div class="navbar">
         <div class="nav-logo">
             <img src="styles/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">

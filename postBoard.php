@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Post Board - ACLC Blogs</title>
 </head>
-<body>
+<body class="postBoard-body">
     <form method="post">
         <h2>Post to Board</h2>
         <label for="title">Title</label>
