@@ -10,12 +10,25 @@
     padding: 0 20px;
 }
 
-.article {
+.home-article {
+    display: flex;
+    flex-direction: row;
     border-bottom: 1px solid #ddd;
     padding: 20px 0;
 }
 
-.article:last-child {
+.home-article-image{   
+    max-width: 100px;
+    margin: 3px;
+}
+
+.home-article div{
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+}
+
+.home-article:last-child {
     border-bottom: none;
 }
 

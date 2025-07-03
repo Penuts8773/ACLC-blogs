@@ -20,15 +20,21 @@
         </div>
     </div>
     <div class="container">
-        <div class="article">
-            <div class="article-title">Welcome to ACLC Blogs!</div>
-            <div class="article-meta">By Admin | 2024-06-01</div>
-            <div class="article-content">This is the first post on ACLC Blogs. Stay tuned for more updates and articles!</div>
+        <div class="home-article">
+            <img src="styles/images/article-sample.png" alt="Article Main Image" class="home-article-image">
+            <div>
+                <div class="article-title">Welcome to ACLC Blogs!</div>
+                <div class="article-meta">By Admin | 2024-06-01</div>
+                <div class="article-content">This is the first post on ACLC Blogs. Stay tuned for more updates and articles!</div>
+            </div>
         </div>
-        <div class="article">
-            <div class="article-title">Getting Started with Blogging</div>
-            <div class="article-meta">By Jane Doe | 2024-06-02</div>
-            <div class="article-content">Learn how to start your own blog and share your thoughts with the world.</div>
+        <div class="home-article">
+            <img src="styles/images/article-sample.png" alt="Article Main Image" class="home-article-image">
+            <div>
+                <div class="article-title">Getting Started with Blogging</div>
+                <div class="article-meta">By Jane Doe | 2024-06-02</div>
+                <div class="article-content">Learn how to start your own blog and share your thoughts with the world.</div>
+            </div>
         </div>
     </div>
 </body>
