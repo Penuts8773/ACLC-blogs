@@ -8,7 +8,10 @@
 </head>
 <body class="login-body">
     <form class="login-container" method="post">
-        <h2>Login</h2>
+        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+            <img src="styles/images/aclc-logo.png" alt="ACLC Logo" style="max-width: 120px; height: auto;">
+        </div>
+        <h2>ACLC Blogs - Login</h2>
         <label for="username">Username</label>
         <input type="text" id="username" name="username" required autocomplete="username">
 
