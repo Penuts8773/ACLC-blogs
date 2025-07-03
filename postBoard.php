@@ -14,7 +14,9 @@
         <label for="content">Content</label>
         <textarea id="content" name="content" required></textarea>
 
-        <label for=""></label>
+        <label for="option">Choose: </label>
+        <button type="submit" name="option" value="image">Add image</button>
+        <button type="submit" name="option" value="text">Add text</button>
     </form>
     
 </body>
