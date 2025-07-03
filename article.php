@@ -7,16 +7,7 @@
     <link rel="stylesheet" href="styles/navbar.css">
 </head>
 <body class="article-body" >
-    <div class="navbar">
-        <div class="nav-logo">
-            <img src="styles/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">
-            <strong>Blogs</strong>
-        </div>
-        <div>
-            <a href="#">Home</a>
-            <a href="#">Post Board</a>
-        </div>
-    </div>
+    <?php include 'navbar.php'; ?>
     <article class="article">
         <h1>Article Title Placeholder</h1>
         <p><em>By Jane Doe | 2024-06-02</em></p>

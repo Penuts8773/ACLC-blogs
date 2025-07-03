@@ -9,16 +9,7 @@
     
 </head>
 <body class="postBoard-body">
-    <div class="navbar">
-        <div class="nav-logo">
-            <img src="styles/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">
-            <strong>Blogs</strong>
-        </div>
-        <div>
-            <a href="#">Home</a>
-            <a href="#">Post Board</a>
-        </div>
-    </div>
+    <?php include 'navbar.php'; ?>
     <div class="postBoard-container">
         <form method="post">
             <h2>Post to Board</h2>
