@@ -4,7 +4,7 @@
         <strong>Blogs</strong>
     </div>
     <div>
-        <a href="#">Home</a>
-        <a href="#">Post Board</a>
+        <a href="home.php">Home</a>
+        <a href="postBoard.php">Post Board</a>
     </div>
 </nav>
