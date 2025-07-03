@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <form class="login-container" method="post"</form>
+    <form class="login-container" method="post">
         <h2>Login</h2>
         <label for="username">Username</label>
         <input type="text" id="username" name="username" required autocomplete="username">
