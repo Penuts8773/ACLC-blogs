@@ -47,3 +47,52 @@
 .article-content {
     font-size: 1.1em;
 }
+
+/* ...existing code... */
+.home-filters {
+    margin-bottom: 20px;
+    background: #ffffff;
+    padding: 16px 20px;
+    border-radius: 20px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.home-filters form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.home-filters select,
+.home-filters input[type="month"] {
+    padding: 6px 12px;
+    border: 1px solid #ffffff;
+    border-radius: 20px;
+    font-size: 1rem;
+    background: #ffffff;
+    transition: border-color 0.2s;
+}
+
+.home-filters select:focus,
+.home-filters input[type="month"]:focus {
+    border-color: #000000;
+    outline: none;
+}   
+
+.home-filters button[type="submit"] {
+    padding: 7px 18px;
+    background: #9a0000;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.home-filters button[type="submit"]:hover {
+    background: #e90000;
+}
+/* ...existing code... */
