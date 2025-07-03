@@ -1,12 +1,18 @@
 .navbar {
+    position: absolute;        /* Make it absolute */
+    top: 0;
+    left: 0;
+    right: 0;
     background: #333;
     color: #fff;
     padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: auto;
+    width: 98%;               /* Ensure full width */
+    z-index: 1000;             /* Ensure it's above other elements */
 }
+
 
 .nav-logo{
     display: flex;

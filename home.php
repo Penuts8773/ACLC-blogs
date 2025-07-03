@@ -16,16 +16,7 @@ if (!isset($_SESSION['username'])) {
     <title>Homepage - ACLC Blogs</title>
 </head>
 <body class="home-body">
-    <div class="navbar">
-        <div class="nav-logo">
-            <img src="styles/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">
-            <strong>Blogs</strong>
-        </div>
-        <div>
-            <a href="#">Home</a>
-            <a href="#">Post Board</a>
-        </div>
-    </div>
+    <?php include 'navbar.php'; ?>
     <div class="home-container">
         <div class="home-filters" style="margin-bottom: 20px;">
             <form method="get" style="display: flex; gap: 10px; align-items: center;">
