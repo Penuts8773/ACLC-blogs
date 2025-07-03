@@ -1,4 +1,4 @@
-body { 
+.login-body { 
     font-family: Arial, sans-serif; 
     background: #f4f4f4; 
     display: flex; 
@@ -8,7 +8,7 @@ body {
     margin: 0;
 }
 .login-container {
-    background: #fff;
+    background: #1a1a1a;
     padding: 2rem 2.5rem;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -17,11 +17,13 @@ body {
 .login-container h2 {
     margin-bottom: 1.5rem;
     text-align: center;
+    color: #f4f4f4;
 }
 .login-container label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
+    color: #f4f4f4;
 }
 .login-container input[type="text"],
 .login-container input[type="password"] {
@@ -34,13 +36,14 @@ body {
 .login-container button {
     width: 100%;
     padding: 0.6rem;
-    background: #007bff;
+    background: #6e0000;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 20px;
     font-size: 1rem;
     cursor: pointer;
 }
 .login-container button:hover {
-    background: #0056b3;
+    background: #b70000;
 }
+

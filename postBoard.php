@@ -3,19 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post to Board</title>
-    <style>
-        .preview-block img { max-width: 100%; margin-top: 10px; }
-        .preview-block { border: 1px solid #aaa; padding: 10px; margin-bottom: 10px; }
-    </style>
+    <title>Document</title>
+    
 </head>
 <body>
-    <form id="postForm" method="post">
-        <div class="postEditor">
-            <h2>Post to Board</h2>
-            <div>
-                <label for="title">Title</label>
-                <input type="text" id="title" name="title" required>
+    <form method="post">
+        <h2>Post to Board</h2>
+        <div>
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required>
 
                 <label for="content">Content</label>
                 <textarea id="content" name="content" required></textarea>
