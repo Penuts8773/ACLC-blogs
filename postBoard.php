@@ -25,8 +25,8 @@
                     ondrop="handleHeaderDrop(event)" ondragover="allowDrop(event)">
                     <label>Choose or Drop Images here</label>
                     <p style="font-size:0.9em; color:#555;">Drag and drop a header image here 📷</p>
-                    <input type="file" name="file" accept="jpg.jpeg,.png,image/jpeg,image/png" id="ImageInput">
-                    <img  id="ImagePreview">
+                    <input type="file" name="headerfile" accept="jpg.jpeg,.png,image/jpeg,image/png" id="HeaderImageInput">
+                    <img  id="HeaderImagePreview" style="display: nonel;">
                 </div>
                 
                 <div id="postPreviewContainer" style="margin-top:15px;"></div>
@@ -44,8 +44,8 @@
                     ondrop="handleDrop(event)" ondragover="allowDrop(event)">
                     <label>Choose or Drop Images Here</label>
                     <p style="font-size:0.9em; color:#555;">Drag and drop images here 📷</p>
-                    <input type="file" name="file" accept="jpg.jpeg,.png,image/jpeg,image/png" id="ImageInput">
-                    <img  id="ImagePreview">
+                    <input type="file" name="file" accept="jpg.jpeg,.png,image/jpeg,image/png">
+                    
                 </div>
                 
                 

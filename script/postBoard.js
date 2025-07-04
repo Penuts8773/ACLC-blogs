@@ -108,7 +108,9 @@ function addBlock() {
     currentImageDataArray = [];
     // Remove all images inside imageDropZone except the instruction text
     const idz = document.getElementById('imageDropZone');
-    idz.innerHTML = `<p style="font-size:0.9em; color:#555;">Drag and drop images here 📷</p>`;
+    idz.innerHTML = `<label>Choose or Drop Images Here</label>
+                    <p style="font-size:0.9em; color:#555;">Drag and drop images here 📷</p>
+                    <input type="file" name="file" accept="jpg.jpeg,.png,image/jpeg,image/png">`;
 }
 
 
