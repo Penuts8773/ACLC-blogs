@@ -134,12 +134,15 @@ if (!isset($_SESSION['username'])) {
                 });
                 $latest = $articles[0];
                 ?>
-                <div class="home-article">
-                    <img src="<?php echo htmlspecialchars($latest['image']); ?>" alt="Latest Post" class="home-article-image">
-                    <div>
-                        <div class="article-title"><?php echo htmlspecialchars($latest['title']); ?></div>
-                        <div class="article-meta">By <?php echo htmlspecialchars($latest['author']); ?> | <?php echo htmlspecialchars($latest['date']); ?></div>
-                        <div class="article-content"><?php echo htmlspecialchars($latest['content']); ?></div>
+                <div class="latest-article-highlight">
+                    <img src="<?php echo htmlspecialchars($latest['image']); ?>" alt="Latest Post" class="latest-img-highlight">
+                    <div style="flex: 1;">
+                        <div class="article-title" style="font-size: 2rem; font-weight: bold; color: #2d3a4a; margin-bottom: 10px;"><?php echo htmlspecialchars($latest['title']); ?></div>
+                        <div class="article-meta" style="color: #888; font-size: 1rem; margin-bottom: 16px;">By <?php echo htmlspecialchars($latest['author']); ?> | <?php echo htmlspecialchars($latest['date']); ?></div>
+                        <div class="article-content" style="font-size: 1.15rem; color: #444; line-height: 1.6; margin-bottom: 12px;">
+                            <?php echo htmlspecialchars($latest['content']); ?>
+                        </div>
+                        <a href="#" style="color: #1976d2; text-decoration: underline; font-weight: 500;">Read More</a>
                     </div>
                 </div>
             </div>
