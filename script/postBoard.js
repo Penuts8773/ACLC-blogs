@@ -111,6 +111,7 @@ function addBlock() {
     idz.innerHTML = `<label>Choose or Drop Images Here</label>
                     <p style="font-size:0.9em; color:#555;">Drag and drop images here 📷</p>
                     <input type="file" name="file" accept="jpg.jpeg,.png,image/jpeg,image/png">`;
+    attachImageInputListener(); 
 }
 
 
@@ -152,3 +153,65 @@ document.getElementById('postForm').addEventListener('submit', function(e) {
     // e.preventDefault(); // Uncomment to debug and prevent actual submit
 });
 
+function attachHeaderImageInputListener() {
+    const headerInput = document.querySelector('#headerZone input[type="file"]');
+    if (headerInput) {
+        headerInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file || !file.type.startsWith('image/')) {
+                alert("Only image files are allowed.");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Remove any previous header images
+                const hz = document.getElementById('headerZone');
+                hz.querySelectorAll('img').forEach(img => img.remove());
+                // Insert new image
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = "Header image";
+                img.style.maxWidth = "100%";
+                img.style.marginTop = "10px";
+                hz.appendChild(img);
+                headerImageData = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            // Reset input so same file can be selected again if needed
+            event.target.value = '';
+        });
+    }
+}
+
+function attachImageInputListener() {
+    const imageInput = document.querySelector('#imageDropZone input[type="file"]');
+    if (imageInput) {
+        imageInput.addEventListener('change', function(event) {
+            const files = Array.from(event.target.files).filter(file => file.type.startsWith('image/'));
+            if (files.length === 0) {
+                alert("Only image files are allowed.");
+                return;
+            }
+            const idz = document.getElementById('imageDropZone');
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = "Block image";
+                    img.style.maxWidth = "100px";
+                    img.style.margin = "5px";
+                    idz.appendChild(img);
+                    currentImageDataArray.push(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+            event.target.value = '';
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    attachImageInputListener();
+    attachHeaderImageInputListener();
+});

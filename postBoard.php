@@ -11,7 +11,7 @@
 <body class="postBoard-body">
     <?php include 'navbar.php'; ?>
     <div class="postBoard-container">
-        <form method="post">
+        <form method="post" id="postForm">
             <h2>Post to Board</h2>
             <div>
                 <label for="title">Title</label>
@@ -25,8 +25,8 @@
                     ondrop="handleHeaderDrop(event)" ondragover="allowDrop(event)">
                     <label>Choose or Drop Images here</label>
                     <p style="font-size:0.9em; color:#555;">Drag and drop a header image here 📷</p>
-                    <input type="file" name="headerfile" accept="jpg.jpeg,.png,image/jpeg,image/png" id="HeaderImageInput">
-                    <img  id="HeaderImagePreview" style="display: nonel;">
+                    <input type="file" name="headerfile" accept="jpg.jpeg,.png,image/jpeg,image/png">
+                    
                 </div>
                 
                 <div id="postPreviewContainer" style="margin-top:15px;"></div>
