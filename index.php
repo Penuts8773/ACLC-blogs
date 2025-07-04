@@ -6,7 +6,7 @@
     <title>Login - ACLC Blogs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
+<body class="login-body">
     <?php if (isset($_GET['error'])): ?>
         <div class="login-error" style="color: red; text-align: center; margin-bottom: 10px;">Invalid username or password.</div>
     <?php endif; ?>

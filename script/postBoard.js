@@ -149,3 +149,4 @@ document.getElementById('postForm').addEventListener('submit', function(e) {
     // Proceed to submit
     // e.preventDefault(); // Uncomment to debug and prevent actual submit
 });
+

@@ -23,11 +23,15 @@
                 <div id="headerZone"
                     style="margin-top:10px; border:2px dashed #ccc; padding:10px; text-align:center;"
                     ondrop="handleHeaderDrop(event)" ondragover="allowDrop(event)">
+                    <label>Choose or Drop Images here</label>
                     <p style="font-size:0.9em; color:#555;">Drag and drop a header image here 📷</p>
+                    <input type="file" name="file" accept="jpg.jpeg,.png,image/jpeg,image/png" id="ImageInput">
+                    <img  id="ImagePreview">
                 </div>
+                
                 <div id="postPreviewContainer" style="margin-top:15px;"></div>
                 <!-- Button to reveal editor -->
-                <button type="button" id="showEditorBtn" onClick="showEditor()">Add to Post</button>
+                <button type="button" id="showEditorBtn" onClick="showEditor()">Add Content</button>
 
                 <!-- Text Input Container -->
                 <div id="textInputContainer" style="display:none; margin-top:10px;">
@@ -38,8 +42,10 @@
                 <div id="imageDropZone"
                     style="display: none; margin-top:10px; border:2px dashed #ccc; padding:10px; text-align:center;"
                     ondrop="handleDrop(event)" ondragover="allowDrop(event)">
+                    <label>Choose or Drop Images Here</label>
                     <p style="font-size:0.9em; color:#555;">Drag and drop images here 📷</p>
-                    <div id="imagePreviewContainer"></div>
+                    <input type="file" name="file" accept="jpg.jpeg,.png,image/jpeg,image/png" id="ImageInput">
+                    <img  id="ImagePreview">
                 </div>
                 
                 
