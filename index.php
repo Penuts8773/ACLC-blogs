@@ -11,10 +11,10 @@ session_start();
   <?php if (isset($_SESSION['user'])): ?>
   <nav class="navbar">
     <div class="nav-logo">
-        <img src="assets/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">
+    <div>        <img src="assets/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">
         <strong>Blogs</strong>
     </div>
-    <div>
+
         <a href="#" onclick="loadPage('home'); return false;">Home</a>
         <a href="#" onclick="loadPage('postBoard'); return false;">Post Board</a>
         <a href="api/logout.php" style="color:red; margin-left:20px;">Logout</a>

@@ -1,7 +1,9 @@
 <?php require_once __DIR__ . '/../api/gatekeeper.php';
 ?>
 <link rel="stylesheet" href="../assets/css/home.css">
+<link rel="stylesheet" href="../assets/css/navbar.css">
 <div class="home-body">
+    <?php include 'navbar.php'; ?>
     <div class="home-container">
         <div class="home-filters" style="margin-bottom: 20px;">
             <form method="get" style="display: flex; gap: 10px; align-items: center;">
@@ -11,7 +13,7 @@
                     <option value="date" <?php if(isset($_GET['filter']) && $_GET['filter'] == 'date') echo 'selected'; ?>>Filter by Month</option>
                 </select>
                 <input type="month" name="date" value="<?php echo isset($_GET['date']) ? htmlspecialchars($_GET['date']) : ''; ?>" <?php if(!isset($_GET['filter']) || $_GET['filter'] != 'date') echo 'style="display:none;"'; ?> id="date-input">
-                <a href="home.php" class="reset-btn" style="text-decoration:none;">
+                <a href="/pages/home.php" class="reset-btn" style="text-decoration:none;">
                     <button type="button">Reset</button>
                 </a>
                 <button type="submit">Apply</button>
