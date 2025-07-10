@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles/login.css">
     <link rel="stylesheet" href="styles/animations.css">
+    <link rel="icon" type="image/png" href="styles/images/aclc-emblem.png">
     <title>Login - ACLC Blogs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>

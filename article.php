@@ -5,6 +5,7 @@
     <title>Article - ACLC Blogs</title>
     <link rel="stylesheet" href="styles/article.css">
     <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="icon" type="image/png" href="styles/images/aclc-emblem.png">
 </head>
 <?php
 require_once __DIR__ . '/backend/conn.php';

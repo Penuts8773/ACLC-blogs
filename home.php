@@ -13,6 +13,8 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="styles/home.css">
     <link rel="stylesheet" href="styles/navbar.css">
     <link rel="stylesheet" href="styles/animations.css">
+    <link rel="icon" type="image/png" href="styles/images/aclc-emblem.png">
+
     <title>Homepage - ACLC Blogs</title>
 </head>
 <body class="home-body">
@@ -147,7 +149,7 @@ if (!isset($_SESSION['username'])) {
         }
         ?>
             </div>
-            <div class="home-section" id="latest-post">
+            <div class="home-section slide-up" id="latest-post">
                 <h2>Latest Posts</h2>
                 <?php
                 usort($articles, function($a, $b) {

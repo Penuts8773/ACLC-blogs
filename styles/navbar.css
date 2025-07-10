@@ -1,5 +1,5 @@
 .navbar {
-    position: absolute;        /* Make it absolute */
+    position: fixed;      /* Make it absolute */
     top: 0;
     left: 0;
     right: 0;
