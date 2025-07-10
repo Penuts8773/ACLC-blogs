@@ -5,6 +5,6 @@
     </div>
     <div>
         <a href="home.php">Home</a>
-        <a href="postBoard.php">Post Board</a>
+        <a href="articleList.php">Post Board</a>
     </div>
 </nav>
