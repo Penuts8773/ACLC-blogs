@@ -1,10 +1,10 @@
 .home-body { 
     display: flex;
     flex-direction: column;
-    font-family: Arial, sans-serif; 
     margin: 0; 
     padding: 0; 
     padding-top: 69px;
+    
 }
 
 .home-container {
@@ -12,7 +12,7 @@
     flex-direction: column;
     max-width: 98%;
     margin: 30px;
-    ;
+    padding: auto;
 }
 
 .home-article {
@@ -21,9 +21,9 @@
     border-bottom: 1px solid #ddd;
     padding: 20px 0;
     align-items: center;
-    overflow-y: auto;
-    width: 100%; 
     box-sizing: border-box;
+    max-width: 300px;
+    
 }
 
 .article-title {
@@ -47,10 +47,6 @@
     
 }
 
-.home-article:last-child {
-    border-bottom: none;
-}
-
 .article-meta {
     color: #888;
     font-size: 12px;
@@ -59,17 +55,26 @@
 }
 
 .article-content {
-    font-size: 1.1em;
+  font-size: 1.1em;
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all; 
 }
+
+
 
 .home-sections-container {
     display: flex;
     flex-direction: row;
     gap: 20px;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    align-items: flex-start;
 }
 
-/* ...existing code... */
+
 .home-filters {
     margin-bottom: 20px;
     background: #ffffff;
@@ -110,13 +115,12 @@
     border-radius: 20px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
 }
 
 .home-filters button:hover {
     background: #e90000;
 }
-/* ...existing code... */
 
 .filtered-articles {
     display: flex;
@@ -128,14 +132,13 @@
 .latest-article-highlight {
     display: flex;
     flex-direction: column;
-    align-items: left;
-    gap: 32px;
-    margin-bottom: 32px;
+    flex: 2;
+    width: 500px;
 }
+
 
 .latest-img-highlight {
     max-width: 569px;
-    width: 100%;
     height: auto;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }

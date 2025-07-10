@@ -1,5 +1,5 @@
 .navbar {
-    position: fixed;      /* Make it absolute */
+    position: fixed;     
     top: 0;
     left: 0;
     right: 0;
@@ -9,8 +9,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 98%;               /* Ensure full width */
-    z-index: 1000;             /* Ensure it's above other elements */
+    width: 98%;              
+    z-index: 1000;             
 }
 
 
@@ -27,6 +27,24 @@
 
 #aclc-logo{
     height: 30px;
+}
+
+.navbar div {
+    display: flex;
+    flex-direction: row;
+}
+
+.logout {
+    background: none;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.logout:hover {
+    background-color: rgb(255, 75, 75);
 }
 
 .navbar a {

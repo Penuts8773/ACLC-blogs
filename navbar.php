@@ -2,7 +2,7 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
     session_unset();
     session_destroy();
-    header("Location: login.php");
+    header("Location: index.php");
     exit;
 }
 ?>
@@ -16,8 +16,8 @@
         <a href="articleList.php">Post Board</a>
         <p>
             <form method="POST" class="logout-form">
-                <button type="submit" name="logout">Logout</button>
+                <button class="logout" type="submit" name="logout">Logout</button>
             </form>
-            </p>
+        </p>
     </div>
 </nav>

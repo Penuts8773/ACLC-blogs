@@ -127,12 +127,12 @@ if (!isset($_SESSION['username'])) {
         } else {
             // No filter: show 3 sections
             ?>
-            <div class="home-sections-container slide-up">
+            <div class="home-sections-container">
                 <div class="home-section slide-up" id="recent-posts">
                 <h2>Just In</h2>
                 <?php
         // Show the 2 most recent articles
-                    $recent = array_slice($articles, 0, 2);
+                    $recent = array_slice($articles, 0, 3);
                     foreach ($recent as $article) {
                         ?>
                         <a href="article.php?id=<?php echo urlencode($article['id']); ?>" style="text-decoration:none;color:inherit;">
@@ -150,7 +150,7 @@ if (!isset($_SESSION['username'])) {
         ?>
             </div>
             <div class="home-section slide-up" id="latest-post">
-                <h2>Latest Posts</h2>
+                <h2>Latest Post</h2>
                 <?php
                 usort($articles, function($a, $b) {
                     return strtotime($b['date']) - strtotime($a['date']);
@@ -170,26 +170,27 @@ if (!isset($_SESSION['username'])) {
                 </div>
             </div>
             <div class="home-section slide-up" id="trending-posts">
-                <h2>Trending</h2>
+                <h2>Trending Posts</h2>
                 <?php
                 usort($articles, function($a, $b) {
                     return $b['views'] - $a['views'];
                 });
-                $trending = array_slice($articles, 0, 2);
-                foreach ($trending as $trend) {
+                $trending = array_slice($articles, 0, 3);
+                foreach ($trending as $article) {
                     ?>
-                    <div class="home-article">
-                        <img src="<?php echo htmlspecialchars($trend['image']); ?>" alt="Trending Post" class="home-article-image">
-                        <div>
-                            <div class="article-title"><?php echo htmlspecialchars($trend['title']); ?></div>
-                            <div class="article-content"><?php echo htmlspecialchars($trend['content']); ?></div>
-                            <div class="article-meta">By <?php echo htmlspecialchars($trend['author']); ?> | <?php echo htmlspecialchars($trend['date']); ?></div> 
+                    <a href="article.php?id=<?php echo urlencode($article['id']); ?>" style="text-decoration:none;color:inherit;">
+                        <div class="home-article">
+                            <img src="<?php echo htmlspecialchars($article['image']); ?>" alt="Trending Post" class="home-article-image">
+                            <div>
+                                <div class="article-title"><?php echo htmlspecialchars($article['title']); ?></div>
+                                <div class="article-content"><?php echo htmlspecialchars($article['content']); ?></div>
+                                <div class="article-meta">By <?php echo htmlspecialchars($article['author']); ?> | <?php echo htmlspecialchars($article['date']); ?></div>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                     <?php
                 }
                 ?>
-            </div>
             </div>
             <?php
         }
