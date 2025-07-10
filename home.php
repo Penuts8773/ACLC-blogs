@@ -12,11 +12,12 @@ if (!isset($_SESSION['username'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/home.css">
     <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="stylesheet" href="styles/animations.css">
     <title>Homepage - ACLC Blogs</title>
 </head>
 <body class="home-body">
     <?php include 'navbar.php'; ?>
-    <div class="home-container">
+    <div class="home-container slide-up">
         <div class="home-filters" style="margin-bottom: 20px;">
             <form method="get" style="display: flex; gap: 10px; align-items: center;">
             <select name="filter" id="filter-select">
@@ -108,7 +109,7 @@ if (!isset($_SESSION['username'])) {
                 foreach ($articles as $article) {
                     ?>
                     <a href="article.php?id=<?php echo urlencode($article['id']); ?>" style="text-decoration:none;color:inherit;">
-                        <div class="home-article">
+                        <div class="home-article slide-up">
                             <img src="<?php echo htmlspecialchars($article['image']); ?>" alt="Article Main Image" class="home-article-image">
                             <div>
                                 <div class="article-title"><?php echo htmlspecialchars($article['title']); ?></div>
@@ -124,8 +125,8 @@ if (!isset($_SESSION['username'])) {
         } else {
             // No filter: show 3 sections
             ?>
-            <div class="home-sections-container">
-                <div class="home-section" id="recent-posts">
+            <div class="home-sections-container slide-up">
+                <div class="home-section slide-up" id="recent-posts">
                 <h2>Just In</h2>
                 <div class="home-article">
                     <img src="styles/images/article-sample.png" alt="Recent Post" class="home-article-image">
@@ -164,7 +165,7 @@ if (!isset($_SESSION['username'])) {
                     </div>
                 </div>
             </div>
-            <div class="home-section" id="trending-posts">
+            <div class="home-section slide-up" id="trending-posts">
                 <h2>Trending</h2>
                 <?php
                 usort($articles, function($a, $b) {
