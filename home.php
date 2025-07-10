@@ -165,7 +165,7 @@ if (!isset($_SESSION['username'])) {
                         <div class="article-content">
                             <?php echo htmlspecialchars($latest['content']); ?>
                         </div>
-                        <a href="article.php?id=<?php echo urlencode($latest['id']); ?>" style="color: #1976d2; text-decoration: underline; font-weight: 500;">Read More</a>
+                        <a class="read-more-button" href="article.php?id=<?php echo urlencode($latest['id']); ?>">Read More</a>
                     </div>
                 </div>
             </div>

@@ -29,7 +29,7 @@
 }
 
 .home-article:hover {
-    background-color: #bbbbbb;
+    background-color: #f3f3f3;
 }
 
 .article-title {
@@ -146,4 +146,22 @@
     max-width: 569px;
     height: auto;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.read-more-button {
+  display: inline-block;
+  padding: 8px 16px;
+  margin-top: 10px;
+  background-color: #9a0000;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
+
+.read-more-button:hover {
+  background-color: #e90000;
 }
