@@ -52,6 +52,11 @@
     color: #fff;
     text-decoration: none;
     margin-right: 15px;
+    transition: all 0.5s ease;
+}
+
+.navbar a:hover {
+    color:  rgb(255, 75, 75);
 }
 
 .navbar a:last-child {

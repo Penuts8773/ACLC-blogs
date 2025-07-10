@@ -167,3 +167,6 @@
 .read-more-button:hover {
   background-color: #e90000;
 }
+::-webkit-scrollbar {
+  width: 0px;
+}
