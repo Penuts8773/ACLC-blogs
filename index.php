@@ -1,65 +1,26 @@
-<?php
-session_start();
-?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Simple PHP SPA</title>
-  <link rel="stylesheet" href="/assets/css/navbar.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles/login.css">
+    <title>Login - ACLC Blogs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
-  <?php if (isset($_SESSION['user'])): ?>
-  <nav class="navbar">
-    <div class="nav-logo">
-    <div>        <img src="assets/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">
-        <strong>Blogs</strong>
-    </div>
+<body class="login-body">
+    <?php if (isset($_GET['error']) && $_GET['error'] === 'login_required'): ?>
+        <div class="login-error" style="color: red; text-align: center; margin-bottom: 10px;">You must be logged in to post.</div>
+    <?php elseif (isset($_GET['error'])): ?>
+        <div class="login-error" style="color: red; text-align: center; margin-bottom: 10px;">Invalid username or password.</div>
+    <?php endif; ?>
+    <form class="login-container" method="post" action="backend/auth.php">
+        <h2>Login</h2>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autocomplete="username">
 
-        <a href="#" onclick="loadPage('home'); return false;">Home</a>
-        <a href="#" onclick="loadPage('postBoard'); return false;">Post Board</a>
-        <a href="api/logout.php" style="color:red; margin-left:20px;">Logout</a>
-    </div>
-  </nav>
-  <?php endif; ?>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password">
 
-  <div id="app">Loading...</div>
-
-  <script>
-    function loadPage(page, query = '') {
-      fetch(`pages/${page}.php${query ? '?' + query.slice(1) : ''}`)
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById('app').innerHTML = html;
-          history.pushState({}, '', `?page=${page}${query}`);
-
-          // Remove old scripts to prevent duplicates
-          const oldScript = document.querySelector(`script[data-page]`);
-          if (oldScript) oldScript.remove();
-
-          // Load page-specific JS
-          if (!html.includes('name="login-form"')) { // or some unique identifier
-            const script = document.createElement('script');
-            script.src = `assets/js/${page}.js`;
-            script.dataset.page = page;
-            script.onload = () => console.log(`${page}.js loaded`);
-            document.body.appendChild(script);
-          }
-        });
-    }
-
-
-    window.addEventListener('popstate', () => {
-      const params = new URLSearchParams(location.search);
-      const page = params.get('page') || 'login';
-      const query = location.search.replace(`?page=${page}`, '');
-      loadPage(page, query);
-    });
-
-
-    // Load initial page
-    const page = new URLSearchParams(location.search).get('page') || 'login';
-    loadPage(page);
-  </script>
-  
+        <button type="submit">Login</button>
+    </form>
 </body>
 </html>

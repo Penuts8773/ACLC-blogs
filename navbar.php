@@ -1,6 +1,6 @@
 <nav class="navbar">
     <div class="nav-logo">
-        <img src="assets6/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">
+        <img src="styles/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">
         <strong>Blogs</strong>
     </div>
     <div>

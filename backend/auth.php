@@ -21,9 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($password === $db_password) {
             $_SESSION['user_id'] = $user_id;
             $_SESSION['username'] = $username;
-            $_SESSION['user'] = $username;
             $stmt->close();
-            header('Location: /index.php?page=home');
+            header('Location: ../home.php');
             exit();
         } else {
             $stmt->close();
