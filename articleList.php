@@ -29,7 +29,8 @@ if (!isset($_SESSION['username'])) {
         if ($result && $result->num_rows > 0) {
             echo '<ul>';
             while ($row = $result->fetch_assoc()) {
-                echo '<li><a href="article.php?id=' . $row['id'] . '">' . htmlspecialchars($row['title']) . '</a> - ' . htmlspecialchars($row['created_at']) . '</li>';
+                echo '<li><a href="article.php?id=' . $row['id'] . '">' . htmlspecialchars($row['title']) . '</a> - ' . htmlspecialchars($row['created_at']) . 
+                '<button class="delete-button" data-id="' . $row['id'] . '">Delete</button></li>';
             }
             echo '</ul>';
         } else {
