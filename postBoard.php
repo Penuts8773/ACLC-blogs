@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="styles/postBoard.css">
     <link rel="stylesheet" href="styles/navbar.css">
     <link rel="icon" type="image/png" href="styles/images/aclc-emblem.png">
-    <title>Post Board - ACLC Blogs</title>
+    <title>Create Post - ACLC Blogs</title>
     
 </head>
 <body class="postBoard-body">
@@ -112,11 +112,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <!-- Add Block Buttons -->
                 <div style="margin-top:10px;">
-                    <button type="button" onclick="addTextBlock()">Add Text Block</button>
-                    <button type="button" onclick="addImageBlock()">Add Image Block</button>
+                    <button class="postButton" type="button" onclick="addTextBlock()">Add Text Block</button>
+                    <button class="postButton" type="button" onclick="addImageBlock()">Add Image Block</button>
                 </div>
 
-                <button type="submit" id="submitBtn" style="margin-top:15px;">Submit Post</button>
+                <button type="submit" class="postButton" style="margin-top:15px;">Submit Post</button>
             </div>
         </form>
     </div>

@@ -11,14 +11,15 @@ if (!isset($_SESSION['username'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>News - ACLC Blogs</title>
     <link rel="stylesheet" href="styles/articleList.css">
     <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="icon" type="image/png" href="styles/images/aclc-emblem.png">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
     <div>
-        <a href="postBoard.php">Post Board</a>
+        <a href="postBoard.php">Create Post</a>
     </div>
     <div class="article">
         <?php

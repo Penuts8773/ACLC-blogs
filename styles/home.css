@@ -22,8 +22,14 @@
     padding: 20px 0;
     align-items: center;
     box-sizing: border-box;
-    max-width: 300px;
+    max-width: 600px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
     
+}
+
+.home-article:hover {
+    background-color: #bbbbbb;
 }
 
 .article-title {
@@ -62,7 +68,6 @@
   text-overflow: ellipsis;
   word-break: break-all; 
 }
-
 
 
 .home-sections-container {

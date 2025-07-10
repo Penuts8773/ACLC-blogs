@@ -143,7 +143,7 @@ function addTextBlock() {
             <label>Text Block</label>
             <textarea name="block_content[]" rows="4" cols="50" required></textarea>
             <input type="hidden" name="block_type[]" value="text">
-            <button type="button" onclick="this.parentNode.remove()">Remove</button>
+            <button class="postButton" type="button" onclick="this.parentNode.remove()">Remove</button>
             <hr>
         `;
         container.appendChild(blockDiv);
@@ -163,7 +163,7 @@ function addTextBlock() {
                 <img src="" style="display:none; max-width:100%; max-height:150px; margin-top:5px;" alt="Preview">
             </div>
             <input type="hidden" name="block_type[]" value="image">
-            <button type="button" onclick="this.parentNode.remove()">Remove</button>
+            <button class="postButton" type="button" onclick="this.parentNode.remove()">Remove</button>
             <hr>
         `;
         container.appendChild(blockDiv);

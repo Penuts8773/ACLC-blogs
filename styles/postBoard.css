@@ -1,6 +1,5 @@
 
  .postBoard-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f9f9f9;
     margin: 0;
     padding-top: 69px;
@@ -13,7 +12,7 @@
     justify-content: space-around;
   }
 
-  form {
+  #postForm {
     max-width: 600px;
     min-width: 600px;
     margin-top: 20px;
@@ -53,7 +52,7 @@
     outline: none;
   }
 
-  button {
+  .postButton {
     background-color: #007bff;
     color: #fff;
     padding: 12px 20px;
@@ -65,7 +64,7 @@
     transition: background-color 0.3s ease;
   }
 
-  button:hover {
+  .postButton:hover {
     background-color: #0056b3;
   }
 

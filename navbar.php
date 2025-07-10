@@ -13,7 +13,7 @@
     </div>
     <div>
         <a href="home.php">Home</a>
-        <a href="articleList.php">Post Board</a>
+        <a href="articleList.php">News</a>
         <p>
             <form method="POST" class="logout-form">
                 <button class="logout" type="submit" name="logout">Logout</button>
