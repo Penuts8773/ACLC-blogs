@@ -13,7 +13,10 @@
         <div class="login-error" style="color: red; text-align: center; margin-bottom: 10px;">Invalid username or password.</div>
     <?php endif; ?>
     <form class="login-container" method="post" action="backend/auth.php">
-        <h2>Login</h2>
+        <div>
+            <img src="styles/images/aclc-logo.png" alt="ACLC Logo" style="max-width: 120px; height: auto;">
+        </div>
+        <h2>Login to ACLC Blogs</h2>
         <label for="username">Username</label>
         <input type="text" id="username" name="username" required autocomplete="username">
 

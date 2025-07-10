@@ -1,6 +1,11 @@
 .login-body { 
     font-family: Arial, sans-serif; 
-    background: #f4f4f4; 
+    background-image: url('images/aclc-bg.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(3px);
     display: flex; 
     justify-content: center; 
     align-items: center; 
@@ -10,9 +15,10 @@
 .login-container {
     background: #1a1a1a;
     padding: 2rem 2.5rem;
-    border-radius: 8px;
+    border-radius: 50px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     width: 320px;
+    box-shadow: 10px 10px 32px 0 rgb(0, 0, 0,0.75);
 }
 .login-container h2 {
     margin-bottom: 1.5rem;
@@ -27,14 +33,17 @@
 }
 .login-container input[type="text"],
 .login-container input[type="password"] {
-    width: 100%;
+    width: 95%;
     padding: 0.5rem;
     margin-bottom: 1.2rem;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 20px;
 }
 .login-container button {
-    width: 100%;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
     padding: 0.6rem;
     background: #6e0000;
     color: #fff;
@@ -45,5 +54,10 @@
 }
 .login-container button:hover {
     background: #b70000;
+    transition: all 0.8s ease;
 }
 
+.login-container div img{
+    display: block;
+    margin: 0 auto 1.5rem;
+}
