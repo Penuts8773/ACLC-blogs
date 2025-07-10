@@ -113,8 +113,8 @@ if (!isset($_SESSION['username'])) {
                             <img src="<?php echo htmlspecialchars($article['image']); ?>" alt="Article Main Image" class="home-article-image">
                             <div>
                                 <div class="article-title"><?php echo htmlspecialchars($article['title']); ?></div>
-                                <div class="article-meta">By <?php echo htmlspecialchars($article['author']); ?> | <?php echo htmlspecialchars($article['date']); ?></div>
                                 <div class="article-content"><?php echo htmlspecialchars($article['content']); ?></div>
+                                <div class="article-meta">By <?php echo htmlspecialchars($article['author']); ?> | <?php echo htmlspecialchars($article['date']); ?></div>    
                             </div>
                         </div>
                     </a>
@@ -180,8 +180,8 @@ if (!isset($_SESSION['username'])) {
                         <img src="<?php echo htmlspecialchars($trend['image']); ?>" alt="Trending Post" class="home-article-image">
                         <div>
                             <div class="article-title"><?php echo htmlspecialchars($trend['title']); ?></div>
-                            <div class="article-meta">By <?php echo htmlspecialchars($trend['author']); ?> | <?php echo htmlspecialchars($trend['date']); ?></div>
                             <div class="article-content"><?php echo htmlspecialchars($trend['content']); ?></div>
+                            <div class="article-meta">By <?php echo htmlspecialchars($trend['author']); ?> | <?php echo htmlspecialchars($trend['date']); ?></div> 
                         </div>
                     </div>
                     <?php
