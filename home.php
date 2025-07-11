@@ -46,40 +46,35 @@ if (!isset($_SESSION['username'])) {
             });
         </script>
         <?php
-        // Fetch articles from the database
-        require_once __DIR__ . '/backend/conn.php';
+        // Fetch articles using the blog.php helper
+        require_once __DIR__ . '/backend/blog.php';
         $articles = [];
-        $sql = "SELECT a.id, a.title, a.created_at, u.name as author FROM articles a JOIN user u ON a.user_id = u.usn ORDER BY a.created_at DESC";
-        $result = $conn->query($sql);
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                // Fetch first block for summary and image
-                $blockSql = "SELECT block_type, content FROM article_blocks WHERE article_id = ? ORDER BY sort_order ASC";
-                $blockStmt = $conn->prepare($blockSql);
-                $blockStmt->bind_param('i', $row['id']);
-                $blockStmt->execute();
-                $blockResult = $blockStmt->get_result();
-                $summary = '';
-                $image = 'styles/images/article-sample.png';
-                while ($block = $blockResult->fetch_assoc()) {
-                    if ($block['block_type'] === 'text' && $summary === '') {
+        $rawArticles = getAllArticlesWithContentAndImages();
+        foreach ($rawArticles as $row) {
+            if (empty($row['id'])) continue; // Skip articles with no ID
+            echo '<!-- DEBUG: row id = ' . $row['id'] . ' -->';
+            $summary = '';
+            $image = '';
+            if (!empty($row['blocks'])) {
+                foreach ($row['blocks'] as $block) {
+                    if ($block['type'] === 'text' && $summary === '') {
                         $summary = mb_substr(strip_tags($block['content']), 0, 120) . '...';
                     }
-                    if ($block['block_type'] === 'image' && $image === 'styles/images/article-sample.png' && !empty($block['content'])) {
-                        $image = 'uploads/' . $block['content'];
+                    if ($block['type'] === 'image' && $image === '' && !empty($block['content'])) {
+                        // Only use the filename, not the full path
+                        $image = 'uploads/' . basename($block['content']);
                     }
                 }
-                $blockStmt->close();
-                $articles[] = [
-                    'id' => $row['id'],
-                    'title' => $row['title'],
-                    'author' => $row['author'],
-                    'date' => date('Y-m-d', strtotime($row['created_at'])),
-                    'content' => $summary,
-                    'image' => $image,
-                    'views' => 0 // Placeholder, add views if you have them
-                ];
             }
+            $articles[] = [
+                'id' => $row['id'],
+                'title' => $row['title'],
+                'author' => $row['author'],
+                'date' => !empty($row['created_at']) ? date('Y-m-d', strtotime($row['created_at'])) : '',
+                'content' => $summary,
+                'image' => $row['image'] ?? $image, // Use the image from the row or the processed one
+                'views' => 0 // Placeholder, add views if you have them
+            ];  
         }
 
         $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
@@ -196,6 +191,5 @@ if (!isset($_SESSION['username'])) {
         }
         ?>
 </body>
-</html>
 
 </html>
