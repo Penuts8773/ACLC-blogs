@@ -4,6 +4,13 @@ if (!isset($_SESSION['username'])) {
     header('Location: index.php');
     exit();
 }
+require_once __DIR__ . '/backend/blog.php';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+    $id = intval($_POST['delete_id']);
+    deleteArticleController($id);
+    header('Location: articleList.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -148,6 +155,14 @@ if (!isset($_SESSION['username'])) {
                 }
             ?>
 
+                echo '<li><a href="article.php?id=' . $row['id'] . '">' . htmlspecialchars($row['title']) . '</a> - ' . htmlspecialchars($row['created_at']);
+                echo '<form method="POST" style="display:inline;"><input type="hidden" name="delete_id" value="' . $row['id'] . '"><button type="submit" class="delete-button">Delete</button></form></li>';
+            }
+            echo '</ul>';
+        } else {
+            echo '<p>No articles found.</p>';
+        }
+        ?>
     </div>
     
 </body>
