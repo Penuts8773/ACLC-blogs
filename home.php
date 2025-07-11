@@ -20,31 +20,7 @@ if (!isset($_SESSION['username'])) {
 <body class="home-body">
     <?php include 'navbar.php'; ?>
     <div class="home-container slide-up">
-        <div class="home-filters" style="margin-bottom: 20px;">
-            <form method="get" style="display: flex; gap: 10px; align-items: center;">
-            <select name="filter" id="filter-select">
-                <option value="latest" <?php if(isset($_GET['filter']) && $_GET['filter'] == 'latest') echo 'selected'; ?>>Latest</option>
-                <option value="trending" <?php if(isset($_GET['filter']) && $_GET['filter'] == 'trending') echo 'selected'; ?>>Trending</option>
-                <option value="date" <?php if(isset($_GET['filter']) && $_GET['filter'] == 'date') echo 'selected'; ?>>Filter by Month</option>
-            </select>
-            <input type="month" name="date" value="<?php echo isset($_GET['date']) ? htmlspecialchars($_GET['date']) : ''; ?>" <?php if(!isset($_GET['filter']) || $_GET['filter'] != 'date') echo 'style="display:none;"'; ?> id="date-input">
-            <a href="home.php" class="reset-btn" style="text-decoration:none;">
-                <button type="button">Reset</button>
-            </a>
-            <button type="submit">Apply</button>
-            </form>
-        </div>
-        <script>
-            // Show/hide date input based on filter selection
-            document.querySelector('select[name="filter"]').addEventListener('change', function() {
-                var dateInput = document.getElementById('date-input');
-                if(this.value === 'date') {
-                    dateInput.style.display = '';
-                } else {
-                    dateInput.style.display = 'none';
-                }
-            });
-        </script>
+        
         <?php
         // Fetch articles from the database
         require_once __DIR__ . '/backend/conn.php';
@@ -81,51 +57,6 @@ if (!isset($_SESSION['username'])) {
                 ];
             }
         }
-
-        $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
-        $hasFilter = isset($_GET['filter']) && ($_GET['filter'] === 'trending' || $_GET['filter'] === 'date');
-        if ($filter === 'trending') {
-            usort($articles, function($a, $b) {
-                return $b['views'] - $a['views'];
-            });
-        } elseif ($filter === 'date' && !empty($_GET['date'])) {
-            $month = $_GET['date']; // format: YYYY-MM
-            $articles = array_filter($articles, function($article) use ($month) {
-                return strpos($article['date'], $month) === 0;
-            });
-            usort($articles, function($a, $b) {
-                return strtotime($b['date']) - strtotime($a['date']);
-            });
-        } elseif ($filter === 'latest') {
-            usort($articles, function($a, $b) {
-                return strtotime($b['date']) - strtotime($a['date']);
-            });
-        }
-
-        if ($hasFilter || ($filter === 'latest' && isset($_GET['filter']))) {
-            // Only show filtered posts
-            echo '<div class="filtered-articles">';
-            if (empty($articles)) {
-                echo '<div>No posts found for the selected filter.</div>';
-            } else {
-                foreach ($articles as $article) {
-                    ?>
-                    <a href="article.php?id=<?php echo urlencode($article['id']); ?>" style="text-decoration:none;color:inherit;">
-                        <div class="home-article slide-up">
-                            <img src="<?php echo htmlspecialchars($article['image']); ?>" alt="Article Main Image" class="home-article-image">
-                            <div>
-                                <div class="article-title"><?php echo htmlspecialchars($article['title']); ?></div>
-                                <div class="article-content"><?php echo htmlspecialchars($article['content']); ?></div>
-                                <div class="article-meta">By <?php echo htmlspecialchars($article['author']); ?> | <?php echo htmlspecialchars($article['date']); ?></div>    
-                            </div>
-                        </div>
-                    </a>
-                    <?php
-                }
-            }
-            echo '</div>';
-        } else {
-            // No filter: show 3 sections
             ?>
             <div class="home-sections-container">
                 <div class="home-section slide-up" id="recent-posts">
@@ -146,8 +77,8 @@ if (!isset($_SESSION['username'])) {
                             </div>
                         </a>
                         <?php
-        }
-        ?>
+                  }
+                ?>
             </div>
             <div class="home-section slide-up" id="latest-post">
                 <h2>Latest Post</h2>
@@ -193,7 +124,7 @@ if (!isset($_SESSION['username'])) {
                 ?>
             </div>
             <?php
-        }
+        
         ?>
 </body>
 </html>
