@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../index.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,11 +13,9 @@
     <title>Document</title>
 </head>
 <body>
-    <il>
-        <a href="postApprovalPage">Post Approval</a>
-        <a href="articleReq">Article Request</a>
-        <a href="postApprovalPage">Post Approval</a>
-        <a href="postApprovalPage">Post Approval</a>
-    </il>
+        <a href="postApprove.php">Post Approval</a>
+        <a href="articleReq.php">Article Request</a>
+        <a href="postApprovalPage.php">Post Approval</a>
+        <a href="postApprovalPage.php">Post Approval</a>
 </body>
 </html>

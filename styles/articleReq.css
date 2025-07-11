@@ -1,0 +1,8 @@
+body {
+  margin: 0;
+  height: 100vh;             /* Full height of viewport */
+  display: flex;             /* Enable flexbox */
+  justify-content: center;   /* Center horizontally */
+  align-items: center;       /* Center vertically */
+  flex-direction: column;    /* Stack children vertically */
+}
