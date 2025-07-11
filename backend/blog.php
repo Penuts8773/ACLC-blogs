@@ -17,4 +17,7 @@ function getArticleWithContentAndImages($id) {
     }
     return $article;
 }
-// ...existing code...
+
+function deleteArticleController($id) {
+    return deleteArticle($id);
+}

@@ -2,21 +2,6 @@
 // Include the database connection
 require_once 'conn.php';
 
-function getAllArticles() {
-    global $conn; // Use the connection from conn.php
-    $sql = "SELECT articles.*, article_blocks.*, u.name as author FROM articles 
-            LEFT JOIN article_blocks ON articles.id = article_blocks.article_id 
-            LEFT JOIN user u ON articles.user_id = u.usn 
-            ORDER BY articles.created_at DESC";
-    $result = $conn->query($sql);
-    $articles = array();
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $articles[] = $row;
-        }
-    }
-    return $articles;
-}
 function createArticle($title, $content, $author, $image) {
 
 }
