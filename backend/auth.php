@@ -1,38 +1,24 @@
 <?php
-  
-session_start();
+require_once 'db.php';
 
-require_once __DIR__ . '/conn.php';
-
-// Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
+    $usn = $_POST['usn'] ?? '';
+    $pass = $_POST['pass'] ?? '';
 
-    $stmt = $conn->prepare('SELECT usn, pass FROM user WHERE usn = ?');
-    $stmt->bind_param('s', $username);
-    $stmt->execute();
-    $stmt->store_result();
+    $stmt = $pdo->prepare("SELECT usn, name, pass, privilege FROM user WHERE usn = ?");
+    $stmt->execute([$usn]);
+    $user = $stmt->fetch();
 
-    if ($stmt->num_rows === 1) {
-        $stmt->bind_result($user_id, $db_password);
-        $stmt->fetch();
-
-        if ($password === $db_password) {
-            $_SESSION['user_id'] = $user_id;
-            $_SESSION['username'] = $username;
-            $stmt->close();
-            header('Location: ../home.php');
-            exit();
-        } else {
-            $stmt->close();
-            header('Location: ../index.php?error=1');
-            exit();
-        }
+if ($user && ($user['pass'] === $pass || password_verify($pass, $user['pass']))) {
+        // Make sure the privilege level is being set in the session
+        $_SESSION['user'] = [
+            'usn' => $user['usn'],
+            'name' => $user['name'],
+            'privilege' => intval($user['privilege'])  // Ensure it's an integer
+        ];
+        header("Location: ../public/index.php");
     } else {
-        $stmt->close();
-        header('Location: ../index.php?error=1');
-        exit();
+        header("Location: ../public/login.php?error=1");
     }
+    exit;
 }
-?>

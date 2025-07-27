@@ -1,0 +1,887 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-image: url('../images/watermark.png');
+    background-size: 100vh;
+    background-repeat: repeat;
+}
+.navbar {
+    background: #333;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.navbar .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.navbar div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+.navbar a:hover {
+    background: rgba(255,255,255,0.1);
+}
+.navbar button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.navbar button:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+.navbar span {
+    opacity: 0.9;
+}
+.container {
+    max-width: 1200px;  /* Increased from 1400px */
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    width: 95%;  /* Add this to ensure some margin on very wide screens */
+}
+.home-articles {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;  /* Three columns, middle one slightly larger */
+    gap: 2rem;
+    max-width: 1600px;      /* Increased max-width to accommodate 3 columns */
+    margin: 0 auto;         /* Center the container */
+    padding: 1rem;          /* Add some padding */
+}
+
+.article {
+    position: relative;
+    min-height: 300px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;  /* Add this */
+    align-items: flex-end;  /* Add this */
+}
+.article-content {
+    position: relative;
+    color: white;
+    padding: 2rem;
+    width: 100%;  /* Add this */
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));  /* Move gradient here */
+}
+.article-content h2 {
+    margin-bottom: 0.25rem; /* Reduced from default */
+}
+.preview {
+    margin-top: 0.75rem; /* Add top margin to separate from author info */
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.read-more {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.read-more:hover {
+    background: white;
+    color: black;
+}
+img {
+    max-width: 100%;
+}
+.article img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+small {
+    color: #f0e9e9;
+}
+.article-content small {
+    display: block;
+    margin-bottom: 0.75rem; /* Reduced from 1rem */
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+.login-box {
+    max-width: 400px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.login-box h2 {
+    text-align: center;
+}
+.login-box input {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.login-box button {
+    width: 100%;
+    padding: 0.75rem;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+.error {
+    color: #dc3545;
+    margin: 1rem 0;
+}
+.success-message {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.error-message {
+    background: #ffebee;
+    color: #c62828;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Add some responsive design for smaller screens */
+@media (max-width: 1024px) {
+    .home-articles {
+        grid-template-columns: 1fr;
+        max-width: 800px;
+    }
+}
+.create-button {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    padding: 1rem 2rem;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    font-size: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.create-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    background: #444;
+}
+
+.liked {
+    color: red;
+    font-weight: bold;
+}
+.like-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    padding: 0;
+}
+.like-btn:hover {
+    transform: scale(1.1);
+}
+.comment-form {
+    margin: 2rem 0;
+    padding: 1rem;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+/* Article Form Styles (Creation & Editing) */
+.article-form {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.article-form h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.article-form input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+}
+
+.block {
+    background: #f8f8f8;
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    position: relative;
+}
+
+.block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.block select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    min-width: 120px;
+}
+
+.remove-block {
+    padding: 0.5rem 1rem;
+    background: #888;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.remove-block:hover {
+    background: #666;
+    transform: translateY(-1px);
+}
+
+.block-content {
+    margin-top: 1rem;
+    position: relative;
+}
+
+.remove-block {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #888;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.remove-block:hover {
+    background: #666;
+    transform: translateY(-1px);
+}
+
+.block textarea,
+.block input[type="text"] {
+    width: 96%;
+    min-height: 100px;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    font-family: inherit;
+}
+
+.add-block-btn,
+.remove-block {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #666;
+    color: white;
+}
+
+.add-block-btn:hover,
+.remove-block:hover {
+    filter: brightness(110%);
+    transform: translateY(-1px);
+}
+
+.remove-block {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #888;
+    font-size: 0.9rem;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.form-buttons button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    background: #666;
+    color: white;
+}
+
+.form-buttons button:hover {
+    filter: brightness(110%);
+    transform: translateY(-1px);
+}
+
+.drop {
+    border: 2px dashed #999;
+    padding: 2rem;
+    margin-top: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    background: #f5f5f5;
+    transition: all 0.2s ease;
+}
+
+.drop:hover {
+    background: #eee;
+    border-color: #666;
+}
+.comment {
+    position: relative;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    background: var(--light-gray);
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.comment-actions {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 1;
+}
+
+.edit-btn, .delete-btn {
+    display: inline-block !important;
+    padding: 0.25rem 0.5rem !important;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-size: 0.875rem;
+}
+
+.edit-btn {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.edit-btn:hover {
+    background: white;
+    color: black;
+}
+
+.delete-btn {
+    background: var(--primary-maroon) !important;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.save-btn {
+    background: var(--navy-blue);
+    color: white;
+}
+
+.cancel-btn {
+    background: #666;
+    color: white;
+}
+
+.edit-form {
+    margin-top: 1rem;
+}
+
+.edit-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 60px;
+}
+
+/* Admin Panel Styles */
+.admin-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.half-width {
+    flex: 1;
+    min-width: 300px;
+    max-width: calc(50% - 1rem);
+}
+
+.admin-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 800px;  /* Limit maximum width */
+    margin: 0 auto;    /* Center the section */
+}
+
+.admin-section.full-width {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* New styles for admin section wrapper and half-width columns */
+.admin-section-wrapper {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.draft-request {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.draft-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.draft-actions form {
+    margin: 0;
+}
+
+.approve-btn {
+    background: #28a745;
+}
+
+.reject-btn {
+    background: #dc3545;
+}
+
+@media (max-width: 1200px) {  /* Increased from 768px */
+    .admin-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        max-width: 1000px;
+    }
+}
+
+@media (max-width: 1600px) {
+    .container {
+        max-width: 1400px;
+    }
+}
+
+.article-approval-form {
+    background: #f8f8f8;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.article-approval-form button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.article-approval-form button:hover {
+    background: #45a049;
+}
+
+.user-management {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.user-search {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.user-form {
+    background: #f8f8f8;
+    padding: 1rem;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-form span {
+    display: inline-block;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background: rgba(0,0,0,0.05);
+    margin-right: 1rem;
+    min-width: 200px;
+}
+
+.user-form select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+}
+
+.user-form button {
+    padding: 0.5rem 1rem;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.user-form button:hover {
+    background: #444;
+}
+
+.article-list {
+    list-style: none;
+    padding: 0;
+}
+
+.article-list li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+.article-search {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.articles-container {
+    margin-bottom: 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.show-more,
+.show-less {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.show-more:hover,
+.show-less:hover {
+    background-color: #45a049;
+}
+
+.show-less {
+    background-color: #f44336;
+}
+
+.show-less:hover {
+    background-color: #da190b;
+}
+
+.article-wrapper {
+    margin-bottom: 0;  /* Remove margin since we're using grid gap */
+    width: 100%;
+}
+
+#approved-articles .article-wrapper {
+    margin-bottom: 1rem;
+}
+
+/* Add these login page specific styles */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.login-form {
+    background: white;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-form h2 {
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: #555;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 0.75rem;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.login-form button:hover {
+    background: #444;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.login-error {
+    background: #ffebee;
+    color: #c62828;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.action-btn, 
+.article-actions button,
+.article-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;  /* Remove padding */
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    width: 120px;
+    height: 36px;
+    backdrop-filter: blur(4px);
+    margin: 0;
+    box-sizing: border-box;
+    text-align: center;  /* Add text-align */
+}
+
+.article-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+    align-items: center;  /* Add align-items */
+}
+
+/* Remove any default anchor styles */
+.article-actions a {
+    text-decoration: none;
+    line-height: 36px;  /* Match height for vertical centering */
+}
+
+.approve-btn, .unapprove-btn {
+    background: rgba(46, 204, 113, 0.6);
+    border-color: rgba(46, 204, 113, 0.4);
+}
+
+.view-btn {
+    background: rgba(52, 152, 219, 0.6);
+    border-color: rgba(52, 152, 219, 0.4);
+}
+
+.edit-btn {
+    background: rgba(241, 196, 15, 0.6);
+    border-color: rgba(241, 196, 15, 0.4);
+}
+
+.delete-btn {
+    background: rgba(231, 76, 60, 0.6);
+    border-color: rgba(231, 76, 60, 0.4);
+}
+
+/* Modal Styles */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.modal.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.modal-buttons button {
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-buttons .confirm-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.modal-buttons .cancel-btn {
+    background: #f44336;
+    color: white;
+}
+
+.edit-info {
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 0.5rem;
+}
+

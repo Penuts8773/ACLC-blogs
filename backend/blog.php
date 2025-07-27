@@ -1,23 +1,38 @@
 <?php
-require_once 'blogModel.php';
-require_once __DIR__ . '/conn.php';
+require_once 'db.php';
 
-// Get all articles with summary and image (moved to model)
-function getAllArticlesWithContentAndImages() {
-    return getAllArticlesWithSummaryAndImage();
+function getArticleWithUser($pdo, $orderBy) {
+    $sql = "
+        SELECT 
+            a.*, 
+            u.name,
+            (SELECT COUNT(*) FROM article_likes WHERE article_id = a.id) AS likes,
+            COUNT(c.id) AS comment_count
+        FROM articles a
+        JOIN user u ON a.user_id = u.usn
+        LEFT JOIN article_comments c ON a.id = c.article_id
+        WHERE a.approved = 1
+        GROUP BY a.id
+        ORDER BY " . ($orderBy === "a.likes" ? "likes" : $orderBy) . " DESC
+        LIMIT 1
+    ";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetch();
 }
 
-// Get a single article by ID (controller)
-function getArticleWithContentAndImages($id) {
-    $article = getArticleById($id);
-    if ($article) {
-        usort($article['blocks'], function($a, $b) {
-            return ($a['position'] ?? 0) <=> ($b['position'] ?? 0);
-        });
-    }
-    return $article;
-}
-
-function deleteArticleController($id) {
-    return deleteArticle($id);
+function getMostCommentedArticle($pdo) {
+    $sql = "SELECT a.*, u.name, COUNT(c.id) AS comment_count
+            FROM articles a
+            JOIN user u ON a.user_id = u.usn
+            LEFT JOIN article_comments c ON a.id = c.article_id
+            WHERE a.approved = 1
+            GROUP BY a.id, a.title, a.created_at, u.name
+            ORDER BY comment_count DESC
+            LIMIT 1";
+            
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetch();
 }
