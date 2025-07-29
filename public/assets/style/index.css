@@ -14,9 +14,20 @@ body {
     color: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
-.navbar .title {
-    font-size: 1.5rem;
-    font-weight: bold;
+
+.nav-logo{
+    display: flex;
+    align-items: center;
+}
+
+#aclc-logo{
+    height: 30px;
+}
+
+.nav-logo strong{
+    padding-top: 3px;
+    font-weight: bolder;
+    color: #f1fcff;
 }
 .navbar div:last-child {
     display: flex;
@@ -27,18 +38,18 @@ body {
     color: white;
     text-decoration: none;
     padding: 0.5rem 1rem;
-    border-radius: 4px;
+    border-radius: 20px;
     transition: background 0.3s ease;
 }
 .navbar a:hover {
     background: rgba(255,255,255,0.1);
 }
 .navbar button {
-    background: #dc3545;
+    background: #333;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
-    border-radius: 4px;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
 }

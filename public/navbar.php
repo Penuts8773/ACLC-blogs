@@ -1,5 +1,8 @@
 <div class="navbar">
-    <div class="title">ACLC Blog</div>
+    <div class="nav-logo">
+        <img src="assets/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">
+        <strong>Blogs</strong>
+    </div>
     <div>
         <span>Hi, <?= htmlspecialchars($_SESSION['user']['name'] ?? '') ?>!</span>
         <a href="index.php">Home</a>
