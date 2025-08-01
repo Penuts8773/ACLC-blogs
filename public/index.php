@@ -47,7 +47,7 @@ $articles = getAllArticles($pdo);
         ?>
         
         <div class="article-section side left">
-            <?php showArticle($mostLiked, "👍 Most Liked Article", $pdo); ?>
+            <?php showArticle($mostLiked, "👍 Most Liked", $pdo); ?>
         </div>
         
         <div class="article-section front">
@@ -55,7 +55,7 @@ $articles = getAllArticles($pdo);
         </div>
 
         <div class="article-section side right">
-            <?php showArticle($mostCommented, "💬 Most Commented Article", $pdo); ?>
+            <?php showArticle($mostCommented, "💬 Most Comments", $pdo); ?>
         </div>
     </div>
 </body>

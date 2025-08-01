@@ -13,6 +13,7 @@ body {
     align-items: center;
     color: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 9999;
 }
 
 .nav-logo{
@@ -68,16 +69,6 @@ body {
 }
 
 /* New styles for home-articles layout and floating/peeking effect */
-.home-articles {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 1rem;
-    position: relative;
-}
 
 .article-section {
     width: 30%;
@@ -88,37 +79,58 @@ body {
 
 .article-section.front {
     z-index: 10;
-    transform: translateY(-20px) scale(1.1);
+    transform: scale(1.1);
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    background-color: white;
+    min-width: 800px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 30px;
+}
+
+.article-section.front:hover {
+    z-index: 20;
+    transform: scale(1.15);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
 }
 
 .article-section.side {
+    background-color: white;
     z-index: 5;
     opacity: 0.8;
     transform-origin: center bottom;
+    min-width: 300px;
+    max-height: 370px;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .article-section.side.left {
-    transform: translateX(-40%) scale(0.9);
+    transform: translateX(-5%) scale(0.9);
 }
 
 .article-section.side.right {
-    transform: translateX(40%) scale(0.9);
+    transform: translateX(5%) scale(0.9);
+}
+
+.article-section.side.left:hover {
+    z-index: 15;
+    transform: translateX(40px) scale(1.1);
+    opacity: 1;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
 .article-section.side:hover {
     z-index: 15;
-    transform: translateY(-20px) scale(1.1);
+    transform: translateX(-40px) scale(1.1);
     opacity: 1;
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 .home-articles {
     display: grid;
-    grid-template-columns: 1fr 1.2fr 1fr;  /* Three columns, middle one slightly larger */
-    gap: 2rem;
-    max-width: 1600px;      /* Increased max-width to accommodate 3 columns */
-    margin: 0 auto;         /* Center the container */
-    padding: 1rem;          /* Add some padding */
+    grid-template-columns: 1fr 1.2fr 1fr;  
+    max-width: 1600px;     
+    margin-top: 60px;
 }
 
 .article {
@@ -139,6 +151,7 @@ body {
     padding: 2rem;
     width: 100%;  /* Add this */
     background: linear-gradient(transparent, rgba(0,0,0,0.8));  /* Move gradient here */
+    ;
 }
 .article-content h2 {
     margin-bottom: 0.25rem; /* Reduced from default */
