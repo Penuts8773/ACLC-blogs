@@ -36,7 +36,7 @@ $sql = "
     JOIN user u ON a.user_id = u.usn
     LEFT JOIN article_comments c ON a.id = c.article_id
     WHERE a.approved = 1
-    GROUP BY a.id
+    GROUP BY a.id, u.name
     ORDER BY $column " . strtoupper($order);
 
 $stmt = $pdo->prepare($sql);

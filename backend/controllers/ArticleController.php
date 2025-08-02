@@ -15,7 +15,7 @@ class ArticleController {
         JOIN user u ON a.user_id = u.usn
         LEFT JOIN article_comments c ON a.id = c.article_id
         WHERE a.approved = 0
-        GROUP BY a.id
+        GROUP BY a.id, u.name
         ORDER BY a.created_at DESC";
         
         $stmt = $this->pdo->query($sql);
@@ -31,7 +31,7 @@ class ArticleController {
         JOIN user u ON a.user_id = u.usn
         LEFT JOIN article_comments c ON a.id = c.article_id
         WHERE a.approved = 1
-        GROUP BY a.id
+        GROUP BY a.id, u.name
         ORDER BY a.created_at DESC";
         
         $stmt = $this->pdo->query($sql);

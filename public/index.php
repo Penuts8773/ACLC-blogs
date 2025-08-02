@@ -55,7 +55,14 @@ $articles = getAllArticles($pdo);
         </div>
 
         <div class="article-section">
-            <?php showArticle($mostCommented, "💬 Most Commented Article", $pdo); ?>
+            <?php 
+            if ($mostCommented && count($mostCommented) > 0) {
+                echo "<h2>💬 Most Commented Articles</h2>";
+                foreach ($mostCommented as $article) {
+                    showArticle($article, "", $pdo);
+                }
+            }
+            ?>
         </div>
     </div>
 </body>
