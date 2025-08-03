@@ -59,8 +59,7 @@ if (!$article) {
     </div>
     
     <?php
-    $blocks = $pdo->prepare("SELECT * FROM article_blocks WHERE article_id = ? ORDER BY sort_order");
-    $blocks->execute([$id]);
+    $blocks = getArticleBlocks($pdo, $id);
     foreach ($blocks as $b) {
         if ($b['block_type'] === 'text') {
             echo "<p>" . nl2br(htmlspecialchars($b['content'])) . "</p>";
@@ -77,16 +76,8 @@ if (!$article) {
     echo "<!-- Current user: " . ($_SESSION['user']['usn'] ?? 'Not logged in') . " -->";
     
     // Get comments with user information
-    $comments = $pdo->prepare("
-        SELECT c.*, u.name, c.user_id 
-        FROM article_comments c 
-        JOIN user u ON c.user_id = u.usn 
-        WHERE article_id = ? 
-        ORDER BY c.created_at DESC
-    ");
-    $comments->execute([$id]);
-    
-    while ($comment = $comments->fetch()) {
+    $comments = getArticleComments($pdo, $id);
+    foreach ($comments as $comment) {
         $isOwner = isset($_SESSION['user']) && $_SESSION['user']['usn'] == $comment['user_id'];
         // Debug output
         echo "<!-- Comment ID: {$comment['id']}, User ID: {$comment['user_id']}, Is Owner: " . ($isOwner ? 'true' : 'false') . " -->";
