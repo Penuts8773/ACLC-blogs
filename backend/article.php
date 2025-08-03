@@ -1,5 +1,21 @@
+
 <?php
 require_once 'db.php';
+
+// Get article with author and last editor names
+function getArticleWithNames($pdo, $id) {
+    $stmt = $pdo->prepare("
+        SELECT a.*, 
+               u1.name AS author_name, 
+               u2.name AS last_editor_name 
+        FROM articles a 
+        JOIN user u1 ON a.user_id = u1.usn 
+        LEFT JOIN user u2 ON a.last_editor_id = u2.usn 
+        WHERE a.id = ?
+    ");
+    $stmt->execute([$id]);
+    return $stmt->fetch();
+}
 
 function getArticleBlocks($pdo, $articleId) {
     $blocks = $pdo->prepare("SELECT * FROM article_blocks WHERE article_id = ? ORDER BY sort_order");

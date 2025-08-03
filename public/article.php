@@ -1,5 +1,6 @@
 <?php
 require_once '../backend/db.php';
+require_once '../backend/article.php';
 include 'components/modal.php';
 
 // Debug session
@@ -16,9 +17,9 @@ if (!$id) {
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT a.*, u.name FROM articles a JOIN user u ON a.user_id = u.usn WHERE a.id = ?");
-$stmt->execute([$id]);
-$article = $stmt->fetch();
+
+
+$article = getArticleWithNames($pdo, $id);
 
 if (!$article) {
     header('Location: articleBoard.php');
