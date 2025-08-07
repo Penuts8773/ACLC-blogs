@@ -137,8 +137,13 @@ body {
 }
 
 .article-section-latest {
+    justify-content: center;
     width: 600px;
     margin: 0 10px;
+}
+
+.article-section-latest .article {
+    min-height: 400px;
 }
 
 .article-section-side{
@@ -155,6 +160,18 @@ body {
     max-height: 230px;
 }
 
+.slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateY(50px); /* Start slightly below */
+}
+
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 .article {
     position: relative;

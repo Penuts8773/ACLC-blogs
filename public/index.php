@@ -62,14 +62,14 @@ $articles = getAllArticles($pdo);
         }
         ?>
         
-        <div class="articleList">
+        <div class="articleList slide-up">
             <h2>📝Article List</h2>
             <?php foreach ($articles as $article) {showListArticle($article, $pdo);}?>
         </div>
-        <div class="article-section-latest">
+        <div class="article-section-latest slide-up">
             <?php showArticle($latest, "🆕 Latest Article", $pdo); ?>
         </div>
-        <div class ="article-section-side">
+        <div class ="article-section-side slide-up">
             <div class="article-section-like">
                 <?php showArticle($mostLiked, "👍 Most Liked Article", $pdo); ?>
             </div>
