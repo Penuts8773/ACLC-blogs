@@ -44,18 +44,40 @@ $articles = getAllArticles($pdo);
             echo "<button onclick='window.location.href=\"article.php?id={$article['id']}\"' class='read-more'>Read More</button>";
             echo "</div></div>";
         }
+
+        function showListArticle($article, $pdo){
+
+            if (!$article) {
+                echo "<p class='no-article'>No articles available.</p>";
+                return;
+            }
+
+            $blocks = getArticleBlocks($pdo, $article['id']);
+            $content = getArticleThumbnailAndPreview($blocks);
+
+            echo "<div class='article-list-item'>";
+            echo "<a href='article.php?id=". urlencode($article['id']) . "'>". htmlspecialchars($article['title']) . "</a>";
+            echo "<small>By " . htmlspecialchars($article['name']) . " on " . $article['created_at'] . "</small>";
+            echo "</div>";
+        }
         ?>
         
-        <div class="article-section side left">
-            <?php showArticle($mostLiked, "👍 Most Liked Article", $pdo); ?>
+        <div class="articleList">
+            <h2>Article List</h2>
+            <?php
+            foreach ($articles as $article) {showListArticle($article, $pdo);}
+            ?>
         </div>
-        
         <div class="article-section front">
             <?php showArticle($latest, "🆕 Latest Article", $pdo); ?>
         </div>
-        <div class="article-section side right">
-            <?php showArticle($mostCommented, "💬 Most Commented Article", $pdo); ?>
-
+        <div class ="article-section side">
+            <div class="article-section side like">
+                <?php showArticle($mostLiked, "👍 Most Liked Article", $pdo); ?>
+            </div>
+            <div class="article-section side comment">
+                <?php showArticle($mostCommented, "💬 Most Commented Article", $pdo); ?>
+            </div>
         </div>
     </div>
 </body>
