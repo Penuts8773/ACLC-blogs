@@ -137,6 +137,7 @@ class ArticleController {
             error_log("Error getting article: " . $e->getMessage());
             return false;
         }
+        
     }
 
     public function createEditDraft($articleId, $userId, $title, $blocks) {

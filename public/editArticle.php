@@ -58,6 +58,21 @@ if ($isTeacher && !$isAdmin) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'] ?? '';
     $blocksData = json_decode($_POST['blocksData'] ?? '[]', true);
+
+    foreach ($blocksData as &$block) {
+        if ($block['type'] === 'image' && str_starts_with($block['content'], 'data:image/')) {
+            $data = explode(',', $block['content']);
+            $imgData = base64_decode($data[1]);
+            $imgName = uniqid('img_', true) . '.png';
+            
+            // Make sure 'uploads/' folder exists and is writable
+            file_put_contents(__DIR__ . "/uploads/$imgName", $imgData);
+
+            // Replace content with relative path
+            $block['content'] = "uploads/$imgName";
+        }
+    }
+    unset($block);
     
     if ($isAdmin) {
         // Direct edit for admins
@@ -94,7 +109,7 @@ $blocks = $articleController->getArticleBlocks($articleId);
             padding: 10px;
             margin-top: 5px;
             cursor: pointer;
-        }
+        }   
     </style>
 </head>
 <body>
@@ -124,9 +139,13 @@ $blocks = $articleController->getArticleBlocks($articleId);
                     <?php if ($block['block_type'] === 'text'): ?>
                         <textarea name="blocks[]" required><?= htmlspecialchars($block['content']) ?></textarea>
                     <?php else: ?>
-                        <input type="hidden" name="blocks[]" value="<?= htmlspecialchars($block['content']) ?>" required>
                         <div class="drop" ondragover="event.preventDefault()" ondrop="handleDrop(event, this)" onclick="handleClick(this)">
-                            <img src="<?= htmlspecialchars($block['content']) ?>" style="max-width: 200px">
+                            <?php if ($block['content']): ?>
+                                <img src="<?= htmlspecialchars($block['content']) ?>" style="max-width: 200px">
+                            <?php else: ?>
+                                <span>Drag & drop image or click</span>
+                            <?php endif; ?>
+                            <input type="hidden" name="blocks[]" value="<?= htmlspecialchars($block['content']) ?>" required>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -262,6 +281,40 @@ function handleTypeChange(select) {
         textarea.required = true;
         content.appendChild(textarea);
     }
+}
+function handleDrop(event, dropZone) {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    if (!file.type.startsWith('image/')) return alert('Only images allowed');
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const input = dropZone.querySelector('input[type=hidden]');
+        input.value = e.target.result;
+        dropZone.innerHTML = `<img src="${e.target.result}" style="max-width: 200px">`;
+        dropZone.appendChild(input);
+    };
+    reader.readAsDataURL(file);
+}
+
+function handleClick(dropZone) {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.onchange = e => {
+        const file = e.target.files[0];
+        if (!file.type.startsWith('image/')) return alert('Only images allowed');
+        
+        const reader = new FileReader();
+        reader.onload = evt => {
+            const input = dropZone.querySelector('input[type=hidden]');
+            input.value = evt.target.result;
+            dropZone.innerHTML = `<img src="${evt.target.result}" style="max-width: 200px">`;
+            dropZone.appendChild(input);
+        };
+        reader.readAsDataURL(file);
+    };
+    fileInput.click();
 }
 
 // Remove the removeBlock function since we're handling it inline
