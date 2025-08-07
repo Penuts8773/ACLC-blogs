@@ -63,19 +63,17 @@ $articles = getAllArticles($pdo);
         ?>
         
         <div class="articleList">
-            <h2>Article List</h2>
-            <?php
-            foreach ($articles as $article) {showListArticle($article, $pdo);}
-            ?>
+            <h2>📝Article List</h2>
+            <?php foreach ($articles as $article) {showListArticle($article, $pdo);}?>
         </div>
-        <div class="article-section front">
+        <div class="article-section-latest">
             <?php showArticle($latest, "🆕 Latest Article", $pdo); ?>
         </div>
-        <div class ="article-section side">
-            <div class="article-section side like">
+        <div class ="article-section-side">
+            <div class="article-section-like">
                 <?php showArticle($mostLiked, "👍 Most Liked Article", $pdo); ?>
             </div>
-            <div class="article-section side comment">
+            <div class="article-section-comment">
                 <?php showArticle($mostCommented, "💬 Most Commented Article", $pdo); ?>
             </div>
         </div>

@@ -4,6 +4,37 @@ body {
     background-image: url('../images/watermark.png');
     background-size: 100vh;
     background-repeat: repeat;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+
+/* Thinnest scrollbar styles for WebKit browsers */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Even thinner for specific elements */
+.articleList::-webkit-scrollbar {
+    width: 2px;
+}
+
+.articleList::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 1px;
 }
 .navbar {
     background: #333;
@@ -110,62 +141,66 @@ body {
     max-width: 1200px;  /* Increased from 1400px */
     margin: 0 auto;
     padding: 1rem 2rem;
-    width: 95%;  /* Add this to ensure some margin on very wide screens */
+    width: 95%;  
 }
 
-/* New styles for home-articles layout and floating/peeking effect */
 .home-articles {
     display: flex;
+    margin: 20px;
+    justify-content: space-between;
+    height: 70vh;
+}
+
+.articleList {
     justify-content: center;
-    align-items: flex-end;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 2rem auto;
+    width: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 550px;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+}
+
+.article-list-item {
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.article-list-item a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.article-list-item a:hover {
+    text-decoration: underline;
+}
+
+.article-list-item small {
+    display: block;
+    margin: 0.5rem 0;
+    color: #666;
+}
+
+.article-section-latest {
+    width: 600px;
+    margin: 0 10px;
+}
+
+.article-section-side{
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     padding: 1rem;
-    position: relative;
+    font-size: 0.8rem;
 }
 
-.article-section {
-    width: 30%;
-    transition: transform 0.3s ease, z-index 0.3s ease;
-    cursor: pointer;
-    position: relative;
+.article-section-side .article {
+    min-height: 150px; /* Smaller than main article */
+    max-height: 230px;
 }
 
-.article-section.front {
-    z-index: 10;
-    transform: translateY(-20px) scale(1.1);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-}
-
-.article-section.side {
-    z-index: 5;
-    opacity: 0.8;
-    transform-origin: center bottom;
-}
-
-.article-section.side.left {
-    transform: translateX(-40%) scale(0.9);
-}
-
-.article-section.side.right {
-    transform: translateX(40%) scale(0.9);
-}
-
-.article-section.side:hover {
-    z-index: 15;
-    transform: translateY(-20px) scale(1.1);
-    opacity: 1;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-}
-.home-articles {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr 1fr;  /* Three columns, middle one slightly larger */
-    gap: 2rem;
-    max-width: 1600px;      /* Increased max-width to accommodate 3 columns */
-    margin: 0 auto;         /* Center the container */
-    padding: 1rem;          /* Add some padding */
-}
 
 .article {
     position: relative;
@@ -176,21 +211,28 @@ body {
     overflow: hidden;
     margin-bottom: 2rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    display: flex;  /* Add this */
-    align-items: flex-end;  /* Add this */
+    display: flex;  
+    align-items: flex-end;  
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .article-content {
     position: relative;
     color: white;
     padding: 2rem;
-    width: 100%;  /* Add this */
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));  /* Move gradient here */
+    width: 100%;  
+    background: linear-gradient(transparent, rgba(0,0,0,0.8)); 
+    word-wrap: break-word;   
+    overflow-wrap: break-word; 
+    word-break: break-word;    
+    hyphens: auto; 
 }
 .article-content h2 {
-    margin-bottom: 0.25rem; /* Reduced from default */
+    margin-bottom: 0.25rem; 
 }
+
 .preview {
-    margin-top: 0.75rem; /* Add top margin to separate from author info */
+    margin-top: 0.75rem; 
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
     line-height: 1.5;

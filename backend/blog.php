@@ -33,5 +33,5 @@ function getMostCommentedArticle($pdo) {
             LIMIT 3";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    return $stmt->fetchAll();
+    return $stmt->fetch();
 }
