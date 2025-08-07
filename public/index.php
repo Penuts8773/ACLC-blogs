@@ -53,9 +53,9 @@ $articles = getAllArticles($pdo);
         <div class="article-section front">
             <?php showArticle($latest, "🆕 Latest Article", $pdo); ?>
         </div>
-
         <div class="article-section side right">
             <?php showArticle($mostCommented, "💬 Most Commented Article", $pdo); ?>
+
         </div>
     </div>
 </body>

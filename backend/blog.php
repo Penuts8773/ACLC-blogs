@@ -12,7 +12,7 @@ function getArticleWithUser($pdo, $orderBy) {
         JOIN user u ON a.user_id = u.usn
         LEFT JOIN article_comments c ON a.id = c.article_id
         WHERE a.approved = 1
-        GROUP BY a.id
+        GROUP BY a.id, u.name
         ORDER BY " . ($orderBy === "a.likes" ? "likes" : $orderBy) . " DESC
         LIMIT 1
     ";
@@ -30,9 +30,8 @@ function getMostCommentedArticle($pdo) {
             WHERE a.approved = 1
             GROUP BY a.id, a.title, a.created_at, u.name
             ORDER BY comment_count DESC
-            LIMIT 1";
-            
+            LIMIT 3";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    return $stmt->fetch();
+    return $stmt->fetchAll();
 }
