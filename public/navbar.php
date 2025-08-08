@@ -9,8 +9,11 @@
       <button id="burger-btn" class="burger-btn" aria-label="Toggle menu">
         &#9776; <!-- burger icon -->
       </button>
-      <div id="dropdown-menu" class="dropdown-content">
-        <span>Hi, <?= htmlspecialchars($_SESSION['user']['name'] ?? '') ?>!</span>
+      <div id="dropdown-menu" class="dropdown-content slideDown">
+        <div class="dropdown-header">
+          <img src="assets/images/user-icon.png" class="user-icon">
+          <span><?= htmlspecialchars($_SESSION['user']['name'] ?? '') ?></span>
+        </div>
         <a href="index.php">Home</a>
         <a href="articleBoard.php">Articles</a>
         <?php if(isset($_SESSION['user']) && $_SESSION['user']['privilege'] == 1): ?>
