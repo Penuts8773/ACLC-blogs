@@ -77,15 +77,12 @@ body {
     transition: all 0.3s ease;
 }
 .navbar button:hover {
-    transform: scaleX(1.5);
-}
-
-.navbar button:focus {
-    rotate: -180deg;
-}
-
-.navbar button:unfocus {
     rotate: 180deg;
+    
+}
+
+.navbar button:active {
+    transform: scaleX(1.5);
 }
 
 .navbar span {
@@ -159,7 +156,6 @@ body {
         transform: translate(0, 0) scale(1);
     }
 }
-
 
 .container {
     max-width: 1200px;  
