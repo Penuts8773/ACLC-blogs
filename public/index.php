@@ -11,14 +11,20 @@ if (!isset($_SESSION['user'])) {
 
 $articles = getAllArticles($pdo);
 ?>
-<?php include 'navbar.php'; ?>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Articles</title>
+    <meta charset="UTF-8">
+    <title>Home - ACLC BLOGS</title>
+    <link rel="icon" type="image/x-icon" href="public/assets/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
     <link rel="stylesheet" href="assets/style/index.css">
 </head>
 <body>  
+    <?php include 'navbar.php'; ?>
     <div class="home-articles">
         <?php
         $latest = getArticleWithUser($pdo, "a.created_at");

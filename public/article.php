@@ -30,6 +30,7 @@ if (!$article) {
 <html>
 <head>
     <title><?= htmlspecialchars($article['title']) ?></title>
+    <link rel="icon" type="image/x-icon" href="assets/images/aclcEmblem.ico">
     <link rel="stylesheet" href="assets/style/index.css">
 </head>
 <body>

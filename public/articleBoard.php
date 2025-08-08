@@ -48,6 +48,7 @@ $articles = $stmt->fetchAll();
 <html>
 <head>
     <title>All Articles</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/aclcEmblem.ico">
     <link rel="stylesheet" href="assets/style/index.css">
 </head>
 <body>

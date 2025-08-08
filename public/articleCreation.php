@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <title>Create Article</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/aclcEmblem.ico">
     <link rel="stylesheet" href="assets/style/index.css">
     <style>
         .drop {
