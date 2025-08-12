@@ -2,6 +2,7 @@
 session_start();
 require_once '../backend/db.php';
 include 'components/modal.php';
+
 // Redirect if not logged in
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
@@ -13,26 +14,28 @@ $user = $_SESSION['user'];
 // Check user privilege
 if ($user['privilege'] == 3) { // Student
     die("Students are not allowed to create articles.");
-} 
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $types = $_POST['types'];
     $blocks = $_POST['blocks'];
+    $category_id = $_POST['category']; // Category selection
+    $tags = $_POST['tags']; // Tags
 
     if ($types[0] !== 'image') {
         die("First block must be an image (thumbnail).");
     }
 
     // Set approval status based on privilege level
-    // Admin (1) = Auto-approved
-    // Teacher (2) = Needs approval
     $isApproved = ($user['privilege'] == 1) ? 1 : 0;
 
-    $stmt = $pdo->prepare("INSERT INTO articles (user_id, title, approved) VALUES (?, ?, ?)");
-    $stmt->execute([$user['usn'], $title, $isApproved]);
+    // Insert article
+    $stmt = $pdo->prepare("INSERT INTO articles (user_id, title, approved, category_id) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$user['usn'], $title, $isApproved, $category_id]);
     $article_id = $pdo->lastInsertId();
 
+    // Insert article blocks (content)
     foreach ($blocks as $i => $content) {
         $type = $types[$i];
 
@@ -48,6 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$article_id, $type, $content, $i]);
     }
 
+    // Insert tags (assumes tags are stored as a comma-separated string or individual entries in a `tags` table)
+    foreach ($tags as $tag) {
+        $stmt = $pdo->prepare("INSERT INTO article_tags (article_id, tag_name) VALUES (?, ?)");
+        $stmt->execute([$article_id, $tag]);
+    }
+
     // Redirect with appropriate message
     if ($isApproved) {
         header("Location: articleBoard.php?success=1");
@@ -56,6 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     exit;
 }
+
+// Fetch categories from the database
+$stmt = $pdo->query("SELECT * FROM categories");
+$categories = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html>
@@ -85,6 +98,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <form method="POST" id="articleForm">
         <input type="text" name="title" placeholder="Title" required><br><br>
+
+        <!-- Category Selection -->
+        <label for="category">Category</label>
+        <select name="category" id="category" required>
+            <option value="">Select Category</option>
+            <?php foreach ($categories as $category): ?>
+                <option value="<?php echo $category['id']; ?>"><?php echo htmlspecialchars($category['name']); ?></option>
+            <?php endforeach; ?>
+        </select><br><br>
+
+        <!-- Tags Input (Comma-separated) -->
+        <label for="tags">Tags (Comma-separated)</label>
+        <input type="text" name="tags" id="tags" placeholder="Enter tags, separated by commas"><br><br>
+
         <div id="blocks">
             <!-- First block (Thumbnail) -->
             <div class="block">
