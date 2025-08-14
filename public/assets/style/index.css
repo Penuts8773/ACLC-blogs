@@ -463,6 +463,13 @@ small {
 .like-btn:hover {
     transform: scale(1.1);
 }
+
+.comment-section {
+    margin-top: 2rem;
+    padding: 1rem;
+    width: 100%;
+}
+
 .comment-form {
     margin: 2rem 0;
     padding: 1rem;
@@ -641,21 +648,32 @@ small {
     border-color: #666;
 }
 .comment {
-    position: relative;
-    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
     margin-bottom: 1rem;
-    background: var(--light-gray);
     border-radius: 8px;
-    border: 1px solid #eee;
+}
+
+#comment-content {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;    
+    hyphens: auto; 
+}
+
+.comment small {
+    margin: 5px 0;
+    color: #333;
 }
 
 .comment-actions {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
     display: flex;
     gap: 0.5rem;
-    z-index: 1;
+    margin-top: 0.5rem;
 }
 
 .delete-btn {

@@ -95,7 +95,7 @@ function showArticle($article, $title, $pdo) {
     ?>
 
     <!-- Display comments -->
-<div class="comments-section" id="comments">
+<div class="comment-section" id="comments">
     <?php
     // Debug output
     echo "<!-- Current user: " . ($_SESSION['user']['usn'] ?? 'Not logged in') . " -->";
@@ -115,13 +115,13 @@ function showArticle($article, $title, $pdo) {
                     <span class="edit-indicator">(edited)</span>
                 <?php endif; ?>
             </small>
+            <p id='comment-content'><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
             <?php if ($isOwner): ?>
                 <div class='comment-actions'>
                     <button class='edit-btn action-btn' onclick='editComment(<?= $comment['id'] ?>)'>Edit</button>
                     <button class='delete-btn action-btn' onclick='deleteComment(<?= $comment['id'] ?>)'>Delete</button>
                 </div>
             <?php endif; ?>
-            <p class='comment-content'><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
             <?php if ($isOwner): ?>
                 <form class='edit-form' style='display:none;'>
                     <textarea required><?= htmlspecialchars($comment['content']) ?></textarea>
