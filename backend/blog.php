@@ -33,5 +33,23 @@ function getMostCommentedArticle($pdo) {
             LIMIT 3";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
-    return $stmt->fetch();
+    return $stmt->fetchAll();
+}
+//ANDITO TANGNAMO
+function getMostLikedArticles($pdo) {
+    $sql = "
+        SELECT 
+            a.*, 
+            u.name,
+            (SELECT COUNT(*) FROM article_likes WHERE article_id = a.id) AS likes
+        FROM articles a
+        JOIN user u ON a.user_id = u.usn
+        WHERE a.approved = 1
+        GROUP BY a.id, u.name
+        ORDER BY likes DESC
+        LIMIT 3
+    ";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll();
 }

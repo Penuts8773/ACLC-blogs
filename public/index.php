@@ -28,7 +28,7 @@ $articles = getAllArticles($pdo);
     <div class="home-articles">
         <?php
         $latest = getArticleWithUser($pdo, "a.created_at");
-        $mostLiked = getArticleWithUser($pdo, "a.likes");
+        $mostLiked = getMostLikedArticles($pdo);
         $mostCommented = getMostCommentedArticle($pdo);
 
         function showArticle($article, $title, $pdo) {
@@ -75,13 +75,31 @@ $articles = getAllArticles($pdo);
         <div class="article-section-latest slide-up">
             <?php showArticle($latest, "🆕 Latest Article", $pdo); ?>
         </div>
-        <div class ="article-section-side slide-up">
+        <div class="article-section-side slide-up">
             <div class="article-section-like">
-                <?php showArticle($mostLiked, "👍 Most Liked Article", $pdo); ?>
+                <h2>👍 Most Liked Articles</h2>
+                <?php
+                if ($mostLiked && count($mostLiked) > 0) {
+                    foreach ($mostLiked as $article) {
+                        showArticle($article, "", $pdo);
+                    }
+                } else {
+                    echo "<p class='no-article'>No articles available.</p>";
+                }
+                ?>
             </div>
-            <div class="article-section-comment">
-                <?php showArticle($mostCommented, "💬 Most Commented Article", $pdo); ?>
-            </div>
+        <div class="article-section-comment">
+            <h2>💬 Most Commented Articles</h2>
+            <?php
+            if ($mostCommented && count($mostCommented) > 0) {
+                foreach ($mostCommented as $article) {
+                    showArticle($article, "", $pdo);
+                }
+            } else {
+                echo "<p class='no-article'>No articles available.</p>";
+            }
+            ?>
+        </div>
         </div>
     </div>
 </body>
