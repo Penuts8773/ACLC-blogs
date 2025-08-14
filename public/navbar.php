@@ -1,11 +1,16 @@
 <div class="navbar">
   <div class="nav-logo">
     <img src="assets/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">
-    <strong>Blogs</strong>
+    <a href="index.php">Blogs</a>
   </div>
   
   <div class="nav-user-menu">
     <div class="dropdown">
+      <?php if ($_SESSION['user']['privilege'] != 3): ?>
+        <button id="create-button" onclick="confirmNavigation('articleCreation.php')">
+            Create Article
+        </button>
+    <?php endif; ?>
       <button id="burger-btn" class="burger-btn" aria-label="Toggle menu">
         &#9776; <!-- burger icon -->
       </button>
@@ -46,4 +51,10 @@ window.addEventListener('click', (event) => {
     dropdownMenu.classList.remove('show');
   }
 });
+
+function confirmNavigation(url) {
+    showConfirmModal('Do you want to create a new article?', () => {
+        window.location.href = url;
+    });
+}
 </script>
