@@ -36,6 +36,34 @@ body {
     background: #aaa;
     border-radius: 1px;
 }
+
+.articleList ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.articleList li {
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.articleList li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.articleList li a:hover {
+    text-decoration: underline;
+}
+
+.articleList li small {
+    display: block;
+    margin: 0.5rem 0;
+    color: #1b1b1b;
+}
+
 .navbar {
     background: #333;
     padding: 0.5rem 1rem;
@@ -55,20 +83,32 @@ body {
     height: 30px;
 }
 
-.nav-logo strong{
+.nav-logo a{
     padding-top: 3px;
     font-weight: bolder;
     color: #f1fcff;
+    text-decoration: none;
 }
 .navbar div:last-child {
     display: flex;
     align-items: center;
     gap: 1.5rem;
 }
-.navbar a:hover {
-    background: rgba(255,255,255,0.1);
+
+#create-button {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
 }
-.navbar button {
+#create-button:hover {
+    background: #444;
+}
+
+.burger-btn {
     background: #333;
     color: white;
     border: none;
@@ -76,12 +116,11 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
 }
-.navbar button:hover {
+.burger-btn:hover {
     rotate: 180deg;
-    
 }
 
-.navbar button:active {
+.burger-btn:active {
     transform: scaleX(1.5);
 }
 
@@ -188,8 +227,8 @@ body {
 
 .article-list-item a {
     text-decoration: none;
-    color: #333;
-    font-weight: bold;
+    color: #000000;
+    font-weight: bolder;
 }
 
 .article-list-item a:hover {
@@ -199,7 +238,7 @@ body {
 .article-list-item small {
     display: block;
     margin: 0.5rem 0;
-    color: #666;
+    color: #1b1b1b;
 }
 
 .article-section-latest {
@@ -281,12 +320,34 @@ body {
 .article-container {
     display:flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     width: 100%;
     padding: 30px;
-    
-    
+}
+
+.article-container p {
+    text-indent: 50px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #333;
+    margin: 30px 0;
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    word-break: break-word;    
+    hyphens: auto; 
+}
+
+.article-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.article-container h1 {
+    margin-bottom: 0px;
+    text-align: center;
+    font-weight: bolder;
 }
 
 .preview {
@@ -387,26 +448,6 @@ small {
         max-width: 800px;
     }
 }
-.create-button {
-    position: fixed;
-    bottom: 2rem;
-    left: 2rem;
-    padding: 1rem 2rem;
-    background: #333;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    font-size: 1rem;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.create-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    background: #444;
-}
 
 .liked {
     color: red;
@@ -422,6 +463,13 @@ small {
 .like-btn:hover {
     transform: scale(1.1);
 }
+
+.comment-section {
+    margin-top: 2rem;
+    padding: 1rem;
+    width: 100%;
+}
+
 .comment-form {
     margin: 2rem 0;
     padding: 1rem;
@@ -600,47 +648,53 @@ small {
     border-color: #666;
 }
 .comment {
-    position: relative;
-    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
     margin-bottom: 1rem;
-    background: var(--light-gray);
     border-radius: 8px;
-    border: 1px solid #eee;
+}
+
+#comment-content {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;    
+    hyphens: auto; 
+}
+
+.comment small {
+    margin: 5px 0;
+    color: #333;
 }
 
 .comment-actions {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
     display: flex;
     gap: 0.5rem;
-    z-index: 1;
+    margin-top: 0.5rem;
 }
 
-.edit-btn, .delete-btn {
+.delete-btn {
     display: inline-block !important;
     padding: 0.25rem 0.5rem !important;
     border: none;
-    border-radius: 4px;
+    border-radius: 20px;
     cursor: pointer;
-    color: white;
-    font-size: 0.875rem;
 }
 
 .edit-btn {
-    background: rgba(255,255,255,0.2);
+    background: #222;
     color: white;
-    border: 1px solid white;
     padding: 0.5rem 1rem;
-    border-radius: 4px;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 1rem;
 }
 
 .edit-btn:hover {
-    background: white;
-    color: black;
+    background: #333;
 }
 
 .delete-btn {
@@ -1011,11 +1065,6 @@ small {
 .view-btn {
     background: rgba(52, 152, 219, 0.6);
     border-color: rgba(52, 152, 219, 0.4);
-}
-
-.edit-btn {
-    background: rgba(241, 196, 15, 0.6);
-    border-color: rgba(241, 196, 15, 0.4);
 }
 
 .delete-btn {

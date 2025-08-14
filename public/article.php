@@ -1,6 +1,7 @@
 <?php
 require_once '../backend/db.php';
 require_once '../backend/article.php';
+require_once '../backend/blog.php';
 include 'components/modal.php';
 
 // Debug session
@@ -19,12 +20,34 @@ if (!$id) {
 
 $articles = getAllArticles($pdo);
 $article = getArticleWithNames($pdo, $id);
+$mostLiked = getMostLikedArticles($pdo);
+$mostCommented = getMostCommentedArticle($pdo);
 
 
 if (!$article) {
     header('Location: articleBoard.php');
     exit;
 }
+
+function showArticle($article, $title, $pdo) {
+            echo "<h2>$title</h2>";
+
+            if (!$article) {
+                echo "<p class='no-article'>No articles available.</p>";
+                return;
+            }
+
+            $blocks = getArticleBlocks($pdo, $article['id']);
+            $content = getArticleThumbnailAndPreview($blocks);
+
+            echo "<div class='article' style='background-image: url(\"" . htmlspecialchars($content['thumbnail']) . "\")'>";
+            echo "<div class='article-content'>";
+            echo "<h2>" . htmlspecialchars($article['title']) . "</h2>";
+            echo "<small>By " . htmlspecialchars($article['name']) . " on " . $article['created_at'] . "</small>";
+            echo "<p class='preview'>" . htmlspecialchars($content['preview']) . "</p>";
+            echo "<button onclick='window.location.href=\"article.php?id={$article['id']}\"' class='read-more'>Read More</button>";
+            echo "</div></div>";
+        }
 ?>
 <!DOCTYPE html>
 <html>
@@ -54,7 +77,7 @@ if (!$article) {
             ($_SESSION['user']['privilege'] == 1 || $_SESSION['user']['usn'] == $article['user_id'])): 
         ?>
             <button onclick="window.location.href='editArticle.php?id=<?= $article['id'] ?>'" 
-                    class="edit-btn action-btn">
+                    class="edit-btn">
                 Edit Article
             </button>
         <?php endif; ?>
@@ -72,7 +95,7 @@ if (!$article) {
     ?>
 
     <!-- Display comments -->
-<div class="comments-section" id="comments">
+<div class="comment-section" id="comments">
     <?php
     // Debug output
     echo "<!-- Current user: " . ($_SESSION['user']['usn'] ?? 'Not logged in') . " -->";
@@ -92,13 +115,13 @@ if (!$article) {
                     <span class="edit-indicator">(edited)</span>
                 <?php endif; ?>
             </small>
+            <p id='comment-content'><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
             <?php if ($isOwner): ?>
                 <div class='comment-actions'>
                     <button class='edit-btn action-btn' onclick='editComment(<?= $comment['id'] ?>)'>Edit</button>
                     <button class='delete-btn action-btn' onclick='deleteComment(<?= $comment['id'] ?>)'>Delete</button>
                 </div>
             <?php endif; ?>
-            <p class='comment-content'><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
             <?php if ($isOwner): ?>
                 <form class='edit-form' style='display:none;'>
                     <textarea required><?= htmlspecialchars($comment['content']) ?></textarea>
@@ -320,7 +343,7 @@ async function deleteComment(id) {
         </div>
         <div class="articleList slide-up">
     <h2>📝Article List</h2>
-    <ul style="list-style:none; padding:0;">
+    <ul>
         <?php foreach ($articles as $a): ?>
             <li>
                 <a href="article.php?id=<?= urlencode($a['id']) ?>">

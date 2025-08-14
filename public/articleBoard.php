@@ -127,11 +127,7 @@ $articles = $stmt->fetchAll();
         </div>
     <?php endforeach; ?>
     
-    <?php if ($_SESSION['user']['privilege'] != 3): ?>
-        <button class="create-button" onclick="confirmNavigation('articleCreation.php')">
-            Create Article
-        </button>
-    <?php endif; ?>
+    
 </div>
 
 <script>
@@ -171,11 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function confirmNavigation(url) {
-    showConfirmModal('Do you want to create a new article?', () => {
-        window.location.href = url;
-    });
-}
+
 </script>
 </body>
 </html>
