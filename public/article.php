@@ -17,9 +17,9 @@ if (!$id) {
     exit;
 }
 
-
-
+$articles = getAllArticles($pdo);
 $article = getArticleWithNames($pdo, $id);
+
 
 if (!$article) {
     header('Location: articleBoard.php');
@@ -33,9 +33,10 @@ if (!$article) {
     <link rel="icon" type="image/x-icon" href="assets/images/aclcEmblem.ico">
     <link rel="stylesheet" href="assets/style/index.css">
 </head>
-<body>
+<body class="article-view">
 <?php include 'navbar.php'; ?>
-<div class="container">
+<div class="article-body">
+    <div class="article-container">
     <h1><?= htmlspecialchars($article['title']) ?></h1>
     <div class="article-meta">
         <p>By <?= htmlspecialchars($article['author_name']) ?> | <?= $article['created_at'] ?></p>
@@ -69,8 +70,8 @@ if (!$article) {
         }
     }
     ?>
-</div>
-<!-- Display comments -->
+
+    <!-- Display comments -->
 <div class="comments-section" id="comments">
     <?php
     // Debug output
@@ -112,7 +113,6 @@ if (!$article) {
     }
     ?>
 </div>
-
 <!-- Comment form -->
 <?php if (isset($_SESSION['user'])): ?>
     <form id="comment-form" class="comment-form">
@@ -291,6 +291,51 @@ async function deleteComment(id) {
     });
 }
 </script>
+</div>
+
+<div class="article-section-side slide-up">
+            <div class="article-section-like">
+                <h2>👍 Most Liked Articles</h2>
+                <?php
+                if ($mostLiked && count($mostLiked) > 0) {
+                    foreach ($mostLiked as $article) {
+                        showArticle($article, "", $pdo);
+                    }
+                } else {
+                    echo "<p class='no-article'>No articles available.</p>";
+                }
+                ?>
+            </div>
+        <div class="article-section-comment">
+            <h2>💬 Most Commented Articles</h2>
+            <?php
+            if ($mostCommented && count($mostCommented) > 0) {
+                foreach ($mostCommented as $article) {
+                    showArticle($article, "", $pdo);
+                }
+            } else {
+                echo "<p class='no-article'>No articles available.</p>";
+            }
+            ?>
+        </div>
+        <div class="articleList slide-up">
+    <h2>📝Article List</h2>
+    <ul style="list-style:none; padding:0;">
+        <?php foreach ($articles as $a): ?>
+            <li>
+                <a href="article.php?id=<?= urlencode($a['id']) ?>">
+                    <strong><?= htmlspecialchars($a['title']) ?></strong>
+                </a>
+                <br>
+                <small>
+                    By <?= htmlspecialchars($a['author_name'] ?? $a['author'] ?? 'Unknown') ?> | <?= htmlspecialchars($a['created_at']) ?>
+                </small>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+        </div>
+</div>
 
 </body>
 </html>
