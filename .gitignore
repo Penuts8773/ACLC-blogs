@@ -1,0 +1,18 @@
+# Ignore PHP config files
+config.php
+
+# Ignore uploads directory (for images and other user files)
+uploads/
+uploads/**
+
+# Ignore common image folders
+img/
+img/**
+
+# Ignore OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
+
+# Ignore Composer dependencies
