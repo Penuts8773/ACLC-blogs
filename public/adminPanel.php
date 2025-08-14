@@ -17,34 +17,40 @@ if (!isset($_SESSION['user']) || !$userController->isAdmin($_SESSION['user'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $success = false;
     $message = '';
-    
+
     try {
+        if (!isset($_POST['action'])) {
+            throw new Exception("No action specified");
+        }
         switch($_POST['action']) {
             case 'approve':
                 $success = $articleController->approveArticle($_POST['article_id'], true);
                 $message = $success ? "Article approved successfully" : "Failed to approve article";
                 break;
-                
             case 'unapprove':
                 $success = $articleController->approveArticle($_POST['article_id'], false);
                 $message = $success ? "Article unapproved successfully" : "Failed to unapprove article";
                 break;
-                
             case 'delete':
                 $success = $articleController->deleteArticle($_POST['article_id']);
                 $message = $success ? "Article deleted successfully" : "Failed to delete article";
                 break;
-                
             case 'approve_draft':
                 $success = $articleController->approveDraft($_POST['draft_id']);
                 $message = $success ? "Edit request approved successfully" : "Failed to approve edit";
                 break;
-                
             case 'reject_draft':
                 $success = $articleController->deleteDraft($_POST['draft_id']);
                 $message = $success ? "Edit request rejected successfully" : "Failed to reject edit";
                 break;
-                
+            case 'update_privilege':
+                if (isset($_POST['target_usn'], $_POST['new_level'])) {
+                    $success = $userController->updateUserPrivilege($_POST['target_usn'], $_POST['new_level']);
+                    $message = $success ? "User privilege updated successfully" : "Failed to update user privilege";
+                } else {
+                    $message = "Missing user or privilege level.";
+                }
+                break;
             default:
                 $message = "Invalid action";
         }
@@ -180,6 +186,7 @@ function displayArticle($article, $isApproved, $articleController) {
                                 <option value="3" <?= $u['privilege'] == 3 ? 'selected' : '' ?>>Student</option>
                             </select>
                             <input type="hidden" name="target_usn" value="<?= $u['usn'] ?>">
+                            <input type="hidden" name="action" value="update_privilege">
                             <button type="submit">Update</button>
                         </div>
                     </form>
