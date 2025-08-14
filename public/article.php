@@ -77,7 +77,7 @@ function showArticle($article, $title, $pdo) {
             ($_SESSION['user']['privilege'] == 1 || $_SESSION['user']['usn'] == $article['user_id'])): 
         ?>
             <button onclick="window.location.href='editArticle.php?id=<?= $article['id'] ?>'" 
-                    class="edit-btn action-btn">
+                    class="edit-btn">
                 Edit Article
             </button>
         <?php endif; ?>
@@ -343,7 +343,7 @@ async function deleteComment(id) {
         </div>
         <div class="articleList slide-up">
     <h2>📝Article List</h2>
-    <ul style="list-style:none; padding:0;">
+    <ul>
         <?php foreach ($articles as $a): ?>
             <li>
                 <a href="article.php?id=<?= urlencode($a['id']) ?>">
