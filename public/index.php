@@ -16,7 +16,9 @@ if (empty($_SESSION['user'])) {
 
 // Fetch articles
 $articles       = getAllArticles($pdo);
-$latest         = getArticleWithUser($pdo, "a.created_at");
+$latestArticles = array_slice($articles, 0, 3);
+$latestMain = $latestArticles[0] ?? null;
+$latestRest = array_slice($latestArticles, 1, 2);
 $mostLiked      = getMostLikedArticles($pdo);
 $mostCommented  = getMostCommentedArticle($pdo);
 
@@ -42,12 +44,41 @@ function showArticle($article, $title, $pdo)
     echo "<div class='article' style='background-image: url(\"$thumb\")'>";
     echo "  <div class='article-content'>";
     echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
-    echo "    <small>By " . htmlspecialchars($article['name']) . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
+    echo "    <small>By " . htmlspecialchars($article['user_id']) . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
     echo "    <p class='preview'>$preview</p>";
     echo "    <button onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='read-more'>Read More</button>";
     echo "  </div>";
     echo "</div>";
 }
+
+/**
+ * Displays a latest article card (different style)
+ */
+function showLatestArticle($article, $pdo, $isMain = false)
+{
+    if (!$article) {
+        echo "<p class='no-article'>No articles available.</p>";
+        return;
+    }
+
+    $blocks  = getArticleBlocks($pdo, $article['id']);
+    $content = getArticleThumbnailAndPreview($blocks);
+    $thumb   = htmlspecialchars($content['thumbnail']);
+    $preview = htmlspecialchars($content['preview']);
+
+    // Gumamit ng ibang class names
+    $class = $isMain ? "latest-article main" : "latest-article small";
+
+    echo "<div class='$class' style='background-image: url(\"$thumb\")'>";
+    echo "  <div class='article-content'>";
+    echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
+    echo "    <small>By " . htmlspecialchars($article['user_id']) . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
+    echo "    <p class='preview'>$preview</p>";
+    echo "    <button onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='read-more'>Read More</button>";
+    echo "  </div>";
+    echo "</div>";
+}
+
 
 /**
  * Displays a smaller list-style article
@@ -88,10 +119,28 @@ function showListArticle($article, $pdo)
             } ?>
         </div>
 
-        <!-- Latest Article -->
+        <!-- Latest Articles -->
         <div class="article-section-latest slide-up">
-            <?php showArticle($latest, "🆕 Latest Article", $pdo); ?>
+            <h2>🆕 Latest Articles</h2>
+
+            <?php if ($latestMain): ?>
+                <!-- Featured big card -->
+                <div class="latest-featured">
+                    <?php showLatestArticle($latestMain, $pdo, true); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($latestRest)): ?>
+                <!-- Two smaller cards -->
+                <div class="latest-grid">
+                    <?php foreach ($latestRest as $article): ?>
+                        <?php showLatestArticle($article, $pdo, false); ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         </div>
+
+
 
         <!-- Side Section -->
         <div class="article-section-side slide-up">
