@@ -67,14 +67,14 @@ function showLatestArticle($article, $pdo, $isMain = false)
     $preview = htmlspecialchars($content['preview']);
 
     // Gumamit ng ibang class names
-    $class = $isMain ? "latest-article main" : "latest-article small";
+    $class = $isMain ? "latest-article-main" : "latest-article-small";
 
     echo "<div class='$class' style='background-image: url(\"$thumb\")'>";
-    echo "  <div class='article-content'>";
+    echo "  <div class='latest-article-content'>";
     echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
     echo "    <small>By " . htmlspecialchars($article['user_id']) . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
-    echo "    <p class='preview'>$preview</p>";
-    echo "    <button onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='read-more'>Read More</button>";
+    echo "    <p class='latest-preview'>$preview</p>";
+    echo "    <button onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='latest-read-more'>Read More</button>";
     echo "  </div>";
     echo "</div>";
 }
@@ -122,22 +122,23 @@ function showListArticle($article, $pdo)
         <!-- Latest Articles -->
         <div class="article-section-latest slide-up">
             <h2>🆕 Latest Articles</h2>
+            <div class="latest-content">
+                <?php if ($latestMain): ?>
+                    <!-- Featured big card -->
+                    <div class="latest-featured">
+                        <?php showLatestArticle($latestMain, $pdo, true); ?>
+                    </div>
+                <?php endif; ?>
 
-            <?php if ($latestMain): ?>
-                <!-- Featured big card -->
-                <div class="latest-featured">
-                    <?php showLatestArticle($latestMain, $pdo, true); ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if (!empty($latestRest)): ?>
-                <!-- Two smaller cards -->
-                <div class="latest-grid">
-                    <?php foreach ($latestRest as $article): ?>
-                        <?php showLatestArticle($article, $pdo, false); ?>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
+                <?php if (!empty($latestRest)): ?>
+                    <!-- Two smaller cards -->
+                    <div class="latest-grid">
+                        <?php foreach ($latestRest as $article): ?>
+                            <?php showLatestArticle($article, $pdo, false); ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
 
 
