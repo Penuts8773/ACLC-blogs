@@ -61,7 +61,7 @@ function showListArticle($article, $pdo)
 
     echo "<div class='article-list-item'>";
     echo "  <a href='article.php?id=" . urlencode($article['id']) . "'>" . htmlspecialchars($article['title']) . "</a>";
-    echo "  <small>By " . htmlspecialchars($article['name']) . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
+    echo "  <small>By " . htmlspecialchars($article['user_id']) . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
     echo "</div>";
 }
 ?>
