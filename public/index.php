@@ -41,12 +41,10 @@ function showArticle($article, $title, $pdo)
     $thumb   = htmlspecialchars($content['thumbnail']);
     $preview = htmlspecialchars($content['preview']);
 
-    echo "<div class='article' style='background-image: url(\"$thumb\")'>";
-    echo "  <div class='article-content'>";
+    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='article' style='background-image: url(\"$thumb\")'>";
+    echo "  <div  class='article-content'>";
     echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
-    echo "    <small>By " . htmlspecialchars($article['user_id']) . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
     echo "    <p class='preview'>$preview</p>";
-    echo "    <button onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='read-more'>Read More</button>";
     echo "  </div>";
     echo "</div>";
 }
@@ -72,7 +70,7 @@ function showLatestArticle($article, $pdo, $isMain = false)
     echo "<div class='$class' style='background-image: url(\"$thumb\")'>";
     echo "  <div class='latest-article-content'>";
     echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
-    echo "    <small>By " . htmlspecialchars($article['user_id']) . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
+    echo "    <small>" . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
     echo "    <p class='latest-preview'>$preview</p>";
     echo "    <button onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='latest-read-more'>Read More</button>";
     echo "  </div>";
