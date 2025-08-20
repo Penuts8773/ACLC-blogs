@@ -43,14 +43,10 @@ function renderArticleCard($article, $pdo) {
     $content = getArticleThumbnailAndPreview($blocks);
     $authorName = $article['author_name'] ?? $article['name'] ?? 'Unknown';
     ?>
-    <div class='article' style='background-image: url("<?= htmlspecialchars($content['thumbnail']) ?>")'>
+    <div onclick='window.location.href="article.php?id=<?= $article['id'] ?>"' class='article' style='background-image: url("<?= htmlspecialchars($content['thumbnail']) ?>")'>
         <div class='article-content'>
             <h2><?= htmlspecialchars($article['title']) ?></h2>
-            <small>By <?= htmlspecialchars($authorName) ?> on <?= htmlspecialchars($article['created_at']) ?></small>
             <p class='preview'><?= htmlspecialchars($content['preview']) ?></p>
-            <button onclick='window.location.href="article.php?id=<?= $article['id'] ?>"' class='read-more'>
-                Read More
-            </button>
         </div>
     </div>
     <?php
@@ -70,7 +66,7 @@ function renderComment($comment, $currentUser) {
                 <span class="edit-indicator">(edited)</span>
             <?php endif; ?>
         </small>
-        <p class='comment-content'><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
+        <p id='comment-content'><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
         
         <?php if ($isOwner): ?>
             <div class='comment-actions'>
