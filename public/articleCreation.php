@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $types = $_POST['types'];
     $blocks = $_POST['blocks'];
     $category_id = $_POST['category']; // Category selection
-    $tags = $_POST['tags']; // Tags
+    $tags_input = $_POST['tags']; // Tags as comma-separated string
 
     if ($types[0] !== 'image') {
         die("First block must be an image (thumbnail).");
@@ -51,10 +51,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$article_id, $type, $content, $i]);
     }
 
-    // Insert tags (assumes tags are stored as a comma-separated string or individual entries in a `tags` table)
-    foreach ($tags as $tag) {
-        $stmt = $pdo->prepare("INSERT INTO article_tags (article_id, tag_name) VALUES (?, ?)");
-        $stmt->execute([$article_id, $tag]);
+    // Process and insert tags
+    if (!empty($tags_input)) {
+        $tags_array = array_map('trim', explode(',', $tags_input));
+        $tags_array = array_filter($tags_array); // Remove empty values
+        
+        foreach ($tags_array as $tag_name) {
+            // Check if tag exists, if not create it
+            $stmt = $pdo->prepare("SELECT id FROM tags WHERE name = ?");
+            $stmt->execute([$tag_name]);
+            $tag = $stmt->fetch();
+            
+            if (!$tag) {
+                // Create new tag
+                $stmt = $pdo->prepare("INSERT INTO tags (name) VALUES (?)");
+                $stmt->execute([$tag_name]);
+                $tag_id = $pdo->lastInsertId();
+            } else {
+                $tag_id = $tag['id'];
+            }
+            
+            // Link article to tag
+            $stmt = $pdo->prepare("INSERT INTO article_tags (article_id, tag_id) VALUES (?, ?)");
+            $stmt->execute([$article_id, $tag_id]);
+        }
     }
 
     // Redirect with appropriate message

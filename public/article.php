@@ -27,6 +27,7 @@ if (!$article) {
 $articles = getAllArticles($pdo);
 $mostLiked = getMostLikedArticles($pdo);
 $mostCommented = getMostCommentedArticle($pdo);
+$mostPopular = getMostPopularArticles($pdo, 4); // Get 4 for better grid layout
 $blocks = getArticleBlocks($pdo, $articleId);
 $comments = getArticleComments($pdo, $articleId);
 
@@ -47,6 +48,11 @@ function renderArticleCard($article, $pdo) {
         <div class='article-content'>
             <h2><?= htmlspecialchars($article['title']) ?></h2>
             <p class='preview'><?= htmlspecialchars($content['preview']) ?></p>
+            <?php if (isset($article['popularity_score'])): ?>
+                <div class='popularity-stats'>
+                    <small>👍 <?= $article['like_count'] ?? 0 ?> | 💬 <?= $article['comment_count'] ?? 0 ?></small>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
     <?php
@@ -159,6 +165,18 @@ function renderComment($comment, $currentUser) {
 
         <!-- Sidebar -->
         <div class="article-section-side slide-up">
+            <!-- Most Popular Articles -->
+            <div class="article-section-popular">
+                <h2>🔥 Most Popular Articles</h2>
+                <?php if ($mostPopular && count($mostPopular) > 0): ?>
+                    <?php foreach ($mostPopular as $popularArticle): ?>
+                        <?php renderArticleCard($popularArticle, $pdo); ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class='no-article'>No articles available.</p>
+                <?php endif; ?>
+            </div>
+
             <!-- Most Liked Articles -->
             <div class="article-section-like">
                 <h2>👍 Most Liked Articles</h2>

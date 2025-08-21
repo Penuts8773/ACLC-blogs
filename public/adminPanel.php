@@ -3,10 +3,8 @@ session_start();
 require_once '../backend/db.php';
 
 require_once '../backend/controllers/ArticleController.php';
-
 require_once '../backend/controllers/UserController.php';
 require_once 'components/admin.php';
-
 
 $articleController = new ArticleController($pdo);
 $userController = new UserController($pdo);
@@ -79,9 +77,46 @@ $pendingDrafts = $articleController->getPendingDrafts();
 
 $articlesPerPage = [
     'pending' => 4,   // Show 4 articles for pending section
-    'approved' => 3   // Keep 3 articles for approved section
+    'approved' => 3,  // Keep 3 articles for approved section
+    'drafts' => 3     // Show 3 drafts initially
 ];
 $searchQuery = $_GET['search'] ?? '';
+
+// Function to display draft like other articles
+function displayDraft($draft, $articleController) {
+    // Get draft blocks for preview
+    $draftBlocks = $articleController->getDraftBlocks($draft['id']);
+    $content = $articleController->processDraftContent($draftBlocks);
+    ?>
+    <div class="article draft-article" style="background-image: url('<?= htmlspecialchars($content['thumbnail']) ?>')">
+        <div class="article-overlay">
+            <div class="article-content">
+                <h2><?= htmlspecialchars($draft['title']) ?></h2>
+                <small>
+                    Original: <?= htmlspecialchars($draft['original_title']) ?> | 
+                    Editor: <?= htmlspecialchars($draft['editor_name']) ?> | 
+                    <?= date('M j, Y g:i A', strtotime($draft['created_at'])) ?>
+                </small>
+                <p class="preview"><?= htmlspecialchars($content['preview']) ?></p>
+                <div class="draft-badge">DRAFT</div>
+            </div>
+        </div>
+        <div class="article-actions">
+            <button onclick="viewDraft(<?= $draft['id'] ?>)" class="action-btn view-btn">View Draft</button>
+            <form method="POST" style="display: inline;" onsubmit="return confirmAction(this, 'approve_draft')">
+                <input type="hidden" name="draft_id" value="<?= $draft['id'] ?>">
+                <input type="hidden" name="action" value="approve_draft">
+                <button type="submit" class="action-btn approve-btn">Approve</button>
+            </form>
+            <form method="POST" style="display: inline;" onsubmit="return confirmAction(this, 'reject_draft')">
+                <input type="hidden" name="draft_id" value="<?= $draft['id'] ?>">
+                <input type="hidden" name="action" value="reject_draft">
+                <button type="submit" class="action-btn delete-btn">Reject</button>
+            </form>
+        </div>
+    </div>
+    <?php
+}
 
 ?>
 <!DOCTYPE html>
@@ -89,6 +124,30 @@ $searchQuery = $_GET['search'] ?? '';
 <head>
     <title>Admin Panel</title>
     <link rel="stylesheet" href="assets/style/index.css">
+    <style>
+        .draft-article {
+            position: relative;
+            border: 2px solid #ffa500;
+        }
+        .draft-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ffa500;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .draft-search {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
 <?php include 'navbar.php'; ?>
@@ -183,38 +242,112 @@ $searchQuery = $_GET['search'] ?? '';
                 <?php if (empty($pendingDrafts)): ?>
                     <p class="no-content">No pending edit requests</p>
                 <?php else: ?>
-                    <?php foreach ($pendingDrafts as $draft): ?>
-                        <div class="draft-request">
-                            <div class="draft-info">
-                                <h3><?= htmlspecialchars($draft['title']) ?></h3>
-                                <p>Original title: <?= htmlspecialchars($draft['original_title']) ?></p>
-                                <p>Editor: <?= htmlspecialchars($draft['editor_name']) ?></p>
-                                <p>Submitted: <?= date('M j, Y g:i A', strtotime($draft['created_at'])) ?></p>
-                            </div>
-                            <div class="draft-actions">
-                                <form method="POST" onsubmit="return confirmAction(this, 'approve_draft')">
-                                    <input type="hidden" name="draft_id" value="<?= $draft['id'] ?>">
-                                    <input type="hidden" name="action" value="approve_draft">
-                                    <button type="submit" class="action-btn approve-btn">
-                                        Approve Edit
-                                    </button>
-                                </form>
-                                <form method="POST" onsubmit="return confirmAction(this, 'reject_draft')">
-                                    <input type="hidden" name="draft_id" value="<?= $draft['id'] ?>">
-                                    <input type="hidden" name="action" value="reject_draft">
-                                    <button type="submit" class="action-btn reject-btn">
-                                        Reject Edit
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+                    <input type="text" class="draft-search" placeholder="Search drafts..." 
+                           data-section="drafts" onkeyup="searchDrafts(this)">
+                    <div class="articles-container" id="drafts-articles">
+                        <?php 
+                        $count = 0;
+                        foreach ($pendingDrafts as $draft): 
+                            $hidden = $count >= $articlesPerPage['drafts'] ? 'style="display: none;"' : '';
+                            echo "<div class='article-wrapper draft-wrapper' $hidden>";
+                            displayDraft($draft, $articleController);
+                            echo "</div>";
+                            $count++;
+                        endforeach; 
+                        ?>
+                    </div>
+                    <?php if (count($pendingDrafts) > $articlesPerPage['drafts']): ?>
+                        <button class="show-more" data-section="drafts">Show More</button>
+                        <button class="show-less" data-section="drafts" style="display: none;">Show Less</button>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         <?php endif; ?>
     </div>
 
-<?php include 'components/modal.php'; ?>
+    <!-- ✅ Only use the global modal -->
+    <?php include 'components/modal.php'; ?>
+
 <script src="components/adminComponents.js" type="text/javascript"></script>
+<script>
+// Draft-specific functionality using the global modal
+function viewDraft(draftId) {
+    showConfirmModal('View this draft?', () => {
+        fetch(`getDraft.php?id=${draftId}`)
+            .then(response => response.text())
+            .then(html => {
+                const modal = document.querySelector('.modal');
+                modal.innerHTML = `
+                    <div class="large-modal">
+                        <span class="close" onclick="closeGlobalModal()">&times;</span>
+                        <div id="draftContent">${html}</div>
+                    </div>
+                `;
+                document.querySelector('.modal-overlay').classList.add('show');
+                modal.classList.add('active');
+            })
+            .catch(error => {
+                console.error('Error loading draft:', error);
+                alert('Failed to load draft content');
+            });
+    });
+}
+
+function closeGlobalModal() {
+    document.querySelector('.modal-overlay').classList.remove('show');
+    document.querySelector('.modal').classList.remove('active');
+}
+
+function searchDrafts(input) {
+    const filter = input.value.toLowerCase();
+    const container = document.getElementById('drafts-articles');
+    const drafts = container.getElementsByClassName('article-wrapper');
+    let visibleCount = 0;
+    let totalMatches = 0;
+
+    for (let wrapper of drafts) {
+        const article = wrapper.querySelector('.article');
+        const title = article.querySelector('h2').textContent;
+        const author = article.querySelector('small').textContent;
+        
+        if (title.toLowerCase().includes(filter) || 
+            author.toLowerCase().includes(filter)) {
+            totalMatches++;
+        }
+    }
+
+    for (let wrapper of drafts) {
+        const article = wrapper.querySelector('.article');
+        const title = article.querySelector('h2').textContent;
+        const author = article.querySelector('small').textContent;
+        
+        if (filter.length > 0) {
+            if (title.toLowerCase().includes(filter) || 
+                author.toLowerCase().includes(filter)) {
+                wrapper.style.display = "";
+                visibleCount++;
+            } else {
+                wrapper.style.display = "none";
+            }
+        } else {
+            wrapper.style.display = visibleCount < 3 ? "" : "none";
+            visibleCount++;
+        }
+    }
+
+    const showMoreBtn = container.parentElement.querySelector('.show-more');
+    const showLessBtn = container.parentElement.querySelector('.show-less');
+    
+    if (showMoreBtn && showLessBtn) {
+        if (filter.length > 0) {
+            showMoreBtn.style.display = "none";
+            showLessBtn.style.display = "none";
+        } else {
+            showMoreBtn.style.display = visibleCount < totalMatches ? "" : "none";
+            showLessBtn.style.display = visibleCount > 3 ? "" : "none";
+        }
+    }
+}
+</script>
 </body>
 </html>

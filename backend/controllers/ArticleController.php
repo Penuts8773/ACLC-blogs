@@ -44,7 +44,34 @@ class ArticleController {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getDraftBlocks($draftId) {
+        $stmt = $this->pdo->prepare("SELECT * FROM article_draft_blocks WHERE draft_id = ? ORDER BY sort_order");
+        $stmt->execute([$draftId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function processArticleContent($blocks) {
+        $thumbnail = '';
+        $preview = '';
+        foreach ($blocks as $block) {
+            if ($block['block_type'] === 'image' && empty($thumbnail)) {
+                $thumbnail = $block['content'];
+            }
+            if ($block['block_type'] === 'text' && empty($preview)) {
+                $text = strip_tags($block['content']);
+                if (strlen($text) > 150) {
+                    $preview = substr($text, 0, 150);
+                    $lastSpace = strrpos($preview, ' ');
+                    $preview = substr($text, 0, $lastSpace) . '...';
+                } else {
+                    $preview = $text;
+                }
+            }
+        }
+        return ['thumbnail' => $thumbnail, 'preview' => $preview];
+    }
+
+    public function processDraftContent($blocks) {
         $thumbnail = '';
         $preview = '';
         foreach ($blocks as $block) {
@@ -67,7 +94,6 @@ class ArticleController {
 
     public function approveArticle($articleId, $approve = true) {
         try {
-            // Simplified query without approval_date for now
             $stmt = $this->pdo->prepare("
                 UPDATE articles 
                 SET approved = :approved,
@@ -81,7 +107,6 @@ class ArticleController {
             ]);
             
             if ($result && $approve) {
-                // Update approval date in a separate query
                 $stmt = $this->pdo->prepare("
                     UPDATE articles 
                     SET approval_date = NOW()
@@ -101,14 +126,12 @@ class ArticleController {
         try {
             $this->pdo->beginTransaction();
             
-            // Delete related records first
-            $tables = ['article_likes', 'article_comments', 'article_blocks'];
+            $tables = ['article_likes', 'article_comments', 'article_blocks', 'article_tags'];
             foreach ($tables as $table) {
                 $stmt = $this->pdo->prepare("DELETE FROM $table WHERE article_id = ?");
                 $stmt->execute([$articleId]);
             }
             
-            // Delete the article
             $stmt = $this->pdo->prepare("DELETE FROM articles WHERE id = ?");
             $result = $stmt->execute([$articleId]);
             
@@ -137,22 +160,71 @@ class ArticleController {
             error_log("Error getting article: " . $e->getMessage());
             return false;
         }
-        
     }
 
-    public function createEditDraft($articleId, $userId, $title, $blocks) {
+    public function getDraft($id) {
+        try {
+            $stmt = $this->pdo->prepare("
+                SELECT d.*, u.name as editor_name, a.title as original_title,
+                       a.user_id as original_author_id, au.name as original_author_name
+                FROM article_drafts d
+                JOIN user u ON d.user_id = u.usn
+                JOIN articles a ON d.original_article_id = a.id
+                JOIN user au ON a.user_id = au.usn
+                WHERE d.id = ?
+            ");
+            $stmt->execute([$id]);
+            return $stmt->fetch();
+        } catch (Exception $e) {
+            error_log("Error getting draft: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    private function updateArticleTags($articleId, $tagsInput) {
+        try {
+            $stmt = $this->pdo->prepare("DELETE FROM article_tags WHERE article_id = ?");
+            $stmt->execute([$articleId]);
+            
+            if (!empty($tagsInput)) {
+                $tags_array = array_map('trim', explode(',', $tagsInput));
+                $tags_array = array_filter($tags_array);
+                
+                foreach ($tags_array as $tag_name) {
+                    $stmt = $this->pdo->prepare("SELECT id FROM tags WHERE name = ?");
+                    $stmt->execute([$tag_name]);
+                    $tag = $stmt->fetch();
+                    
+                    if (!$tag) {
+                        $stmt = $this->pdo->prepare("INSERT INTO tags (name) VALUES (?)");
+                        $stmt->execute([$tag_name]);
+                        $tag_id = $this->pdo->lastInsertId();
+                    } else {
+                        $tag_id = $tag['id'];
+                    }
+                    
+                    $stmt = $this->pdo->prepare("INSERT INTO article_tags (article_id, tag_id) VALUES (?, ?)");
+                    $stmt->execute([$articleId, $tag_id]);
+                }
+            }
+            return true;
+        } catch (Exception $e) {
+            error_log("Error updating tags: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function createEditDraft($articleId, $userId, $title, $blocks, $categoryId = null, $tagsInput = '') {
         try {
             $this->pdo->beginTransaction();
             
-            // Create draft entry
             $stmt = $this->pdo->prepare("
-                INSERT INTO article_drafts (original_article_id, user_id, title, created_at)
-                VALUES (?, ?, ?, NOW())
+                INSERT INTO article_drafts (original_article_id, user_id, title, category_id, tags, created_at)
+                VALUES (?, ?, ?, ?, ?, NOW())
             ");
-            $stmt->execute([$articleId, $userId, $title]);
+            $stmt->execute([$articleId, $userId, $title, $categoryId, $tagsInput]);
             $draftId = $this->pdo->lastInsertId();
             
-            // Add draft blocks
             $stmt = $this->pdo->prepare("
                 INSERT INTO article_draft_blocks (draft_id, block_type, content, sort_order)
                 VALUES (?, ?, ?, ?)
@@ -176,7 +248,6 @@ class ArticleController {
             error_log("Starting draft approval for ID: " . $draftId);
             $this->pdo->beginTransaction();
             
-            // Get draft data with blocks
             $stmt = $this->pdo->prepare("
                 SELECT d.*, db.block_type, db.content, db.sort_order 
                 FROM article_drafts d
@@ -192,35 +263,37 @@ class ArticleController {
                 throw new Exception("Draft not found");
             }
             
-            $draft = $draftData[0]; // First row contains draft info
-            error_log("Processing draft: " . json_encode($draft));
+            $draft = $draftData[0];
             
-            // Update original article
             $stmt = $this->pdo->prepare("
                 UPDATE articles 
                 SET title = ?, 
                     modified_at = NOW(),
-                    last_editor_id = ?
+                    last_editor_id = ?,
+                    category_id = ?
                 WHERE id = ?
             ");
             $stmt->execute([
                 $draft['title'],
                 $draft['user_id'],
+                $draft['category_id'],
                 $draft['original_article_id']
             ]);
             
-            // Delete existing blocks
+            if (!empty($draft['tags'])) {
+                $this->updateArticleTags($draft['original_article_id'], $draft['tags']);
+            }
+            
+            // Replace article blocks
             $stmt = $this->pdo->prepare("DELETE FROM article_blocks WHERE article_id = ?");
             $stmt->execute([$draft['original_article_id']]);
             
-            // Insert new blocks from draft data
             $stmt = $this->pdo->prepare("
                 INSERT INTO article_blocks (article_id, block_type, content, sort_order)
                 VALUES (?, ?, ?, ?)
             ");
-            
             foreach ($draftData as $block) {
-                if ($block['block_type'] !== null) { // Skip the first row if it doesn't have block data
+                if ($block['block_type'] !== null) {
                     $stmt->execute([
                         $draft['original_article_id'],
                         $block['block_type'],
@@ -230,7 +303,7 @@ class ArticleController {
                 }
             }
             
-            // Clean up: Delete draft and its blocks
+            // Clean up draft
             $stmt = $this->pdo->prepare("DELETE FROM article_draft_blocks WHERE draft_id = ?");
             $stmt->execute([$draftId]);
             
@@ -240,7 +313,6 @@ class ArticleController {
             $this->pdo->commit();
             error_log("Draft approval completed successfully");
             return true;
-            
         } catch (Exception $e) {
             $this->pdo->rollBack();
             error_log("Error approving draft: " . $e->getMessage() . "\n" . $e->getTraceAsString());
@@ -250,9 +322,6 @@ class ArticleController {
 
     public function deleteDraft($draftId) {
         try {
-            error_log("Starting draft deletion for ID: " . $draftId);
-            
-            // Also delete draft blocks
             $this->pdo->beginTransaction();
             
             $stmt = $this->pdo->prepare("DELETE FROM article_draft_blocks WHERE draft_id = ?");
@@ -262,57 +331,10 @@ class ArticleController {
             $result = $stmt->execute([$draftId]);
             
             $this->pdo->commit();
-            error_log("Draft deletion completed successfully");
             return $result;
-            
         } catch (Exception $e) {
             $this->pdo->rollBack();
             error_log("Error deleting draft: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    public function updateArticle($articleId, $title, $blocks, $editorId) {
-        try {
-            $this->pdo->beginTransaction();
-            
-            // Update article title and editor info
-            $stmt = $this->pdo->prepare("
-                UPDATE articles 
-                SET title = ?, 
-                    last_editor_id = ?,
-                    modified_at = NOW()
-                WHERE id = ?
-            ");
-            $stmt->execute([$title, $editorId, $articleId]);
-            
-            // Delete existing blocks
-            $stmt = $this->pdo->prepare("
-                DELETE FROM article_blocks 
-                WHERE article_id = ?
-            ");
-            $stmt->execute([$articleId]);
-            
-            // Insert new blocks
-            $stmt = $this->pdo->prepare("
-                INSERT INTO article_blocks (article_id, block_type, content, sort_order) 
-                VALUES (?, ?, ?, ?)
-            ");
-            
-            foreach ($blocks as $index => $block) {
-                $stmt->execute([
-                    $articleId,
-                    $block['type'],
-                    $block['content'],
-                    $index
-                ]);
-            }
-            
-            $this->pdo->commit();
-            return true;
-        } catch (Exception $e) {
-            $this->pdo->rollBack();
-            error_log("Error updating article: " . $e->getMessage());
             return false;
         }
     }
@@ -345,6 +367,42 @@ class ArticleController {
             return $stmt->fetchColumn() > 0;
         } catch (Exception $e) {
             error_log("Error checking pending draft: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function updateArticle($articleId, $title, $blocks, $editorId, $categoryId = null, $tagsInput = '') {
+        try {
+            $this->pdo->beginTransaction();
+            
+            $stmt = $this->pdo->prepare("
+                UPDATE articles 
+                SET title = ?, 
+                    last_editor_id = ?,
+                    modified_at = NOW(),
+                    category_id = ?
+                WHERE id = ?
+            ");
+            $stmt->execute([$title, $editorId, $categoryId, $articleId]);
+            
+            $this->updateArticleTags($articleId, $tagsInput);
+            
+            $stmt = $this->pdo->prepare("DELETE FROM article_blocks WHERE article_id = ?");
+            $stmt->execute([$articleId]);
+            
+            $stmt = $this->pdo->prepare("
+                INSERT INTO article_blocks (article_id, block_type, content, sort_order) 
+                VALUES (?, ?, ?, ?)
+            ");
+            foreach ($blocks as $index => $block) {
+                $stmt->execute([$articleId, $block['type'], $block['content'], $index]);
+            }
+            
+            $this->pdo->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->pdo->rollBack();
+            error_log("Error updating article: " . $e->getMessage());
             return false;
         }
     }

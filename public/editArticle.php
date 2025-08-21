@@ -57,7 +57,16 @@ if ($isTeacher && !$isAdmin) {
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'] ?? '';
+    $category_id = $_POST['category'] ?? null;
+    $tags_input = $_POST['tags'] ?? '';
     $blocksData = json_decode($_POST['blocksData'] ?? '[]', true);
+
+    // Validate thumbnail (first block must be image)
+    if (empty($blocksData) || $blocksData[0]['type'] !== 'image') {
+        $_SESSION['error'] = "First block must be an image (thumbnail)";
+        header('Location: editArticle.php?id=' . $articleId);
+        exit;
+    }
 
     foreach ($blocksData as &$block) {
         if ($block['type'] === 'image' && str_starts_with($block['content'], 'data:image/')) {
@@ -76,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($isAdmin) {
         // Direct edit for admins
-        $success = $articleController->updateArticle($articleId, $title, $blocksData, $_SESSION['user']['usn']);
+        $success = $articleController->updateArticle($articleId, $title, $blocksData, $_SESSION['user']['usn'], $category_id, $tags_input);
         if ($success) {
             $_SESSION['success'] = "Article updated successfully";
             header('Location: article.php?id=' . $articleId);
@@ -84,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else {
         // Create draft for teachers
-        $draftId = $articleController->createEditDraft($articleId, $_SESSION['user']['usn'], $title, $blocksData);
+        $draftId = $articleController->createEditDraft($articleId, $_SESSION['user']['usn'], $title, $blocksData, $category_id, $tags_input);
         if ($draftId) {
             $_SESSION['success'] = "Your edit has been submitted for approval";
             header('Location: article.php?id=' . $articleId);
@@ -97,6 +106,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Get article blocks
 $blocks = $articleController->getArticleBlocks($articleId);
+
+// Get categories
+$stmt = $pdo->query("SELECT * FROM categories");
+$categories = $stmt->fetchAll();
+
+// Get current article tags
+$stmt = $pdo->prepare("
+    SELECT t.name 
+    FROM tags t 
+    JOIN article_tags at ON t.id = at.tag_id 
+    WHERE at.article_id = ?
+");
+$stmt->execute([$articleId]);
+$currentTags = $stmt->fetchAll(PDO::FETCH_COLUMN);
+$tagsString = implode(', ', $currentTags);
 ?>
 <!DOCTYPE html>
 <html>
@@ -122,46 +146,67 @@ $blocks = $articleController->getArticleBlocks($articleId);
     <?php endif; ?>
 
     <form method="POST" id="editForm">
-    <input type="text" name="title" value="<?= htmlspecialchars($article['title']) ?>" required>
-    <div id="blocks">
-        <?php foreach ($blocks as $index => $block): ?>
-            <div class="block">
-                <div class="block-header">
-                    <select name="types[]" onchange="handleTypeChange(this)">
-                        <option value="text" <?= $block['block_type'] === 'text' ? 'selected' : '' ?>>Text</option>
-                        <option value="image" <?= $block['block_type'] === 'image' ? 'selected' : '' ?>>Image</option>
-                    </select>
-                    <?php if ($index > 0): ?>
-                        <button type="button" class="remove-block" onclick="this.closest('.block').remove()">Remove</button>
-                    <?php endif; ?>
+        <input type="text" name="title" value="<?= htmlspecialchars($article['title']) ?>" required><br><br>
+        
+        <!-- Category Selection -->
+        <label for="category">Category</label>
+        <select name="category" id="category" required>
+            <option value="">Select Category</option>
+            <?php foreach ($categories as $category): ?>
+                <option value="<?php echo $category['id']; ?>" <?= $category['id'] == $article['category_id'] ? 'selected' : '' ?>>
+                    <?php echo htmlspecialchars($category['name']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select><br><br>
+
+        <!-- Tags Input -->
+        <label for="tags">Tags (Comma-separated)</label>
+        <input type="text" name="tags" id="tags" value="<?= htmlspecialchars($tagsString) ?>" placeholder="Enter tags, separated by commas"><br><br>
+
+        <div id="blocks">
+            <?php foreach ($blocks as $index => $block): ?>
+                <div class="block">
+                    <div class="block-header">
+                        <?php if ($index === 0): ?>
+                            <label>Thumbnail (Required)</label>
+                            <select name="types[]" onchange="handleTypeChange(this)" disabled>
+                                <option value="image" selected>Image</option>
+                            </select>
+                        <?php else: ?>
+                            <select name="types[]" onchange="handleTypeChange(this)">
+                                <option value="text" <?= $block['block_type'] === 'text' ? 'selected' : '' ?>>Text</option>
+                                <option value="image" <?= $block['block_type'] === 'image' ? 'selected' : '' ?>>Image</option>
+                            </select>
+                            <button type="button" class="remove-block" onclick="this.closest('.block').remove()">Remove</button>
+                        <?php endif; ?>
+                    </div>
+                    <div class="block-content">
+                        <?php if ($block['block_type'] === 'text'): ?>
+                            <textarea name="blocks[]" required><?= htmlspecialchars($block['content']) ?></textarea>
+                        <?php else: ?>
+                            <div class="drop" ondragover="event.preventDefault()" ondrop="handleDrop(event, this)" onclick="handleClick(this)">
+                                <?php if ($block['content']): ?>
+                                    <img src="<?= htmlspecialchars($block['content']) ?>" style="max-width: 200px">
+                                <?php else: ?>
+                                    <span>Drag & drop image or click</span>
+                                <?php endif; ?>
+                                <input type="hidden" name="blocks[]" value="<?= htmlspecialchars($block['content']) ?>" required>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <div class="block-content">
-                    <?php if ($block['block_type'] === 'text'): ?>
-                        <textarea name="blocks[]" required><?= htmlspecialchars($block['content']) ?></textarea>
-                    <?php else: ?>
-                        <div class="drop" ondragover="event.preventDefault()" ondrop="handleDrop(event, this)" onclick="handleClick(this)">
-                            <?php if ($block['content']): ?>
-                                <img src="<?= htmlspecialchars($block['content']) ?>" style="max-width: 200px">
-                            <?php else: ?>
-                                <span>Drag & drop image or click</span>
-                            <?php endif; ?>
-                            <input type="hidden" name="blocks[]" value="<?= htmlspecialchars($block['content']) ?>" required>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
-    <button type="button" onclick="addBlock()" class="add-block-btn">Add Block</button>
-    <div class="form-buttons">
-        <button type="submit" class="save-btn action-btn">Save Changes</button>
-        <button type="button" onclick="history.back()" class="cancel-btn action-btn">Cancel</button>
-    </div>
-</form>
+            <?php endforeach; ?>
+        </div>
+        <button type="button" onclick="addBlock()" class="add-block-btn">Add Block</button>
+        <div class="form-buttons">
+            <button type="submit" class="save-btn action-btn">Save Changes</button>
+            <button type="button" onclick="history.back()" class="cancel-btn action-btn">Cancel</button>
+        </div>
+    </form>
 </div>
 
 <?php include 'components/modal.php'; ?>
-<script src="./editArticleJs.js"></script>
+<script src="script/editArticleJs.js"></script>
 
 </body>
 </html>

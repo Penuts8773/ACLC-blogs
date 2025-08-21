@@ -1,6 +1,7 @@
 <?php
 require_once '../backend/blog.php';
 require_once '../backend/article.php';
+require_once '../backend/controllers/ArticleController.php';
 include 'components/modal.php';
 
 // Start session if not already started
@@ -14,13 +15,15 @@ if (empty($_SESSION['user'])) {
     exit;
 }
 
-// Fetch articles
-$articles       = getAllArticles($pdo);
+// Use ArticleController for approved articles
+$articleController = new ArticleController($pdo);
+$articles = $articleController->getApprovedArticles();
 $latestArticles = array_slice($articles, 0, 3);
 $latestMain = $latestArticles[0] ?? null;
 $latestRest = array_slice($latestArticles, 1, 2);
-$mostLiked      = getMostLikedArticles($pdo);
-$mostCommented  = getMostCommentedArticle($pdo);
+$mostLiked = getMostLikedArticles($pdo);
+$mostCommented = getMostCommentedArticle($pdo);
+$mostPopular = getMostPopularArticles($pdo, 6);
 
 /**
  * Displays a single main article block
@@ -45,6 +48,11 @@ function showArticle($article, $title, $pdo)
     echo "  <div  class='article-content'>";
     echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
     echo "    <p class='preview'>$preview</p>";
+    if (isset($article['popularity_score'])) {
+        echo "    <div class='popularity-stats'>";
+        echo "      <small>👍 " . ($article['like_count'] ?? 0) . " | 💬 " . ($article['comment_count'] ?? 0) . "</small>";
+        echo "    </div>";
+    }
     echo "  </div>";
     echo "</div>";
 }
@@ -64,7 +72,6 @@ function showLatestArticle($article, $pdo, $isMain = false)
     $thumb   = htmlspecialchars($content['thumbnail']);
     $preview = htmlspecialchars($content['preview']);
 
-    // Gumamit ng ibang class names
     $class = $isMain ? "latest-article-main" : "latest-article-small";
 
     echo "<div class='$class' style='background-image: url(\"$thumb\")'>";
@@ -76,7 +83,6 @@ function showLatestArticle($article, $pdo, $isMain = false)
     echo "  </div>";
     echo "</div>";
 }
-
 
 /**
  * Displays a smaller list-style article
@@ -91,6 +97,32 @@ function showListArticle($article, $pdo)
     echo "<div class='article-list-item'>";
     echo "  <a href='article.php?id=" . urlencode($article['id']) . "'>" . htmlspecialchars($article['title']) . "</a>";
     echo "  <small>By " . htmlspecialchars($article['user_id']) . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
+    echo "</div>";
+}
+
+/**
+ * Displays a popular article in grid format
+ */
+function showPopularArticle($article, $pdo)
+{
+    if (!$article) {
+        echo "<p class='no-article'>No articles available.</p>";
+        return;
+    }
+
+    $blocks  = getArticleBlocks($pdo, $article['id']);
+    $content = getArticleThumbnailAndPreview($blocks);
+    $thumb   = htmlspecialchars($content['thumbnail']);
+    $preview = htmlspecialchars($content['preview']);
+
+    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='popular-article' style='background-image: url(\"$thumb\")'>";
+    echo "  <div class='popular-article-content'>";
+    echo "    <h3>" . htmlspecialchars($article['title']) . "</h3>";
+    echo "    <p class='popular-preview'>$preview</p>";
+    echo "    <div class='popularity-stats'>";
+    echo "      <small>👍 " . ($article['like_count'] ?? 0) . " | 💬 " . ($article['comment_count'] ?? 0) . " | Score: " . ($article['popularity_score'] ?? 0) . "</small>";
+    echo "    </div>";
+    echo "  </div>";
     echo "</div>";
 }
 ?>
@@ -111,7 +143,7 @@ function showListArticle($article, $pdo)
     <div class="home-articles">
         <!-- Article List -->
         <div class="articleList slide-up">
-            <h2>📝 Article List</h2>
+            <h2>📄 Article List</h2>
             <?php foreach ($articles as $article) {
                 showListArticle($article, $pdo);
             } ?>
@@ -138,8 +170,6 @@ function showListArticle($article, $pdo)
                 <?php endif; ?>
             </div>
         </div>
-
-
 
         <!-- Side Section -->
         <div class="article-section-side slide-up">
@@ -170,6 +200,24 @@ function showListArticle($article, $pdo)
                 }
                 ?>
             </div>
+        </div>
+    </div>
+
+    <!-- Most Popular Articles Section at the Bottom -->
+    <div class="popular-articles-section slide-up">
+        <div class="container">
+            <h2 class="section-title">🔥 Most Popular Articles</h2>
+            <p class="section-subtitle">Articles ranked by combined likes and comments activity</p>
+            
+            <?php if (!empty($mostPopular)): ?>
+                <div class="popular-articles-grid">
+                    <?php foreach ($mostPopular as $article): ?>
+                        <?php showPopularArticle($article, $pdo); ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <p class='no-article'>No popular articles available yet.</p>
+            <?php endif; ?>
         </div>
     </div>
 </body>

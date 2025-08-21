@@ -1,5 +1,15 @@
 document.querySelector('form').onsubmit = (e) => {
     e.preventDefault();
+    
+    // Validate thumbnail (first block must be image)
+    const firstBlockType = document.querySelector('input[name="types[]"]').value;
+    const firstBlockContent = document.querySelector('input[name="blocks[]"]').value;
+    
+    if (firstBlockType !== 'image' || !firstBlockContent) {
+        alert('First block must be an image (thumbnail) and is required.');
+        return;
+    }
+    
     showConfirmModal('Are you sure you want to publish this article?', () => {
         e.target.submit();
     });

@@ -5,7 +5,8 @@ document.getElementById('editForm').addEventListener('submit', function(e) {
     const blocks = [];
     
     document.querySelectorAll('.block').forEach((block, index) => {
-        const type = block.querySelector('select').value;
+        const select = block.querySelector('select');
+        const type = select ? select.value : 'image'; // First block might not have select
         let content;
         
         if (type === 'text') {
@@ -21,9 +22,9 @@ document.getElementById('editForm').addEventListener('submit', function(e) {
         });
     });
     
-    // Validate thumbnail
-    if (blocks.length === 0 || blocks[0].type !== 'image') {
-        alert('First block must be an image (thumbnail).');
+    // Validate thumbnail (first block must be image with content)
+    if (blocks.length === 0 || blocks[0].type !== 'image' || !blocks[0].content) {
+        alert('First block must be an image (thumbnail) and is required.');
         return;
     }
     
@@ -118,6 +119,7 @@ function handleTypeChange(select) {
         content.appendChild(textarea);
     }
 }
+
 function handleDrop(event, dropZone) {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
@@ -152,5 +154,3 @@ function handleClick(dropZone) {
     };
     fileInput.click();
 }
-
-// Remove the removeBlock function since we're handling it inline

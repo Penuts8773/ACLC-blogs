@@ -1380,6 +1380,9 @@ img {
     transform: translateY(-20px);
     opacity: 0;
     transition: all 0.3s ease;
+    min-width: 300px;   /* make sure it's visible */
+    max-width: 90%;     /* responsive */
+    z-index: 1001;      /* above the dark overlay */
 }
 
 .modal.active {
@@ -1453,4 +1456,203 @@ img {
 
 small {
     color: #f0e9e9;
+}
+/* ========================================
+   POPULAR ARTICLES ADDITIONS - APPEND TO EXISTING index.css
+   ======================================== */
+
+/* Popular Articles Section at Bottom of Homepage */
+.popular-articles-section {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 3rem 0;
+    margin-top: 2rem;
+}
+
+.popular-articles-section .container {
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.section-subtitle {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+    font-style: italic;
+}
+
+.popular-articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.popular-article {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: flex-end;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 250px;
+    min-height: 250px;
+}
+
+.popular-article:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.popular-article-content {
+    position: relative;
+    color: white;
+    padding: 1.5rem;
+    width: 100%;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.popular-article-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+    font-weight: bold;
+}
+
+.popular-preview {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    opacity: 0.9;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.popularity-stats {
+    background: rgba(0,0,0,0.3);
+    padding: 0.25rem 0.5rem;
+    border-radius: 15px;
+    display: inline-block;
+    backdrop-filter: blur(4px);
+}
+
+.popularity-stats small {
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+/* Article Section Popular (for article.php sidebar) */
+.article-section-popular {
+    width: 100%;
+    flex: 1;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr 0.6fr 0.6fr;
+    gap: 6px;
+    unicode-bidi: normal !important;
+}
+
+.article-section-popular h2 {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    margin: 0 0 4px 0;
+    text-align: center;
+    padding: 4px 0;
+}
+
+.article-section-popular .article:nth-child(2) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 0;
+    min-height: auto;
+}
+
+.article-section-popular .article:nth-child(3) {
+    grid-column: 1;
+    grid-row: 3;
+    margin: 0;
+    min-height: auto;
+}
+
+.article-section-popular .article:nth-child(4) {
+    grid-column: 2;
+    grid-row: 3;
+    margin: 0;
+    min-height: auto;
+}
+
+.article-section-popular .article:nth-child(5) {
+    grid-column: 1;
+    grid-row: 4;
+    margin: 0;
+    min-height: auto;
+}
+
+.article-section-popular .article:nth-child(6) {
+    grid-column: 2;
+    grid-row: 4;
+    margin: 0;
+    min-height: auto;
+}
+
+/* Enhanced popularity stats styling for existing article cards */
+.article-content .popularity-stats {
+    margin-top: 0.5rem;
+    background: rgba(255,255,255,0.2);
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+}
+
+.article-content .popularity-stats small {
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.65rem;
+}
+
+/* Responsive design for popular articles */
+@media (max-width: 768px) {
+    .popular-articles-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0 0.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .popular-article {
+        height: 200px;
+        min-height: 200px;
+    }
+    
+    .popular-article-content {
+        padding: 1rem;
+    }
+    
+    .popular-article-content h3 {
+        font-size: 1rem;
+    }
+    
+    .popular-preview {
+        font-size: 0.8rem;
+        -webkit-line-clamp: 2;
+    }
 }

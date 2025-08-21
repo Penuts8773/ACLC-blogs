@@ -61,19 +61,6 @@ function getArticleThumbnailAndPreview($blocks) {
     return ['thumbnail' => $thumbnail, 'preview' => $preview];
 }
 
-/**
- * Get all articles with author information
- */
-function getAllArticles($pdo) {
-    $stmt = $pdo->prepare("
-        SELECT a.*, u.name AS author_name 
-        FROM articles a 
-        JOIN user u ON a.user_id = u.usn 
-        ORDER BY a.created_at DESC
-    ");
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
 
 /**
  * Get comments for an article with user information

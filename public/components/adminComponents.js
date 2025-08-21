@@ -1,4 +1,3 @@
-
 function confirmView(articleId) {
 	showConfirmModal('View this article?', () => {
 		window.location.href = `article.php?id=${articleId}`;
@@ -87,6 +86,66 @@ function searchArticles(input) {
 			}
 		} else {
 			// When not searching, respect the initial limit
+			const limit = section === 'pending' ? 4 : 3;
+			wrapper.style.display = visibleCount < limit ? "" : "none";
+			visibleCount++;
+		}
+	}
+
+	// Update buttons visibility
+	const showMoreBtn = container.parentElement.querySelector('.show-more');
+	const showLessBtn = container.parentElement.querySelector('.show-less');
+    
+	if (showMoreBtn && showLessBtn) {
+		if (filter.length > 0) {
+			// Hide both buttons during search
+			showMoreBtn.style.display = "none";
+			showLessBtn.style.display = "none";
+		} else {
+			// Show appropriate buttons when not searching
+			const limit = section === 'pending' ? 4 : 3;
+			showMoreBtn.style.display = visibleCount < totalMatches ? "" : "none";
+			showLessBtn.style.display = visibleCount > limit ? "" : "none";
+		}
+	}
+}
+
+function searchDrafts(input) {
+	const filter = input.value.toLowerCase();
+	const container = document.getElementById('drafts-articles');
+	const drafts = container.getElementsByClassName('article-wrapper');
+	let visibleCount = 0;
+	let totalMatches = 0;
+
+	// Count total matches first
+	for (let wrapper of drafts) {
+		const article = wrapper.querySelector('.article');
+		const title = article.querySelector('h2').textContent;
+		const author = article.querySelector('small').textContent;
+        
+		if (title.toLowerCase().includes(filter) || 
+			author.toLowerCase().includes(filter)) {
+			totalMatches++;
+		}
+	}
+
+	// Now handle visibility
+	for (let wrapper of drafts) {
+		const article = wrapper.querySelector('.article');
+		const title = article.querySelector('h2').textContent;
+		const author = article.querySelector('small').textContent;
+        
+		if (filter.length > 0) {
+			// When searching, show/hide based on match
+			if (title.toLowerCase().includes(filter) || 
+				author.toLowerCase().includes(filter)) {
+				wrapper.style.display = "";
+				visibleCount++;
+			} else {
+				wrapper.style.display = "none";
+			}
+		} else {
+			// When not searching, respect the initial limit
 			wrapper.style.display = visibleCount < 3 ? "" : "none";
 			visibleCount++;
 		}
@@ -107,6 +166,26 @@ function searchArticles(input) {
 			showLessBtn.style.display = visibleCount > 3 ? "" : "none";
 		}
 	}
+}
+
+function viewDraft(draftId) {
+	showConfirmModal('View this draft?', () => {
+		// Fetch and display draft content
+		fetch(`getDraft.php?id=${draftId}`)
+			.then(response => response.text())
+			.then(html => {
+				document.getElementById('draftContent').innerHTML = html;
+				document.getElementById('draftModal').style.display = 'block';
+			})
+			.catch(error => {
+				console.error('Error loading draft:', error);
+				alert('Failed to load draft content');
+			});
+	});
+}
+
+function closeDraftModal() {
+	document.getElementById('draftModal').style.display = 'none';
 }
 
 // Show more/less functionality
@@ -136,9 +215,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			const container = document.getElementById(section + '-articles');
 			const articles = container.getElementsByClassName('article-wrapper');
             
-			// Show only first 3 articles
+			// Show only initial articles based on section
+			const limit = section === 'pending' ? 4 : 3;
 			Array.from(articles).forEach((article, index) => {
-				article.style.display = index < 3 ? "" : "none";
+				article.style.display = index < limit ? "" : "none";
 			});
 
 			// Show show more button and hide show less button
@@ -160,6 +240,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			return false;
 		};
 	});
+
+	// Close modal when clicking outside
+	window.onclick = function(event) {
+		const modal = document.getElementById('draftModal');
+		if (event.target == modal) {
+			closeDraftModal();
+		}
+	}
 });
 
 // Replace the confirmAction function and remove the redundant event handlers
