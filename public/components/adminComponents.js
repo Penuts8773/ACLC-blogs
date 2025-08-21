@@ -168,26 +168,6 @@ function searchDrafts(input) {
 	}
 }
 
-function viewDraft(draftId) {
-	showConfirmModal('View this draft?', () => {
-		// Fetch and display draft content
-		fetch(`getDraft.php?id=${draftId}`)
-			.then(response => response.text())
-			.then(html => {
-				document.getElementById('draftContent').innerHTML = html;
-				document.getElementById('draftModal').style.display = 'block';
-			})
-			.catch(error => {
-				console.error('Error loading draft:', error);
-				alert('Failed to load draft content');
-			});
-	});
-}
-
-function closeDraftModal() {
-	document.getElementById('draftModal').style.display = 'none';
-}
-
 // Show more/less functionality
 document.addEventListener('DOMContentLoaded', function() {
 	document.querySelectorAll('.show-more').forEach(button => {
@@ -230,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 
-	// Update your form submissions to use the new modal
+	// Update form submissions to use the new modal
 	document.querySelectorAll('.user-form').forEach(form => {
 		form.onsubmit = (e) => {
 			e.preventDefault();
@@ -240,17 +220,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			return false;
 		};
 	});
-
-	// Close modal when clicking outside
-	window.onclick = function(event) {
-		const modal = document.getElementById('draftModal');
-		if (event.target == modal) {
-			closeDraftModal();
-		}
-	}
 });
 
-// Replace the confirmAction function and remove the redundant event handlers
+// Replace the confirmAction function
 function confirmAction(form, action) {
 	event.preventDefault();
     

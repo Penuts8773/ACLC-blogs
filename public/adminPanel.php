@@ -89,30 +89,28 @@ function displayDraft($draft, $articleController) {
     $content = $articleController->processDraftContent($draftBlocks);
     ?>
     <div class="article draft-article" style="background-image: url('<?= htmlspecialchars($content['thumbnail']) ?>')">
-        <div class="article-overlay">
-            <div class="article-content">
-                <h2><?= htmlspecialchars($draft['title']) ?></h2>
-                <small>
-                    Original: <?= htmlspecialchars($draft['original_title']) ?> | 
-                    Editor: <?= htmlspecialchars($draft['editor_name']) ?> | 
-                    <?= date('M j, Y g:i A', strtotime($draft['created_at'])) ?>
-                </small>
-                <p class="preview"><?= htmlspecialchars($content['preview']) ?></p>
-                <div class="draft-badge">DRAFT</div>
+        <div class="article-content">
+            <div class="draft-badge">EDIT REQUEST</div>
+            <h2><?= htmlspecialchars($draft['title']) ?></h2>
+            <small>
+                Original: <?= htmlspecialchars($draft['original_title']) ?><br>
+                Editor: <?= htmlspecialchars($draft['editor_name']) ?><br>
+                <?= date('M j, Y g:i A', strtotime($draft['created_at'])) ?>
+            </small>
+            <p class="preview"><?= htmlspecialchars(substr($content['preview'], 0, 120)) ?>...</p>
+            <div class="article-actions">
+                <a href="getDraft.php?id=<?= $draft['id'] ?>" class="action-btn view-btn">View Draft</a>
+                <form method="POST" style="display: inline;" onsubmit="return confirmAction(this, 'approve_draft')">
+                    <input type="hidden" name="draft_id" value="<?= $draft['id'] ?>">
+                    <input type="hidden" name="action" value="approve_draft">
+                    <button type="submit" class="action-btn approve-btn">Approve</button>
+                </form>
+                <form method="POST" style="display: inline;" onsubmit="return confirmAction(this, 'reject_draft')">
+                    <input type="hidden" name="draft_id" value="<?= $draft['id'] ?>">
+                    <input type="hidden" name="action" value="reject_draft">
+                    <button type="submit" class="action-btn delete-btn">Reject</button>
+                </form>
             </div>
-        </div>
-        <div class="article-actions">
-            <button onclick="viewDraft(<?= $draft['id'] ?>)" class="action-btn view-btn">View Draft</button>
-            <form method="POST" style="display: inline;" onsubmit="return confirmAction(this, 'approve_draft')">
-                <input type="hidden" name="draft_id" value="<?= $draft['id'] ?>">
-                <input type="hidden" name="action" value="approve_draft">
-                <button type="submit" class="action-btn approve-btn">Approve</button>
-            </form>
-            <form method="POST" style="display: inline;" onsubmit="return confirmAction(this, 'reject_draft')">
-                <input type="hidden" name="draft_id" value="<?= $draft['id'] ?>">
-                <input type="hidden" name="action" value="reject_draft">
-                <button type="submit" class="action-btn delete-btn">Reject</button>
-            </form>
         </div>
     </div>
     <?php
@@ -127,25 +125,70 @@ function displayDraft($draft, $articleController) {
     <style>
         .draft-article {
             position: relative;
-            border: 2px solid #ffa500;
+            border: 3px solid #ffa500;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
         }
+        
+        .draft-article:hover {
+            border-color: #ff8c00;
+            box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
+        }
+        
         .draft-badge {
             position: absolute;
             top: 10px;
             right: 10px;
-            background: #ffa500;
+            background: linear-gradient(135deg, #ffa500, #ff8c00);
             color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 11px;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+        
+        .draft-article .article-content {
+            background: linear-gradient(transparent, rgba(255, 165, 0, 0.15), rgba(0,0,0,0.8));
+        }
+        
+        .draft-article .article-content small {
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+        }
+        
         .draft-search {
             width: 100%;
             padding: 8px;
             margin-bottom: 15px;
             border: 1px solid #ddd;
             border-radius: 4px;
+        }
+        
+        /* Enhanced styling for draft section */
+        .drafts-section {
+            border: 2px solid #ffa500;
+            border-radius: 12px;
+            background: linear-gradient(145deg, #fff9e6, #ffffff);
+        }
+        
+        .drafts-section h3 {
+            color: #ff8c00;
+            border-bottom: 2px solid #ffa500;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .no-content {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            padding: 2rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px dashed #ddd;
         }
     </style>
 </head>
@@ -212,142 +255,64 @@ function displayDraft($draft, $articleController) {
             </div>
         </div>
 
-        <!-- Approved Articles Section -->
-        <div class="admin-section half-width">
-            <h3>Approved Articles</h3>
-            <input type="text" class="article-search" placeholder="Search approved articles..." 
-                   data-section="approved" onkeyup="searchArticles(this)">
-            <div class="articles-container" id="approved-articles">
-                <?php 
-                $count = 0;
-                foreach ($approved as $article): 
-                    $hidden = $count >= 3 ? 'style="display: none;"' : '';
-                    echo "<div class='article-wrapper' $hidden>";
-                    displayArticle($article, true, $articleController);
-                    echo "</div>";
-                    $count++;
-                endforeach; 
-                ?>
-            </div>
-            <?php if (count($approved) > 3): ?>
-                <button class="show-more" data-section="approved">Show More</button>
-                <button class="show-less" data-section="approved" style="display: none;">Show Less</button>
-            <?php endif; ?>
-        </div>
-
-        <!-- Pending Edit Requests Section -->
-        <?php if ($_SESSION['user']['privilege'] == 1): ?>
+        <div class="admin-section-wrapper">
+            <!-- Approved Articles Section -->
             <div class="admin-section half-width">
-                <h3>Pending Edit Requests</h3>
-                <?php if (empty($pendingDrafts)): ?>
-                    <p class="no-content">No pending edit requests</p>
-                <?php else: ?>
-                    <input type="text" class="draft-search" placeholder="Search drafts..." 
-                           data-section="drafts" onkeyup="searchDrafts(this)">
-                    <div class="articles-container" id="drafts-articles">
-                        <?php 
-                        $count = 0;
-                        foreach ($pendingDrafts as $draft): 
-                            $hidden = $count >= $articlesPerPage['drafts'] ? 'style="display: none;"' : '';
-                            echo "<div class='article-wrapper draft-wrapper' $hidden>";
-                            displayDraft($draft, $articleController);
-                            echo "</div>";
-                            $count++;
-                        endforeach; 
-                        ?>
-                    </div>
-                    <?php if (count($pendingDrafts) > $articlesPerPage['drafts']): ?>
-                        <button class="show-more" data-section="drafts">Show More</button>
-                        <button class="show-less" data-section="drafts" style="display: none;">Show Less</button>
-                    <?php endif; ?>
+                <h3>Approved Articles</h3>
+                <input type="text" class="article-search" placeholder="Search approved articles..." 
+                       data-section="approved" onkeyup="searchArticles(this)">
+                <div class="articles-container" id="approved-articles">
+                    <?php 
+                    $count = 0;
+                    foreach ($approved as $article): 
+                        $hidden = $count >= 3 ? 'style="display: none;"' : '';
+                        echo "<div class='article-wrapper' $hidden>";
+                        displayArticle($article, true, $articleController);
+                        echo "</div>";
+                        $count++;
+                    endforeach; 
+                    ?>
+                </div>
+                <?php if (count($approved) > 3): ?>
+                    <button class="show-more" data-section="approved">Show More</button>
+                    <button class="show-less" data-section="approved" style="display: none;">Show Less</button>
                 <?php endif; ?>
             </div>
-        <?php endif; ?>
+
+            <!-- Pending Edit Requests Section -->
+            <?php if ($_SESSION['user']['privilege'] == 1): ?>
+                <div class="admin-section half-width drafts-section">
+                    <h3>📝 Pending Edit Requests</h3>
+                    <?php if (empty($pendingDrafts)): ?>
+                        <p class="no-content">✨ No pending edit requests at the moment</p>
+                    <?php else: ?>
+                        <input type="text" class="draft-search" placeholder="Search edit requests..." 
+                               data-section="drafts" onkeyup="searchDrafts(this)">
+                        <div class="articles-container" id="drafts-articles">
+                            <?php 
+                            $count = 0;
+                            foreach ($pendingDrafts as $draft): 
+                                $hidden = $count >= $articlesPerPage['drafts'] ? 'style="display: none;"' : '';
+                                echo "<div class='article-wrapper draft-wrapper' $hidden>";
+                                displayDraft($draft, $articleController);
+                                echo "</div>";
+                                $count++;
+                            endforeach; 
+                            ?>
+                        </div>
+                        <?php if (count($pendingDrafts) > $articlesPerPage['drafts']): ?>
+                            <button class="show-more" data-section="drafts">Show More</button>
+                            <button class="show-less" data-section="drafts" style="display: none;">Show Less</button>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        </div>
     </div>
 
-    <!-- ✅ Only use the global modal -->
+    <!-- Confirmation Modal -->
     <?php include 'components/modal.php'; ?>
 
-<script src="components/adminComponents.js" type="text/javascript"></script>
-<script>
-// Draft-specific functionality using the global modal
-function viewDraft(draftId) {
-    showConfirmModal('View this draft?', () => {
-        fetch(`getDraft.php?id=${draftId}`)
-            .then(response => response.text())
-            .then(html => {
-                const modal = document.querySelector('.modal');
-                modal.innerHTML = `
-                    <div class="large-modal">
-                        <span class="close" onclick="closeGlobalModal()">&times;</span>
-                        <div id="draftContent">${html}</div>
-                    </div>
-                `;
-                document.querySelector('.modal-overlay').classList.add('show');
-                modal.classList.add('active');
-            })
-            .catch(error => {
-                console.error('Error loading draft:', error);
-                alert('Failed to load draft content');
-            });
-    });
-}
-
-function closeGlobalModal() {
-    document.querySelector('.modal-overlay').classList.remove('show');
-    document.querySelector('.modal').classList.remove('active');
-}
-
-function searchDrafts(input) {
-    const filter = input.value.toLowerCase();
-    const container = document.getElementById('drafts-articles');
-    const drafts = container.getElementsByClassName('article-wrapper');
-    let visibleCount = 0;
-    let totalMatches = 0;
-
-    for (let wrapper of drafts) {
-        const article = wrapper.querySelector('.article');
-        const title = article.querySelector('h2').textContent;
-        const author = article.querySelector('small').textContent;
-        
-        if (title.toLowerCase().includes(filter) || 
-            author.toLowerCase().includes(filter)) {
-            totalMatches++;
-        }
-    }
-
-    for (let wrapper of drafts) {
-        const article = wrapper.querySelector('.article');
-        const title = article.querySelector('h2').textContent;
-        const author = article.querySelector('small').textContent;
-        
-        if (filter.length > 0) {
-            if (title.toLowerCase().includes(filter) || 
-                author.toLowerCase().includes(filter)) {
-                wrapper.style.display = "";
-                visibleCount++;
-            } else {
-                wrapper.style.display = "none";
-            }
-        } else {
-            wrapper.style.display = visibleCount < 3 ? "" : "none";
-            visibleCount++;
-        }
-    }
-
-    const showMoreBtn = container.parentElement.querySelector('.show-more');
-    const showLessBtn = container.parentElement.querySelector('.show-less');
-    
-    if (showMoreBtn && showLessBtn) {
-        if (filter.length > 0) {
-            showMoreBtn.style.display = "none";
-            showLessBtn.style.display = "none";
-        } else {
-            showMoreBtn.style.display = visibleCount < totalMatches ? "" : "none";
-            showLessBtn.style.display = visibleCount > 3 ? "" : "none";
-        }
-    }
-}
-</script>
+    <script src="components/adminComponents.js" type="text/javascript"></script>
 </body>
 </html>
