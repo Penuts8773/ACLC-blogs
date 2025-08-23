@@ -1289,6 +1289,73 @@ img {
     background-color: #da190b;
 }
 
+.draft-article {
+    position: relative;
+    border: 3px solid #ffa500;
+    box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+}
+
+.draft-article:hover {
+    border-color: #ff8c00;
+    box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
+}
+
+.draft-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #ffa500, #ff8c00);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.draft-article .article-content {
+    background: linear-gradient(transparent, rgba(255, 165, 0, 0.15), rgba(0,0,0,0.8));
+}
+
+.draft-article .article-content small {
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+}
+
+.draft-search {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Enhanced styling for draft section */
+.drafts-section {
+    border: 2px solid #ffa500;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #fff9e6, #ffffff);
+}
+
+.drafts-section h3 {
+    color: #ff8c00;
+    border-bottom: 2px solid #ffa500;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.no-content {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 2rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px dashed #ddd;
+}
 /* ========================================
    ACTION BUTTONS
    ======================================== */
