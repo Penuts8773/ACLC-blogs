@@ -1,0 +1,203 @@
+/* ========================================
+   MODERNIZED ARTICLE FORM (GRAY/WHITE THEME)
+   ======================================== */
+
+.article-form {
+    max-width: 860px;
+    margin: 3rem auto;
+    padding: 2.5rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.article-form h2 {
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 1.75rem;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+/* Inputs */
+.article-form input[type="text"] {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.05rem;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 1.8rem;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.article-form input[type="text"]:focus {
+    border-color: #666;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+    outline: none;
+}
+
+/* Form Blocks */
+.block {
+    background: #f8f8f8;
+    margin-bottom: 1.5rem;
+    padding: 1.8rem;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    position: relative;
+    transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.block:hover {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+}
+
+
+/* Modern Select Wrapper */
+.select-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 180px; /* adjust as needed */
+}
+
+.select-wrapper select {
+    appearance: none;          /* Remove native arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    width: 100%;
+    padding: 1rem;
+    padding-right: 3rem;       /* space for arrow */
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Custom arrow */
+.select-wrapper::after {
+    content: "▾"; /* down arrow */
+    font-size: 1rem;
+    color: #666;
+    position: absolute;
+    right: 1rem;
+    top: 35%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Hover + focus for select */
+.select-wrapper select:hover {
+    border-color: #999;
+}
+
+.select-wrapper select:focus {
+    border-color: #666;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+    outline: none;
+}
+
+/* Textareas */
+.block textarea,
+.block input[type="text"] {
+    width: 100%;
+    min-height: 110px;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-top: 0.8rem;
+    font-family: inherit;
+    resize: vertical;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.block textarea:focus,
+.block input[type="text"]:focus {
+    border-color: #666;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+    outline: none;
+}
+
+/* Buttons */
+.add-block-btn,
+.remove-block {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-weight: 500;
+    font-size: 0.95rem;
+    background: #666;
+    color: white;
+}
+
+.add-block-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+.remove-block {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #888;
+    font-size: 0.85rem;
+}
+
+.remove-block:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Form Footer Buttons */
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+
+.form-buttons button {
+    padding: 0.9rem 1.8rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-size: 1rem;
+    font-weight: 500;
+    background: #666;
+    color: white;
+}
+
+.form-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+/* File Drop Zone */
+.drop {
+    border: 2px dashed #999;
+    padding: 2rem;
+    margin-top: 0.8rem;
+    border-radius: 14px;
+    cursor: pointer;
+    text-align: center;
+    background: #f5f5f5;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    color: #666;
+}
+
+.drop:hover {
+    background: #eee;
+    border-color: #666;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}

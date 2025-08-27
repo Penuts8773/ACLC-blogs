@@ -96,6 +96,7 @@ $categories = $stmt->fetchAll();
     <title>Create Article</title>
     <link rel="icon" type="image/x-icon" href="assets/images/aclcEmblem.ico">
     <link rel="stylesheet" href="assets/style/index.css">
+    <link rel="stylesheet" href="assets/style/articleForm.css">
     <style>
         .drop {
             border: 2px dashed #ccc;
@@ -117,19 +118,21 @@ $categories = $stmt->fetchAll();
     <?php endif; ?>
 
     <form method="POST" id="articleForm">
-        <input type="text" name="title" placeholder="Title" required><br><br>
+        <input type="text" name="title" placeholder="Title" required><br>
 
         <!-- Category Selection -->
-        <label for="category">Category</label>
-        <select name="category" id="category" required>
-            <option value="">Select Category</option>
-            <?php foreach ($categories as $category): ?>
-                <option value="<?php echo $category['id']; ?>"><?php echo htmlspecialchars($category['name']); ?></option>
-            <?php endforeach; ?>
-        </select><br><br>
+        <div class="select-wrapper">
+            <select name="category" id="category" required>
+                <option value="">Select Category</option>
+                <?php foreach ($categories as $category): ?>
+                    <option value="<?php echo $category['id']; ?>"><?php echo htmlspecialchars($category['name']); ?></option>
+                <?php endforeach; ?>
+            </select><br><br>
+        </div>
+        
 
         <!-- Tags Input (Comma-separated) -->
-        <label for="tags">Tags (Comma-separated)</label>
+        
         <input type="text" name="tags" id="tags" placeholder="Enter tags, separated by commas"><br><br>
 
         <div id="blocks">
