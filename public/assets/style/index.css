@@ -728,13 +728,18 @@ img {
     padding: 30px;
 }
 
+.article-meta p {
+    font-size: 0.7rem;
+    color: #666;
+}
+
 .article-container h1 {
     margin-bottom: 0;
     text-align: center;
     font-weight: bolder;
 }
 
-.article-container p {
+.article-desc {
     text-indent: 50px;
     font-size: 1.1rem;
     line-height: 1.6;
@@ -1023,9 +1028,25 @@ img {
     border-radius: 8px;
 }
 
+.comment-user {
+    display: flex;
+    align-items: center;
+}
+
+.comment .user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
 #comment-content {
+    margin: 0 0 10px 0;
+    padding-left: 70px;
     font-size: 1rem;
-    line-height: 1.5;
+    line-height: 1.1;
     word-wrap: break-word;
     overflow-wrap: break-word;
     word-break: break-word;
@@ -1040,7 +1061,17 @@ img {
 .comment-actions {
     display: flex;
     gap: 0.5rem;
-    margin-top: 0.5rem;
+}
+
+.comment-edit:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.comment-meta {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 /* Comment Editing */

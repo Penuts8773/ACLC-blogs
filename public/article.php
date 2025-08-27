@@ -65,28 +65,34 @@ function renderComment($comment, $currentUser) {
     $isOwner = isset($currentUser) && $currentUser['usn'] == $comment['user_id'];
     ?>
     <div class='comment' id='comment-<?= $comment['id'] ?>'>
-        <strong><?= htmlspecialchars($comment['name']) ?></strong>
-        <small>
-            <?= htmlspecialchars($comment['created_at']) ?>
-            <?php if ($comment['modified_at']): ?>
-                <span class="edit-indicator">(edited)</span>
-            <?php endif; ?>
-        </small>
+        <div class="comment-user">
+            <img src="assets/images/user-icon.png" alt="User Icon" class="user-icon">
+            <strong><?= htmlspecialchars($comment['name']) ?></strong>
+        </div>
         <p id='comment-content'><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
-        
-        <?php if ($isOwner): ?>
-            <div class='comment-actions'>
-                <button class='edit-btn action-btn' onclick='editComment(<?= $comment['id'] ?>)'>Edit</button>
-                <button class='delete-btn action-btn' onclick='deleteComment(<?= $comment['id'] ?>)'>Delete</button>
-            </div>
-            <form class='edit-form' style='display:none;'>
-                <textarea required><?= htmlspecialchars($comment['content']) ?></textarea>
-                <div class="form-buttons">
-                    <button type='submit' class="save-btn action-btn">Save</button>
-                    <button type='button' class="cancel-btn action-btn" onclick='cancelEdit(<?= $comment['id'] ?>)'>Cancel</button>
+        <div class="comment-meta">
+            <small>
+                <?= htmlspecialchars($comment['created_at']) ?>
+                <?php if ($comment['modified_at']): ?>
+                    <span class="edit-indicator">(edited)</span>
+                <?php endif; ?>
+            </small>
+            <?php if ($isOwner): ?>
+                <div class='comment-actions'>
+                    <a class='comment-edit' onclick='editComment(<?= $comment['id'] ?>)'>Edit</a>
+                    <a class='comment-edit' onclick='deleteComment(<?= $comment['id'] ?>)'>Delete</a>
                 </div>
-            </form>
-        <?php endif; ?>
+                <form class='edit-form' style='display:none;'>
+                    <textarea required><?= htmlspecialchars($comment['content']) ?></textarea>
+                    <div class="form-buttons">
+                        <button type='submit' class="save-btn action-btn">Save</button>
+                        <button type='button' class="cancel-btn action-btn" onclick='cancelEdit(<?= $comment['id'] ?>)'>Cancel</button>
+                    </div>
+                </form>
+            <?php endif; ?>
+        </div>
+        
+        
     </div>
     <?php
 }
@@ -110,7 +116,7 @@ function renderComment($comment, $currentUser) {
             <h1><?= htmlspecialchars($article['title']) ?></h1>
             
             <div class="article-meta">
-                <p>By <?= htmlspecialchars($article['author_name']) ?> | <?= htmlspecialchars($article['created_at']) ?></p>
+                <p class="author-meta">By <?= htmlspecialchars($article['author_name']) ?> | <?= htmlspecialchars($article['created_at']) ?></p>
                 
                 <?php if ($article['modified_at'] && $article['last_editor_name']): ?>
                     <p class="edit-info">
@@ -130,7 +136,7 @@ function renderComment($comment, $currentUser) {
             <div>
                 <?php foreach ($blocks as $block): ?>
                     <?php if ($block['block_type'] === 'text'): ?>
-                        <p><?= nl2br(htmlspecialchars($block['content'])) ?></p>
+                        <p class="article-desc"><?= nl2br(htmlspecialchars($block['content'])) ?></p>
                     <?php else: ?>
                         <img src="<?= htmlspecialchars($block['content']) ?>" alt="Article image">
                     <?php endif; ?>
