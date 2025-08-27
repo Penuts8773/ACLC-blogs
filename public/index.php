@@ -43,6 +43,9 @@ function showArticle($article, $title, $pdo)
     $content = getArticleThumbnailAndPreview($blocks);
     $thumb   = htmlspecialchars($content['thumbnail']);
     $preview = htmlspecialchars($content['preview']);
+    $preview = !empty($content['preview']) 
+    ? htmlspecialchars($content['preview']) 
+    : "No description available.";
 
     echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='article' style='background-image: url(\"$thumb\")'>";
     echo "  <div  class='article-content'>";
@@ -114,6 +117,9 @@ function showPopularArticle($article, $pdo)
     $content = getArticleThumbnailAndPreview($blocks);
     $thumb   = htmlspecialchars($content['thumbnail']);
     $preview = htmlspecialchars($content['preview']);
+    $preview = !empty($content['preview']) 
+    ? htmlspecialchars($content['preview']) 
+    : "No description available.";
 
     echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='popular-article' style='background-image: url(\"$thumb\")'>";
     echo "  <div class='popular-article-content'>";
@@ -206,9 +212,7 @@ function showPopularArticle($article, $pdo)
     <!-- Most Popular Articles Section at the Bottom -->
     <div class="popular-articles-section slide-up">
         <div class="container">
-            <h2 class="section-title">🔥 Most Popular Articles</h2>
-            <p class="section-subtitle">Articles ranked by combined likes and comments activity</p>
-            
+            <h2 class="section-title">🔥 Most Popular Articles</h2>            
             <?php if (!empty($mostPopular)): ?>
                 <div class="popular-articles-grid">
                     <?php foreach ($mostPopular as $article): ?>
