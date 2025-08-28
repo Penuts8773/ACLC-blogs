@@ -44,6 +44,16 @@
             }
         });
 
+        const mainCommentTextarea = document.querySelector('#comment-form textarea');
+        if (mainCommentTextarea) {
+            mainCommentTextarea.addEventListener('keydown', e => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    mainCommentTextarea.form.requestSubmit(); // triggers your submit listener above
+                }   
+            });
+        }
+
         // Comment editing functions
         function editComment(id) {
             const commentDiv = document.getElementById(`comment-${id}`);
@@ -73,6 +83,16 @@
 
         // Handle edit form submissions
         document.querySelectorAll('.edit-form').forEach(form => {
+            const textarea = form.querySelector('textarea');
+
+            // 🔑 Enter = submit, Shift+Enter = newline
+            textarea.addEventListener('keydown', e => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    form.requestSubmit(); // will trigger the submit handler below
+                }
+            });
+            
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
@@ -112,6 +132,7 @@
                     }
                 });
             });
+
         });
 
         // Delete comment function

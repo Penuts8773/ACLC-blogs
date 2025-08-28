@@ -69,7 +69,7 @@ function renderComment($comment, $currentUser) {
             <img src="assets/images/user-icon.png" alt="User Icon" class="user-icon">
             <strong><?= htmlspecialchars($comment['name']) ?></strong>
         </div>
-        <p id='comment-content'><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
+        <p class='comment-content'><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
         <div class="comment-meta">
             <small>
                 <?= htmlspecialchars($comment['created_at']) ?>
