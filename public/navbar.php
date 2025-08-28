@@ -29,7 +29,15 @@
     </div>
   </div>
 </div>
-
+<div class="tags-area">
+  <div class="tags-container" id="tags-container">
+    <div class="tag">#All</div>
+    <div class="tag">#Technology</div>
+    <div class="tag">#Science</div>
+    <div class="tag">#Education</div>
+    <div class="tag">#Lifestyle</div>
+  </div>
+</div>
 
 
 <script src="script/navbarJs.js"></script>
