@@ -558,7 +558,7 @@ img {
 
 /* Featured big card */
 .latest-article-main {
-    height: 97%;
+    height: 525px;
     width: 500px;
     margin: 5px;
     border-radius: 12px;
@@ -576,7 +576,7 @@ img {
 
 .latest-article-small {
     margin: 5px;
-    height: 213px;
+    height: 257px;
     width: 300px;
     border-radius: 12px;
     overflow: hidden;
@@ -649,7 +649,7 @@ img {
     color: white;
     padding: 2rem;
     width: 100%;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    background: linear-gradient(transparent, rgba(0,0,0,0.6), rgba(0,0,0,0.8));
     word-wrap: break-word;
     overflow-wrap: break-word;
     word-break: break-word;
@@ -666,6 +666,10 @@ img {
 .article:hover h2{
     transition: all 0.3s ease;
     transform: translateY(5px);
+}
+
+.article:hover .article-content{
+    background: linear-gradient(transparent, rgba(0,0,0,0.8), rgba(0,0,0,1));
 }
 
 .article-content small {
@@ -778,11 +782,13 @@ img {
     text-decoration: none;
     color: #333;
     font-weight: bold;
+    transition: all 0.3s ease;
 }
 
 .article-list-item a:hover,
 .articleList li a:hover {
     text-decoration: underline;
+    color: maroon;
 }
 
 .article-list-item small,
@@ -1594,7 +1600,7 @@ small {
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(5px, 175px));
     gap: 5px;
-    max-width: 1200px;
+    max-width: 1500px;
     margin: 0 auto;
     padding: 0 1rem;
 }
@@ -1611,7 +1617,7 @@ small {
     cursor: pointer;
     transition: all 0.3s ease;
     height: 100px;
-    width: 150px;
+    width: 175px;
 }
 
 .popular-article:hover {
@@ -1624,9 +1630,14 @@ small {
     color: white;
     padding: 0.5rem;
     width: 100%;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    background: linear-gradient(transparent, rgba(0,0,0,0.6), rgba(0,0,0,0.8));
     word-wrap: break-word;
     overflow-wrap: break-word;
+    transition: all 0.3s ease;
+}
+
+.popular-article:hover .popular-article-content{
+    background: linear-gradient(transparent, rgba(0,0,0,0.8), rgba(0,0,0,1));
 }
 
 .popular-article-content h3 {
