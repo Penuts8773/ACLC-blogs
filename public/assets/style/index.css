@@ -721,7 +721,8 @@ img {
 .article-body {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 105px;
 }
 
 .article-container {
@@ -1011,9 +1012,9 @@ img {
 }
 
 .comment-form {
+    width: 100%;
     margin: 2rem 0;
     padding: 1rem;
-    background: #f5f5f5;
     border-radius: 8px;
 }
 
@@ -1021,9 +1022,23 @@ img {
     width: 100%;
     padding: 0.5rem;
     margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    resize: vertical;
+    border: 1px solid #353535;
+    border-radius: 15px;
+    resize: none;
+}
+
+.comment-form button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: maroon;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.comment-form button:hover {
+    background: #5a0000;
 }
 
 .comment {

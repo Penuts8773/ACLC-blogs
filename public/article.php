@@ -27,7 +27,7 @@ if (!$article) {
 $articles = getAllArticles($pdo);
 $mostLiked = getMostLikedArticles($pdo);
 $mostCommented = getMostCommentedArticle($pdo);
-$mostPopular = getMostPopularArticles($pdo, 4); // Get 4 for better grid layout
+$mostPopular = getMostPopularArticles($pdo, 3); // Get 4 for better grid layout
 $blocks = getArticleBlocks($pdo, $articleId);
 $comments = getArticleComments($pdo, $articleId);
 
@@ -95,6 +95,32 @@ function renderComment($comment, $currentUser) {
         
     </div>
     <?php
+}
+
+function showPopularArticle($article, $pdo)
+{
+    if (!$article) {
+        echo "<p class='no-article'>No articles available.</p>";
+        return;
+    }
+
+    $blocks  = getArticleBlocks($pdo, $article['id']);
+    $content = getArticleThumbnailAndPreview($blocks);
+    $thumb   = htmlspecialchars($content['thumbnail']);
+    $preview = htmlspecialchars($content['preview']);
+    $preview = !empty($content['preview']) 
+    ? htmlspecialchars($content['preview']) 
+    : "No description available.";
+
+    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='popular-article' style='background-image: url(\"$thumb\")'>";
+    echo "  <div class='popular-article-content'>";
+    echo "    <h3>" . htmlspecialchars($article['title']) . "</h3>";
+    echo "    <p class='popular-preview'>$preview</p>";
+    echo "    <div class='popularity-stats'>";
+    echo "      <small>👍 " . ($article['like_count'] ?? 0) . " | 💬 " . ($article['comment_count'] ?? 0) . " | Score: " . ($article['popularity_score'] ?? 0) . "</small>";
+    echo "    </div>";
+    echo "  </div>";
+    echo "</div>";
 }
 ?>
 
@@ -172,15 +198,19 @@ function renderComment($comment, $currentUser) {
         <!-- Sidebar -->
         <div class="article-section-side slide-up">
             <!-- Most Popular Articles -->
-            <div class="article-section-popular">
-                <h2>🔥 Most Popular Articles</h2>
-                <?php if ($mostPopular && count($mostPopular) > 0): ?>
-                    <?php foreach ($mostPopular as $popularArticle): ?>
-                        <?php renderArticleCard($popularArticle, $pdo); ?>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p class='no-article'>No articles available.</p>
-                <?php endif; ?>
+            <div class="popular-articles-section slide-up">
+                <div class="container">
+                    <h2 class="section-title">🔥 Most Popular Articles</h2>            
+                    <?php if (!empty($mostPopular)): ?>
+                        <div class="popular-articles-grid">
+                            <?php foreach ($mostPopular as $article): ?>
+                                <?php showPopularArticle($article, $pdo); ?>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <p class='no-article'>No popular articles available yet.</p>
+                    <?php endif; ?>
+                </div>
             </div>
 
             <!-- Most Liked Articles -->
