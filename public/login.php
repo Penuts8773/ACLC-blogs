@@ -21,6 +21,9 @@ include 'components/modal.php';
             <input type="text" name="usn" placeholder="Enter your USN" required>
             <input type="password" name="pass" placeholder="Enter your password" required>
             <button type="submit">Login</button>
+            <a href="index.html">
+                <button type="button">Log ON as Guest</button>
+            </a>
         </form>
     </div>
 </body>

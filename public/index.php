@@ -9,12 +9,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Redirect if user is not logged in
-if (empty($_SESSION['user'])) {
-    header("Location: login.php");
-    exit;
-}
-
 // Use ArticleController for approved articles
 $articleController = new ArticleController($pdo);
 $articles = $articleController->getApprovedArticles();

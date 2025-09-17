@@ -19,9 +19,9 @@ class UserController {
     public function updateUserPrivilege($usn, $newLevel) {
         try {
             $stmt = $this->pdo->prepare("UPDATE user SET privilege = ? WHERE usn = ?");
-            return $stmt->execute([intval($newLevel), $usn]);
+            $stmt->execute([$newLevel, $usn]);
+            return true;
         } catch (Exception $e) {
-            error_log("Error updating user privilege: " . $e->getMessage());
             return false;
         }
     }
@@ -36,14 +36,12 @@ class UserController {
 
     public function getPrivilegeName($level) {
         switch (intval($level)) {
-            case 1:
-                return 'Admin';
-            case 2:
-                return 'Teacher';
-            case 3:
-                return 'Student';
-            default:
-                return 'Unknown';
+            case 1: return 'Admin';
+            case 2: return 'privileged';
+            case 3: return 'Moderator';
+            case 4: return 'user';
+            case 5: return 'restricted';
+            default: return 'Unknown';
         }
     }
 }

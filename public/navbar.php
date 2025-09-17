@@ -6,7 +6,7 @@
   
   <div class="nav-user-menu">
     <div class="dropdown">
-      <?php if ($_SESSION['user']['privilege'] != 3): ?>
+      <?php if (isset($_SESSION['user']) && $_SESSION['user']['privilege'] < 2): ?>
         <button id="create-button" onclick="confirmNavigation('articleCreation.php')">
             Create Article
         </button>

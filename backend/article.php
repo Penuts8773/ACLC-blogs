@@ -80,14 +80,14 @@ function getAllArticles($pdo) {
  */
 function getArticleComments($pdo, $articleId) {
     $stmt = $pdo->prepare("
-        SELECT c.*, u.name 
-        FROM article_comments c 
-        JOIN user u ON c.user_id = u.usn 
-        WHERE c.article_id = ? 
+        SELECT c.*, u.name, u.usn AS user_id, u.privilege AS user_privilege
+        FROM article_comments c
+        JOIN user u ON c.user_id = u.usn
+        WHERE c.article_id = ?
         ORDER BY c.created_at DESC
     ");
     $stmt->execute([$articleId]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $stmt->fetchAll();
 }
 
 /**

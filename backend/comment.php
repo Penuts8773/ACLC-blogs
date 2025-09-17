@@ -4,7 +4,7 @@ require_once 'db.php';
 header('Content-Type: application/json');
 
 // Ensure user is authenticated
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user']) || $_SESSION['user']['privilege'] == 5) {
     http_response_code(403);
     echo json_encode(['success' => false, 'error' => 'Unauthorized']);
     exit;

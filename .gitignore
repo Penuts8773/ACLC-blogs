@@ -16,3 +16,4 @@ Thumbs.db
 # Ignore Composer dependencies
 
 backend/config.php
+

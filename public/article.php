@@ -2,6 +2,7 @@
 require_once '../backend/db.php';
 require_once '../backend/article.php';
 require_once '../backend/blog.php';
+
 include 'components/modal.php';
 
 // Initialize session
@@ -63,6 +64,7 @@ function renderArticleCard($article, $pdo) {
  */
 function renderComment($comment, $currentUser) {
     $isOwner = isset($currentUser) && $currentUser['usn'] == $comment['user_id'];
+    $isAdminOrMod = isset($currentUser) && in_array($currentUser['privilege'], [1, 3]);
     ?>
     <div class='comment' id='comment-<?= $comment['id'] ?>'>
         <div class="comment-user">
@@ -90,9 +92,20 @@ function renderComment($comment, $currentUser) {
                     </div>
                 </form>
             <?php endif; ?>
+
+            <!-- Restrict User Button for Admins/Moderators -->
+            <?php
+            // Show for admins/mods, except if commenter is already banned or is admin/teacher
+            if ($isAdminOrMod && !in_array($comment['user_privilege'], [1, 2, 5])):
+            ?>
+                <form method="post" action="restrictUser.php" style="display:inline;">
+                    <input type="hidden" name="user_id" value="<?= htmlspecialchars($comment['user_id']) ?>">
+                    <button type="submit" class="restrict-btn" onclick="return confirm('Restrict this user from commenting?');">
+                        Restrict User
+                    </button>
+                </form>
+            <?php endif; ?>
         </div>
-        
-        
     </div>
     <?php
 }
@@ -179,15 +192,20 @@ function showPopularArticle($article, $pdo)
                 <?php if (empty($comments)): ?>
                     <p class="no-comments">No comments yet. Be the first to comment!</p>
                 <?php endif; ?>
+                
             </div>
 
             <!-- Comment Form -->
-            <?php if (isset($_SESSION['user'])): ?>
-                <form id="comment-form" class="comment-form">
-                    <textarea name="comment" rows="3" placeholder="Write a comment..." required></textarea>
-                    <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
-                    <button type="submit">Post Comment</button>
-                </form>
+            <?php if (isset($_SESSION['user']) && $_SESSION['user']['privilege'] != 5): ?>
+            <form id="comment-form" class="comment-form">
+                <textarea name="comment" rows="3" placeholder="Write a comment..." required></textarea>
+                <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
+                <button type="submit">Post Comment</button>
+            </form>
+            <?php elseif (isset($_SESSION['user']) && $_SESSION['user']['privilege'] == 5): ?>
+                <p class="login-prompt">
+                    You are banned from commenting.
+                </p>
             <?php else: ?>
                 <p class="login-prompt">
                     <a href="login.php">Login</a> to comment.

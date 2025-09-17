@@ -6,11 +6,6 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
-    exit;
-}
-
 $sort_by = $_GET['sort_by'] ?? 'latest';
 $order = $_GET['order'] ?? 'desc';
 

@@ -174,8 +174,10 @@ function displayDraft($draft, $articleController) {
                         <div>
                             <select name="new_level">
                                 <option value="1" <?= $u['privilege'] == 1 ? 'selected' : '' ?>>Admin</option>
-                                <option value="2" <?= $u['privilege'] == 2 ? 'selected' : '' ?>>Teacher</option>
-                                <option value="3" <?= $u['privilege'] == 3 ? 'selected' : '' ?>>Student</option>
+                                <option value="2" <?= $u['privilege'] == 2 ? 'selected' : '' ?>>Privileged</option>
+                                <option value="3" <?= $u['privilege'] == 3 ? 'selected' : '' ?>>Moderator</option>
+                                <option value="4" <?= $u['privilege'] == 4 ? 'selected' : '' ?>>User</option>
+                                <option value="5" <?= $u['privilege'] == 5 ? 'selected' : '' ?>>Restricted</option>
                             </select>
                             <input type="hidden" name="target_usn" value="<?= $u['usn'] ?>">
                             <input type="hidden" name="action" value="update_privilege">
