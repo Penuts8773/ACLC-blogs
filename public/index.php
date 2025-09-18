@@ -138,6 +138,7 @@ function showPopularArticle($article, $pdo)
     <link rel="stylesheet" href="assets/style/index.css">
     <link rel="stylesheet" href="assets/style/article.css">
 
+
 </head>
 <body>
     <?php include 'navbar.php'; ?>
@@ -145,7 +146,7 @@ function showPopularArticle($article, $pdo)
     <div class="home-articles">
         <!-- Article List -->
         <div class="articleList slide-up">
-            <h2>📄 Article List</h2>
+            <h2 style="text-align: center;">📄 Article List</h2>
             <?php foreach ($articles as $article) {
                 showListArticle($article, $pdo);
             } ?>

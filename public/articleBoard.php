@@ -46,7 +46,7 @@ $articles = $stmt->fetchAll();
     <link rel="icon" type="image/x-icon" href="assets/images/aclcEmblem.ico">
     <link rel="stylesheet" href="assets/style/index.css">
     <link rel="stylesheet" href="assets/style/article.css">
-    <link rel="stylesheet" href="assets/style/navBar.css">
+
 </head>
 <body>
 <?php include 'navbar.php'; ?>

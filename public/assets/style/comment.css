@@ -1,0 +1,197 @@
+/* ========================================
+   COMMENTS SYSTEM
+   ======================================== */
+
+.comment-section {
+    margin-top: 2rem;
+    padding: 1rem;
+    width: 100%;
+}
+
+.comment-form {
+    width: 100%;
+    margin: 2rem 0;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #353535;
+    border-radius: 15px;
+    resize: none;
+}
+
+.comment-form button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: maroon;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.comment-form button:hover {
+    background: #5a0000;
+}
+
+.comment {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+}
+
+.comment-user {
+    display: flex;
+    align-items: center;
+}
+
+.comment .user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+#comment-content {
+    margin: 0 0 10px 0;
+    padding-left: 70px;
+    font-size: 1rem;
+    line-height: 1.1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+}
+
+.comment small {
+    margin: 5px 0;
+    color: #333;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.comment-edit:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.comment-meta {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* Comment Editing */
+.edit-form {
+    margin-top: 1rem;
+}
+
+.edit-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 60px;
+}
+
+/* Responsive Design Adjustments */
+
+@media (max-width: 1024px) {
+    .comment-section {
+        padding: 0.8rem;
+    }
+
+    .comment-form {
+        padding: 0.8rem;
+    }
+
+    .comment-form textarea {
+        font-size: 0.9rem;
+    }
+
+    .comment {
+        padding: 8px;
+    }
+
+    #comment-content {
+        font-size: 0.9rem;
+    }
+
+    .comment .user-icon {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 768px) {
+    .comment-section {
+        padding: 0.5rem;
+    }
+
+    .comment-form {
+        padding: 0.5rem;
+    }
+
+    .comment-form textarea {
+        font-size: 0.85rem;
+    }
+
+    .comment {
+        padding: 6px;
+    }
+
+    #comment-content {
+        font-size: 0.85rem;
+        padding-left: 60px;
+    }
+
+    .comment .user-icon {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .comment-section {
+        padding: 0.3rem;
+    }
+
+    .comment-form {
+        padding: 0.3rem;
+    }
+
+    .comment-form textarea {
+        font-size: 0.8rem;
+    }
+
+    .comment {
+        padding: 4px;
+    }
+
+    #comment-content {
+        font-size: 0.8rem;
+        padding-left: 50px;
+    }
+
+    .comment .user-icon {
+        width: 25px;
+        height: 25px;
+    }
+
+    .comment-actions {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+}

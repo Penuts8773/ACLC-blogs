@@ -134,7 +134,8 @@ function showArticle($article, $title, $pdo)
     <link rel="icon" type="image/x-icon" href="assets/images/aclcEmblem.ico">
     <link rel="stylesheet" href="assets/style/index.css">
     <link rel="stylesheet" href="assets/style/article.css">
-    <link rel="stylesheet" href="assets/style/navBar.css">
+    <link rel="stylesheet" href="assets/style/comment.css">
+
 </head>
 <body class="article-view">
     <?php include 'navbar.php'; ?>
@@ -206,10 +207,11 @@ function showArticle($article, $title, $pdo)
         <!-- Sidebar -->
         <div class="article-article-section-side slide-up">
             <!-- Most Popular Articles -->
-            <div class="article.popular-articles-section slide-up">
-                <h2 class="section-title">🔥 Most Popular Articles</h2>            
+            <div class="popular-articles-section slide-up">
+                <div class="container">
+                                
                     <?php if (!empty($mostPopular)): ?>
-                        <div class="article-popular-articles-grid">
+                        <div class="popular-articles-grid">
                             <?php foreach ($mostPopular as $article): ?>
                                 <?php showArticle($article, "",$pdo); ?>
                             <?php endforeach; ?>

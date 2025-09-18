@@ -128,6 +128,7 @@ $tagsString = implode(', ', $currentTags);
     <title>Edit Article - <?= htmlspecialchars($article['title']) ?></title>
     <link rel="stylesheet" href="assets/style/index.css">
     <link rel="stylesheet" href="assets/style/article.css">
+    <link rel="stylesheet" href="assets/style/articleForm.css">
 
     <style>
         .drop {
