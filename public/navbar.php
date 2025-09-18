@@ -1,4 +1,14 @@
-<div class="navbar">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="assets/style/navBar.css">
+
+</head>
+<body>
+  <div class="navbar">
   <div class="nav-logo">
     <img src="assets/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">
     <a href="index.php">Blogs</a>
@@ -41,3 +51,6 @@
 
 
 <script src="script/navbarJs.js"></script>
+</body>
+</html>
+

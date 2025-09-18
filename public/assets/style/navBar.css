@@ -1,0 +1,120 @@
+/* ========================================
+   NAVIGATION
+   ======================================== */
+
+.navbar {
+    background: #333;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+}
+
+#aclc-logo {
+    height: 30px;
+}
+
+.nav-logo a {
+    padding-top: 3px;
+    font-weight: bolder;
+    color: #f1fcff;
+    text-decoration: none;
+}
+
+.navbar div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.navbar span {
+    opacity: 0.9;
+}
+
+/* Navigation Buttons */
+#create-button,
+.burger-btn {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+}
+
+#create-button:hover {
+    background: #444;
+}
+
+.burger-btn:hover {
+    rotate: 180deg;
+}
+
+.burger-btn:active {
+    transform: scaleX(1.5);
+}
+
+/* ========================================
+   DROPDOWN MENU
+   ======================================== */
+
+.nav-user-menu {
+    position: relative;
+    font-size: 1rem;
+}
+
+.dropdown-content {
+    display: none !important;
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    background-color: #333;
+    min-width: 160px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 100;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.dropdown-content.show {
+    display: block !important;
+}
+
+.dropdown-header {
+    background-color: #444;
+    display: flex;
+    align-items: center;
+}
+
+.user-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 10px;
+    background-color: white;
+}
+
+.dropdown-content span {
+    color: #ffffff;
+    text-align: center;
+}
+
+.dropdown-content a {
+    color: #ffffff;
+    padding: 10px 14px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #444;
+}

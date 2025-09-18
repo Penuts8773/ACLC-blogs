@@ -10,6 +10,8 @@ include 'components/modal.php';
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
     <link rel="stylesheet" href="assets/style/index.css">
+    <link rel="stylesheet" href="assets/style/article.css">
+
 </head>
 <body>
     <div class="login-container">

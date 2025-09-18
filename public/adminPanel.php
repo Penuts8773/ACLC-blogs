@@ -122,6 +122,8 @@ function displayDraft($draft, $articleController) {
 <head>
     <title>Admin Panel</title>
     <link rel="stylesheet" href="assets/style/index.css">
+    <link rel="stylesheet" href="assets/style/admin.css">
+    <link rel="stylesheet" href="assets/style/article.css">
 </head>
 <body>
 <?php include 'navbar.php'; ?>

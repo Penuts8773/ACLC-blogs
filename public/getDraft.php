@@ -37,6 +37,8 @@ $blocks = $articleController->getDraftBlocks($draftId);
     <title>Draft: <?= htmlspecialchars($draft['title']) ?></title>
     <link rel="icon" type="image/x-icon" href="assets/images/aclcEmblem.ico">
     <link rel="stylesheet" href="assets/style/index.css">
+    <link rel="stylesheet" href="assets/style/article.css">
+
     <style>
         .container {
             max-width: 1000px;

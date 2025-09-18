@@ -145,6 +145,8 @@ function showPopularArticle($article, $pdo)
     <title><?= htmlspecialchars($article['title']) ?></title>
     <link rel="icon" type="image/x-icon" href="assets/images/aclcEmblem.ico">
     <link rel="stylesheet" href="assets/style/index.css">
+    <link rel="stylesheet" href="assets/style/article.css">
+    <link rel="stylesheet" href="assets/style/navBar.css">
 </head>
 <body class="article-view">
     <?php include 'navbar.php'; ?>

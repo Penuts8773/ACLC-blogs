@@ -127,6 +127,8 @@ $tagsString = implode(', ', $currentTags);
 <head>
     <title>Edit Article - <?= htmlspecialchars($article['title']) ?></title>
     <link rel="stylesheet" href="assets/style/index.css">
+    <link rel="stylesheet" href="assets/style/article.css">
+
     <style>
         .drop {
             border: 2px dashed #ccc;
