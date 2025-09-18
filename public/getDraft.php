@@ -38,6 +38,8 @@ $blocks = $articleController->getDraftBlocks($draftId);
     <link rel="icon" type="image/x-icon" href="assets/images/aclcEmblem.ico">
     <link rel="stylesheet" href="assets/style/index.css">
     <link rel="stylesheet" href="assets/style/article.css">
+    <link rel="stylesheet" href="assets/style/articleForm.css">
+    <link rel="stylesheet" href="assets/style/draft.css">
 
     <style>
         .container {

@@ -138,6 +138,7 @@ function showPopularArticle($article, $pdo)
     <link rel="stylesheet" href="assets/style/index.css">
     <link rel="stylesheet" href="assets/style/article.css">
 
+
 </head>
 <body>
     <?php include 'navbar.php'; ?>
