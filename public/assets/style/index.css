@@ -389,3 +389,102 @@ small {
 .tag:active {
     transform: scale(0.95);
 }
+
+/* ========================================
+   RESPONSIVE STYLES
+   ======================================== */
+
+/* Small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .container {
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .login-form,
+    .login-box {
+        padding: 2rem;
+    }
+
+    .tags-container {
+        justify-content: center;
+    }
+
+    .modal {
+        padding: 1.5rem;
+    }
+
+    .home-articles {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px; /* Increased gap between sections */
+    }
+
+    .article-section-latest,
+    .article-section-like,
+    .article-section-comment,
+    .popular-articles-section {
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .articleList {
+        max-height: 300px; /* Limit the height of the article list */
+        overflow-y: auto;
+    }
+
+    .articleList li {
+        margin-bottom: 10px; /* Adjust spacing between articles */
+    }
+}
+
+/* Medium devices (tablets, 768px and down) */
+@media only screen and (max-width: 768px) {
+    .container {
+        padding: 1rem 1.5rem;
+    }
+
+    .tags-container {
+        gap: 6px;
+    }
+
+    .modal {
+        padding: 1.8rem;
+    }
+
+    .home-articles {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .article-section-side {
+        width: 100%;
+        margin: 0;
+    }
+
+    .popular-articles-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .container {
+        padding: 2rem 3rem;
+    }
+
+    .login-form,
+    .login-box {
+        padding: 3rem;
+    }
+
+    .modal {
+        padding: 2.5rem;
+    }
+
+    .tags-container {
+        gap: 10px;
+    }
+}
+

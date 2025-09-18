@@ -221,9 +221,10 @@ function showPopularArticle($article, $pdo)
             <!-- Most Popular Articles -->
             <div class="popular-articles-section slide-up">
                 <div class="container">
-                    <h2 class="section-title">🔥 Most Popular Articles</h2>            
+                                
                     <?php if (!empty($mostPopular)): ?>
                         <div class="popular-articles-grid">
+                            <h2>🔥 Most Popular Articles</h2>
                             <?php foreach ($mostPopular as $article): ?>
                                 <?php showPopularArticle($article, $pdo); ?>
                             <?php endforeach; ?>

@@ -105,3 +105,93 @@
     resize: vertical;
     min-height: 60px;
 }
+
+/* Responsive Design Adjustments */
+
+@media (max-width: 1024px) {
+    .comment-section {
+        padding: 0.8rem;
+    }
+
+    .comment-form {
+        padding: 0.8rem;
+    }
+
+    .comment-form textarea {
+        font-size: 0.9rem;
+    }
+
+    .comment {
+        padding: 8px;
+    }
+
+    #comment-content {
+        font-size: 0.9rem;
+    }
+
+    .comment .user-icon {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 768px) {
+    .comment-section {
+        padding: 0.5rem;
+    }
+
+    .comment-form {
+        padding: 0.5rem;
+    }
+
+    .comment-form textarea {
+        font-size: 0.85rem;
+    }
+
+    .comment {
+        padding: 6px;
+    }
+
+    #comment-content {
+        font-size: 0.85rem;
+        padding-left: 60px;
+    }
+
+    .comment .user-icon {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .comment-section {
+        padding: 0.3rem;
+    }
+
+    .comment-form {
+        padding: 0.3rem;
+    }
+
+    .comment-form textarea {
+        font-size: 0.8rem;
+    }
+
+    .comment {
+        padding: 4px;
+    }
+
+    #comment-content {
+        font-size: 0.8rem;
+        padding-left: 50px;
+    }
+
+    .comment .user-icon {
+        width: 25px;
+        height: 25px;
+    }
+
+    .comment-actions {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+}

@@ -55,6 +55,7 @@
 
 /* Most Liked Section - Grid Layout MAXIMIZED */
 .article-section-like {
+    
     width: 100%;
     flex: 1; /* Take equal space */
     display: grid !important;
@@ -200,6 +201,7 @@
 }
 
 .article-list-item {
+    text-align: center;
     padding: 3px; /* Reduced from 5px */
     margin-bottom: 3px; /* Reduced from 5px */
 }
@@ -579,9 +581,12 @@
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(5px, 175px));
     gap: 5px;
-    max-width: 1500px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 0 1rem;
+}
+.popular-articles-grid .popular-article:nth-child(6) {
+    display: none;
 }
 
 .popular-article {
@@ -669,7 +674,7 @@
     display: grid !important;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto 1fr 0.6fr 0.6fr;
-    gap: 6px;
+    gap: 5px;
     unicode-bidi: normal !important;
 }
 
@@ -716,7 +721,6 @@
     min-height: auto;
 }
 
-/* Enhanced popularity stats styling for existing article cards */
 .article-content .popularity-stats {
     margin-top: 0.5rem;
     background: rgba(255,255,255,0.2);
@@ -760,4 +764,121 @@
         font-size: 0.8rem;
         -webkit-line-clamp: 2;
     }
+}
+
+/* ========================================
+   RESPONSIVE STYLES
+   ======================================== */
+
+/* Small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .home-articles {
+        flex-direction: column;
+        height: auto;
+        gap: 10px;
+    }
+
+    .articleList {
+        width: 100%;
+        height: auto;
+    }
+
+    .article-section-latest {
+        width: 100%;
+        margin: 0;
+    }
+
+    .article-section-side {
+        width: 100%;
+        margin: 0;
+        height: auto;
+    }
+
+    .article-section-like, .article-section-comment {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+    
+
+    .latest-article-main {
+        height: 300px;
+        width: 100%;
+    }
+
+    .latest-article-small {
+        height: 150px;
+        width: 100%;
+    }
+
+    .popular-articles-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .latest-content,
+    .article-section-like,
+    .article-section-comment {
+        margin-bottom: 20px; /* Add spacing between sections */
+    }
+    .popular-articles-grid {
+        margin-top: 50px; /* Add spacing between sections */
+        
+    }
+
+    .articleList {
+        max-height: 300px; /* Limit the height of the article list */
+        overflow-y: auto;
+    }
+
+    .articleList li {
+        margin-bottom: 10px; /* Adjust spacing between articles */
+    }
+}
+
+/* Adjustments for Most Liked and Most Commented sections */
+@media only screen and (max-width: 600px) {
+    .article-section-like,
+    .article-section-comment {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px; /* Add spacing between articles */
+    }
+
+    .article-section-like .article:nth-child(4),
+    .article-section-comment .article:nth-child(4) {
+        display: none;
+    }
+
+    .popular-articles-section {
+        margin-top: 1px; /* Add spacing below Most Liked and Most Commented */
+        align-items: center;
+    }
+}
+
+/* Center align articles for Most Popular section */
+@media only screen and (max-width: 600px) {
+    .popular-articles-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .popular-articles-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px; /* Add spacing between articles */
+    }
+
+    .popular-article {
+        width: 100%;
+        max-width: 300px; /* Ensure consistent width */
+    }
+}
+
+/* Compatibility fix for line-clamp */
+.article-section-like .article:nth-child(n+3) .preview,
+.article-section-comment .article:nth-child(n+3) .preview {
+    line-clamp: 2;
 }
