@@ -2,7 +2,7 @@
 require_once '../backend/db.php';
 require_once '../backend/article.php';
 require_once '../backend/blog.php';
-
+require_once '../backend/controllers/ArticleController.php';
 include 'components/modal.php';
 
 // Initialize session
@@ -32,36 +32,7 @@ $mostPopular = getMostPopularArticles($pdo, 3); // Get 4 for better grid layout
 $blocks = getArticleBlocks($pdo, $articleId);
 $comments = getArticleComments($pdo, $articleId);
 
-/**
- * Render an article card
- */
-function renderArticleCard($article, $pdo) {
-    if (!$article) {
-        echo "<p class='no-article'>No articles available.</p>";
-        return;
-    }
-    
-    $blocks = getArticleBlocks($pdo, $article['id']);
-    $content = getArticleThumbnailAndPreview($blocks);
-    $authorName = $article['author_name'] ?? $article['name'] ?? 'Unknown';
-    ?>
-    <div onclick='window.location.href="article.php?id=<?= $article['id'] ?>"' class='article' style='background-image: url("<?= htmlspecialchars($content['thumbnail']) ?>")'>
-        <div class='article-content'>
-            <h2><?= htmlspecialchars($article['title']) ?></h2>
-            <p class='preview'><?= htmlspecialchars($content['preview']) ?></p>
-            <?php if (isset($article['popularity_score'])): ?>
-                <div class='popularity-stats'>
-                    <small>👍 <?= $article['like_count'] ?? 0 ?> | 💬 <?= $article['comment_count'] ?? 0 ?></small>
-                </div>
-            <?php endif; ?>
-        </div>
-    </div>
-    <?php
-}
 
-/**
- * Render a single comment
- */
 function renderComment($comment, $currentUser) {
     $isOwner = isset($currentUser) && $currentUser['usn'] == $comment['user_id'];
     $isAdminOrMod = isset($currentUser) && in_array($currentUser['privilege'], [1, 3]);
@@ -110,8 +81,28 @@ function renderComment($comment, $currentUser) {
     <?php
 }
 
-function showPopularArticle($article, $pdo)
+/**
+ * Displays a smaller list-style article
+ */
+function showListArticle($article, $pdo)
 {
+    if (!$article) {
+        echo "<p class='no-article'>No articles available.</p>";
+        return;
+    }
+
+    echo "<div class='article-list-item'>";
+    echo "  <a href='article.php?id=" . urlencode($article['id']) . "'>" . htmlspecialchars($article['title']) . "</a>";
+    echo "  <small>By " . htmlspecialchars($_SESSION['user']['name'] ?? '') . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
+    echo "</div>";
+}
+
+function showArticle($article, $title, $pdo)
+{
+    if ($title) {
+        echo "<h2>" . htmlspecialchars($title) . "</h2>";
+    }
+
     if (!$article) {
         echo "<p class='no-article'>No articles available.</p>";
         return;
@@ -125,13 +116,10 @@ function showPopularArticle($article, $pdo)
     ? htmlspecialchars($content['preview']) 
     : "No description available.";
 
-    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='popular-article' style='background-image: url(\"$thumb\")'>";
-    echo "  <div class='popular-article-content'>";
-    echo "    <h3>" . htmlspecialchars($article['title']) . "</h3>";
-    echo "    <p class='popular-preview'>$preview</p>";
-    echo "    <div class='popularity-stats'>";
-    echo "      <small>👍 " . ($article['like_count'] ?? 0) . " | 💬 " . ($article['comment_count'] ?? 0) . " | Score: " . ($article['popularity_score'] ?? 0) . "</small>";
-    echo "    </div>";
+    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='article' style='background-image: url(\"$thumb\")'>";
+    echo "  <div  class='article-content'>";
+    echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
+    echo "    <p class='preview'>$preview</p>";
     echo "  </div>";
     echo "</div>";
 }
@@ -216,65 +204,56 @@ function showPopularArticle($article, $pdo)
         </div>
 
         <!-- Sidebar -->
-        <div class="article-section-side slide-up">
+        <div class="article-article-section-side slide-up">
             <!-- Most Popular Articles -->
-            <div class="popular-articles-section slide-up">
-                <div class="container">
-                    <h2 class="section-title">🔥 Most Popular Articles</h2>            
+            <div class="article.popular-articles-section slide-up">
+                <h2 class="section-title">🔥 Most Popular Articles</h2>            
                     <?php if (!empty($mostPopular)): ?>
-                        <div class="popular-articles-grid">
+                        <div class="article-popular-articles-grid">
                             <?php foreach ($mostPopular as $article): ?>
-                                <?php showPopularArticle($article, $pdo); ?>
+                                <?php showArticle($article, "",$pdo); ?>
                             <?php endforeach; ?>
                         </div>
                     <?php else: ?>
                         <p class='no-article'>No popular articles available yet.</p>
                     <?php endif; ?>
-                </div>
             </div>
 
             <!-- Most Liked Articles -->
-            <div class="article-section-like">
-                <h2>👍 Most Liked Articles</h2>
+            <div class="article-article-section-like">
+                <h2 class="section-title">👍 Most Liked Articles</h2>
                 <?php if ($mostLiked && count($mostLiked) > 0): ?>
-                    <?php foreach ($mostLiked as $likedArticle): ?>
-                        <?php renderArticleCard($likedArticle, $pdo); ?>
-                    <?php endforeach; ?>
+                    <div class="article.popular-articles-grid">
+                        <?php foreach ($mostLiked as $likedArticle): ?>
+                            <?php showArticle($likedArticle,    "", $pdo); ?>
+                        <?php endforeach; ?>
+                    </div>
                 <?php else: ?>
                     <p class='no-article'>No articles available.</p>
                 <?php endif; ?>
             </div>
 
             <!-- Most Commented Articles -->
-            <div class="article-section-comment">
-                <h2>💬 Most Commented Articles</h2>
+            <div class="article-article-section-comment">
+                <h2 class="section-title">💬 Most Commented Articles</h2>
                 <?php if ($mostCommented && count($mostCommented) > 0): ?>
-                    <?php foreach ($mostCommented as $commentedArticle): ?>
-                        <?php renderArticleCard($commentedArticle, $pdo); ?>
-                    <?php endforeach; ?>
+                    <div class="article.popular-articles-grid">
+                        <?php foreach ($mostCommented as $commentedArticle): ?>
+                            <?php showArticle($commentedArticle,"", $pdo); ?>
+                        <?php endforeach; ?>
+                    </div>
                 <?php else: ?>
                     <p class='no-article'>No articles available.</p>
                 <?php endif; ?>
             </div>
 
             <!-- Article List -->
-            <div class="articleList slide-up">
-                <h2>📄 Article List</h2>
-                <ul>
-                    <?php foreach ($articles as $listArticle): ?>
-                        <li>
-                            <a href="article.php?id=<?= urlencode($listArticle['id']) ?>">
-                                <strong><?= htmlspecialchars($listArticle['title']) ?></strong>
-                            </a>
-                            <br>
-                            <small>
-                                By <?= htmlspecialchars($listArticle['author_name'] ?? 'Unknown') ?> 
-                                | <?= htmlspecialchars($listArticle['created_at']) ?>
-                            </small>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
+                <div class="articleList slide-up">
+                    <h2>📄 Article List</h2>
+                    <?php foreach ($articles as $article) {
+                        showListArticle($article, $pdo);
+                    } ?>
+                </div>
         </div>
     </div>
 

@@ -651,6 +651,47 @@ img {
 }
 
 /* ========================================
+   ARTICLE VIEW SIDE PAGE
+   ======================================== */
+
+.article-article-section-side .article  {
+    margin-bottom: 10px;
+}
+
+.article-article-section-side .article-content  {
+    text-align: center;
+
+}
+
+.article.article-list-item {
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.article.article-list-item a,
+.article.articleList li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.article.article-list-item a:hover,
+.article.articleList li a:hover {
+    text-decoration: underline;
+    color: maroon;
+}
+
+.article.article-list-item small,
+.article.articleList li small {
+    display: block;
+    margin: 0.5rem 0;
+    color: #1b1b1b;
+}
+
+
+
+/* ========================================
    ARTICLE LIST ITEMS
    ======================================== */
 
