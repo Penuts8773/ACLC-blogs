@@ -1,5 +1,6 @@
 <?php
 require_once '../backend/db.php';
+require_once '../backend/controllers/ArticleController.php';
 include 'components/modal.php';
 
 if (!isset($_SESSION)) {
@@ -8,36 +9,11 @@ if (!isset($_SESSION)) {
 
 $sort_by = $_GET['sort_by'] ?? 'latest';
 $order = $_GET['order'] ?? 'desc';
-
-$column = match($sort_by) {
-    'likes' => 'likes',
-    'comments' => 'comment_count',
-    default => 'a.created_at'
-};
-
+$categoryId = $_GET['category'] ?? null;
 $userId = $_SESSION['user']['usn'] ?? 0;
 
-$sql = "
-    SELECT 
-        a.id, a.user_id, a.title, a.created_at,
-        u.name,
-        (SELECT COUNT(*) FROM article_likes WHERE article_id = a.id) AS likes,
-        COUNT(c.id) AS comment_count,
-        EXISTS (
-            SELECT 1 FROM article_likes 
-            WHERE article_id = a.id AND user_id = :user_id
-        ) AS liked_by_user
-    FROM articles a
-    JOIN user u ON a.user_id = u.usn
-    LEFT JOIN article_comments c ON a.id = c.article_id
-    WHERE a.approved = 1
-    GROUP BY a.id, u.name
-    ORDER BY $column " . strtoupper($order);
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute(['user_id' => $userId]);
-$articles = $stmt->fetchAll();
-
+$articleController = new ArticleController($pdo);
+$articles = $articleController->getApprovedArticlesByCategory($userId, $categoryId, $sort_by, $order);
 ?>
 <!DOCTYPE html>
 <html>

@@ -38,6 +38,44 @@ class ArticleController {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getApprovedArticlesByCategory($userId, $categoryId = null, $sort_by = 'latest', $order = 'desc') {
+        $column = match($sort_by) {
+            'likes' => 'likes',
+            'comments' => 'comment_count',
+            default => 'a.created_at'
+        };
+
+        $sql = "
+            SELECT 
+                a.id, a.user_id, a.title, a.created_at,
+                u.name,
+                (SELECT COUNT(*) FROM article_likes WHERE article_id = a.id) AS likes,
+                COUNT(c.id) AS comment_count,
+                EXISTS (
+                    SELECT 1 FROM article_likes 
+                    WHERE article_id = a.id AND user_id = :user_id
+                ) AS liked_by_user
+            FROM articles a
+            JOIN user u ON a.user_id = u.usn
+            LEFT JOIN article_comments c ON a.id = c.article_id
+            WHERE a.approved = 1
+        ";
+
+        $params = ['user_id' => $userId];
+
+        if ($categoryId) {
+            $sql .= " AND a.category_id = :category_id";
+            $params['category_id'] = $categoryId;
+        }
+
+        $sql .= " GROUP BY a.id, u.name
+            ORDER BY $column " . strtoupper($order);
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getArticleBlocks($articleId) {
         $stmt = $this->pdo->prepare("SELECT * FROM article_blocks WHERE article_id = ? ORDER BY sort_order");
         $stmt->execute([$articleId]);

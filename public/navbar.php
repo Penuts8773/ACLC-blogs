@@ -39,13 +39,21 @@
     </div>
   </div>
 </div>
+<?php
+require_once '../backend/db.php';
+if (!isset($_SESSION)) session_start();
+
+// Fetch categories from DB
+$categories = $pdo->query("SELECT id, name FROM categories ORDER BY name")->fetchAll();
+?>
 <div class="tags-area">
   <div class="tags-container" id="tags-container">
-    <div class="tag">#All</div>
-    <div class="tag">#Technology</div>
-    <div class="tag">#Science</div>
-    <div class="tag">#Education</div>
-    <div class="tag">#Lifestyle</div>
+    <div class="tag"><a href="articleBoard.php">#All</a></div>
+    <?php foreach ($categories as $cat): ?>
+      <div class="tag">
+        <a href="articleBoard.php?category=<?= urlencode($cat['id']) ?>">#<?= htmlspecialchars($cat['name']) ?></a>
+      </div>
+    <?php endforeach; ?>
   </div>
 </div>
 
