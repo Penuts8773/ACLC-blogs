@@ -141,7 +141,7 @@ function showArticle($article, $title, $pdo)
     <?php include 'navbar.php'; ?>
     
     <div class="article-body">
-        <div class="article-container">
+        <div class="article-container slide-up">
             <!-- Article Header -->
             <h1><?= htmlspecialchars($article['title']) ?></h1>
             

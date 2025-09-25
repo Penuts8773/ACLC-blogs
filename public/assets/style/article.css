@@ -94,6 +94,7 @@
     min-height: auto;
 }
 
+
 /* Most Commented Section - Grid Layout MAXIMIZED */
 .article-section-comment {
     width: 100%;
@@ -541,8 +542,12 @@
 
 .article-article-section-side .article-content  {
     text-align: center;
-
 }
+
+.article-section-side .article-content  {
+    text-align: center;
+}
+
 
 .article.article-list-item {
     padding: 5px;
