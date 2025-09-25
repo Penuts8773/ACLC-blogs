@@ -1,0 +1,132 @@
+.ab-article {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: flex-end;
+    cursor: pointer;
+    overflow-wrap: break-word;
+    height: 400px;
+    width: 600px;
+    margin-bottom: 2rem;
+}
+
+.ab-article-content {
+    position: relative;
+    color: white;
+    padding: 2rem;
+    width: 100%;
+    background: linear-gradient(transparent, rgba(0,0,0,0.6), rgba(0,0,0,0.8));
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    transition: all 0.3s ease;
+}
+
+.ab-article-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.ab-article-content small {
+    display: block;
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+    border-radius: 15px;
+}
+
+.ab-like-btn {
+    position: absolute;
+    right: 20px;
+    bottom: 70px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.ab-preview {
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    transition: all 0.3s ease;
+}
+
+.read-more {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.read-more:hover {
+    background: white;
+    color: black;
+}
+
+.ab-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 105px;
+}
+
+.ab-all-articles form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.ab-all-articles form label {
+    font-weight: 500;
+    color: #333;
+}
+
+.ab-all-articles form select,
+.ab-all-articles form button {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background: #fff;
+    font-size: 0.80rem;
+    transition: border 0.3s ease;
+}
+
+.ab-all-articles form select:focus,
+.ab-all-articles form button:focus {
+    border-color: maroon;
+    outline: none;
+}
+
+.ab-all-articles form button {
+    background: maroon;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.ab-all-articles form button:hover {
+    background: #5a0000;
+}

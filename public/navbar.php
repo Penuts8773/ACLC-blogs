@@ -48,11 +48,9 @@ $categories = $pdo->query("SELECT id, name FROM categories ORDER BY name")->fetc
 ?>
 <div class="tags-area">
   <div class="tags-container" id="tags-container">
-    <div class="tag"><a href="articleBoard.php">#All</a></div>
+    <button class="tag" onclick="window.location.href='articleBoard.php'">#All</button>
     <?php foreach ($categories as $cat): ?>
-      <div class="tag">
-        <a href="articleBoard.php?category=<?= urlencode($cat['id']) ?>">#<?= htmlspecialchars($cat['name']) ?></a>
-      </div>
+        <button class="tag" onclick="window.location.href='articleBoard.php?category=<?= urlencode($cat['id']) ?>'">#<?= htmlspecialchars($cat['name']) ?></button>
     <?php endforeach; ?>
   </div>
 </div>

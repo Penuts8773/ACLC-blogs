@@ -118,3 +118,25 @@
 .dropdown-content a:hover {
     background-color: #444;
 }
+
+/* tags area */
+
+.tags-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tag{
+    padding: 5px 10px;
+    border-radius: 15px;
+    border: none;
+    font-size: 0.85rem;
+}
+
+.tag:hover {
+    background: #555;
+    color: white;
+    transition: all 0.3s ease;
+}
+

@@ -207,7 +207,7 @@ function showArticle($article, $title, $pdo)
         <!-- Sidebar -->
         <div class="article-article-section-side slide-up">
             <!-- Most Popular Articles -->
-            <div class="article.popular-articles-section slide-up">
+            <div class="article.popular-articles-section">
                 <h2 class="section-title">🔥 Most Popular Articles</h2>            
                     <?php if (!empty($mostPopular)): ?>
                         <div class="article-popular-articles-grid">
