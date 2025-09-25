@@ -201,7 +201,6 @@
 }
 
 .article-list-item {
-    text-align: center;
     padding: 3px; /* Reduced from 5px */
     margin-bottom: 3px; /* Reduced from 5px */
 }
@@ -487,7 +486,6 @@
 .article-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 1000px;
     padding: 30px;
 }
@@ -572,6 +570,14 @@
     color: #1b1b1b;
 }
 
+.article-image {
+    max-height: 600px;      /* pick your limit */
+    width: auto;            /* keeps the aspect ratio */
+    height: auto;           /* default, but makes the intent clear */
+    display: block;
+    border-radius: 4px;
+    margin: 0 auto;
+}
 
 
 

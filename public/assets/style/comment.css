@@ -56,8 +56,8 @@
     height: 40px;
     border-radius: 50%;
     background-color: #ffffff;
-    margin-right: 10px;
     flex-shrink: 0;
+    margin: 0 10px 0 0;
 }
 
 #comment-content {

@@ -135,6 +135,7 @@ function showArticle($article, $title, $pdo)
     <link rel="stylesheet" href="assets/style/index.css">
     <link rel="stylesheet" href="assets/style/article.css">
     <link rel="stylesheet" href="assets/style/navBar.css">
+    <link rel="stylesheet" href="assets/style/comment.css">
 </head>
 <body class="article-view">
     <?php include 'navbar.php'; ?>
@@ -167,7 +168,7 @@ function showArticle($article, $title, $pdo)
                     <?php if ($block['block_type'] === 'text'): ?>
                         <p class="article-desc"><?= nl2br(htmlspecialchars($block['content'])) ?></p>
                     <?php else: ?>
-                        <img src="<?= htmlspecialchars($block['content']) ?>" alt="Article image">
+                        <img src="<?= htmlspecialchars($block['content']) ?>" class="article-image" alt="article-image">
                     <?php endif; ?>
                 <?php endforeach; ?>
             </div>
