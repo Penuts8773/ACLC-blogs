@@ -145,6 +145,7 @@ function showPopularArticle($article, $pdo)
 
     <div class="home-articles">
         <!-- Article List -->
+        
         <div class="articleList slide-up">
             <h2 style="text-align: center;">📄 Article List</h2>
             <?php foreach ($articles as $article) {

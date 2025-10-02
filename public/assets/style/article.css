@@ -6,6 +6,7 @@
     display: flex;
     margin: 10px; /* Reduced from 20px */
     justify-content: space-between;
+
     height: 87vh; /* Increased from 70vh */
     gap: 15px; /* Reduced from 20px */
 }
@@ -26,7 +27,7 @@
     flex-direction: column;
     align-items: center;
     width: 1000px;
-    margin: 0; /* Remove margins */
+    margin: 0px; /* Remove margins */
     height: 100%; /* Use full height */
 }
 
@@ -531,6 +532,31 @@
    ARTICLE LIST ITEMS INSIDE ARTICLE VIEW PAGE
    ======================================== */
 
+.article-list-item {
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.article-list-item a,
+.articleList li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.article-list-item a:hover,
+.articleList li a:hover {
+    text-decoration: underline;
+    color: maroon;
+}
+
+.article-list-item small,
+.articleList li small {
+    display: block;
+    margin: 0.5rem 0;
+    color: #1b1b1b;
+}
 
 /* ========================================
    ARTICLE VIEW SIDE PAGE
@@ -801,25 +827,46 @@
 /* Small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .home-articles {
+        display: flex;
         flex-direction: column;
         height: auto;
-        gap: 10px;
+        gap: 50px;
+        justify-content: space-between;
     }
 
     .articleList {
+        border-style: double ;
+        border-radius: 8px;
+        order: 2;
         width: 100%;
         height: auto;
+        text-align: center;
+        margin-top: -15px;
+    }
+    
+    .articleList li{
+        margin-bottom: 10px;
     }
 
     .article-section-latest {
+        order: 1;
         width: 100%;
-        margin: 0;
+        margin: 0px;
+        text-align: center;
     }
 
     .article-section-side {
+        order: 4;
         width: 100%;
         margin: 0;
         height: auto;
+    }
+    .popular-articles-section {
+        order: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
 
     .article-section-like, .article-section-comment {
@@ -842,7 +889,14 @@
         grid-template-columns: 1fr;
     }
 
-    .latest-content,
+    .latest-content{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .latest-grid{
+        flex-direction: row;;
+    }
+    
     .article-section-like,
     .article-section-comment {
         margin-bottom: 20px; /* Add spacing between sections */
@@ -885,12 +939,7 @@
 
 /* Center align articles for Most Popular section */
 @media only screen and (max-width: 600px) {
-    .popular-articles-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
+    
 
     .popular-articles-grid {
         display: flex;
