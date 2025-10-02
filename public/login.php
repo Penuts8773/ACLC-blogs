@@ -23,8 +23,8 @@ include 'components/modal.php';
             <input type="text" name="usn" placeholder="Enter your USN" required>
             <input type="password" name="pass" placeholder="Enter your password" required>
             <button type="submit">Login</button>
-            <a href="index.html">
-                <button type="button">Log ON as Guest</button>
+            <a href="index.php">
+                <button type="button">Log In as Guest</button>
             </a>
         </form>
     </div>

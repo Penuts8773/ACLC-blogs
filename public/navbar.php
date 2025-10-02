@@ -27,14 +27,26 @@
       <div id="dropdown-menu" class="dropdown-content slideDown">
         <div class="dropdown-header">
           <img src="assets/images/user-icon.png" class="user-icon">
-          <span><?= htmlspecialchars($_SESSION['user']['name'] ?? '') ?></span>
+          <span>
+            <?php if (isset($_SESSION['user'])): ?>
+              <?= htmlspecialchars($_SESSION['user']['name']) ?>
+            <?php else: ?>
+              <a href="login.php" style="color:white; text-decoration:none;">Sign In</a>
+            <?php endif; ?>
+          </span>
         </div>
+
         <a href="index.php">Home</a>
         <a href="articleBoard.php">Articles</a>
+
         <?php if(isset($_SESSION['user']) && $_SESSION['user']['privilege'] == 1): ?>
           <a href="adminPanel.php">Admin</a>
         <?php endif; ?>
-        <a href="#" onclick="confirmLogout()">Logout</a>
+
+        <?php if(isset($_SESSION['user'])): ?>
+          <a href="#" onclick="confirmLogout()">Logout</a>
+        <?php endif; ?>
+
       </div>
     </div>
   </div>
