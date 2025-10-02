@@ -6,13 +6,15 @@
     display: flex;
     margin: 10px; /* Reduced from 20px */
     justify-content: space-between;
-
+    margin-top: -12px;
     height: 87vh; /* Increased from 70vh */
-    gap: 15px; /* Reduced from 20px */
+    gap: 12px; /* Reduced from 20px */
 }
 
 .articleList {
-    justify-content: center;
+    display: flex;
+    
+    flex-direction: column;
     width: 300px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -43,7 +45,7 @@
 
 /* Compact Square Layout for Side Sections - MAXIMIZED */
 .article-section-side {
-    width: 400px;
+    width: 270px;
     margin-right: 30px; /* Reduced margin */
     height: 70vh; /* Use full available height */
     display: flex;
@@ -200,11 +202,13 @@
 .articleList li {
     padding: 3px; /* Reduced from 5px */
     margin-bottom: 3px; /* Reduced from 5px */
+    
 }
 
 .article-list-item {
     padding: 3px; /* Reduced from 5px */
     margin-bottom: 3px; /* Reduced from 5px */
+    text-align: center;
 }
 
 /* Adjust content padding for compact layout */
@@ -618,7 +622,7 @@
 
 /* Popular Articles Section at Bottom of Homepage */
 .popular-articles-section {
-    margin-top: -160px;
+    margin-top: -190px;
 }
 
 .popular-articles-section .container {
