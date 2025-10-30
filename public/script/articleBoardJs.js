@@ -1,6 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.like-btn').forEach(btn => {
+    document.querySelectorAll('.ab-like-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
             const id = this.getAttribute('data-id');

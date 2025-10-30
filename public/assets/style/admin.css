@@ -328,6 +328,68 @@
     background: #dc3545;
 }
 
+ .article-wrapper .article {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: flex-end;
+    cursor: pointer;
+    overflow-wrap: break-word;
+    height: 400px;
+    width: 100%;
+}
+
+.article-wrapper .article-content {
+    position: relative;
+    color: white;
+    padding: 2rem;
+    width: 100%;
+    background: linear-gradient(transparent, rgba(0,0,0,0.6), rgba(0,0,0,0.8));
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    transition: all 0.3s ease;
+}
+
+.article-wrapper .article-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    transform: translateY(0);
+}
+
+.article-wrapper .article-content small {
+    display: block;
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+    border-radius: 15px;
+}
+
+.article-wrapper .preview {
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    transition: all 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.article-wrapper .ab-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 105px;
+}
+
 .approve-btn {
     background: #28a745;
 }
