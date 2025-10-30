@@ -39,12 +39,22 @@ function searchUsers() {
 	const userList = document.getElementById('userList');
 	const forms = userList.getElementsByTagName('form');
 
-	for (let form of forms) {
-		const usn = form.querySelector('span').textContent;
-		if (usn.toLowerCase().includes(filter)) {
-			form.style.display = "";
-		} else {
-			form.style.display = "none";
+	if (filter.length > 0) {
+		for (let form of forms) {
+			const wrapper = form.closest('.user-wrapper') || form;
+			const usn = form.querySelector('span').textContent || '';
+			if (usn.toLowerCase().includes(filter)) {
+				wrapper.style.display = "";
+			} else {
+				wrapper.style.display = "none";
+			}
+		}
+	} else {
+		let idx = 0;
+		for (let form of forms) {
+			const wrapper = form.closest('.user-wrapper') || form;
+			wrapper.style.display = idx < 3 ? "" : "none";
+			idx++;
 		}
 	}
 }

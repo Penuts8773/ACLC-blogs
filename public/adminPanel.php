@@ -170,23 +170,32 @@ function displayDraft($draft, $articleController) {
             <h3>User Privilege Management</h3>
             <input type="text" id="userSearch" class="user-search" placeholder="Search users..." onkeyup="searchUsers()">
             <div class="user-management" id="userList">
-                <?php foreach ($users as $u): ?>
-                    <form method="POST" class="user-form">
-                        <span><?= htmlspecialchars($u['usn']) ?> - <?= htmlspecialchars($userController->getPrivilegeName($u['privilege'])) ?></span>
-                        <div>
-                            <select name="new_level">
-                                <option value="1" <?= $u['privilege'] == 1 ? 'selected' : '' ?>>Admin</option>
-                                <option value="2" <?= $u['privilege'] == 2 ? 'selected' : '' ?>>Privileged</option>
-                                <option value="3" <?= $u['privilege'] == 3 ? 'selected' : '' ?>>Moderator</option>
-                                <option value="4" <?= $u['privilege'] == 4 ? 'selected' : '' ?>>User</option>
-                                <option value="5" <?= $u['privilege'] == 5 ? 'selected' : '' ?>>Restricted</option>
-                            </select>
-                            <input type="hidden" name="target_usn" value="<?= $u['usn'] ?>">
-                            <input type="hidden" name="action" value="update_privilege">
-                            <button type="submit">Update</button>
-                        </div>
-                    </form>
-                <?php endforeach; ?>
+                <?php
+                $uCount = 0;
+                foreach ($users as $u):
+                    $hidden = $uCount >= 3 ? 'style="display: none;"' : '';
+                ?>
+                    <div class="user-wrapper" <?php echo $hidden; ?> >
+                        <form method="POST" class="user-form">
+                            <span><?= htmlspecialchars($u['usn']) ?> - <?= htmlspecialchars($userController->getPrivilegeName($u['privilege'])) ?></span>
+                            <div>
+                                <select name="new_level">
+                                    <option value="1" <?= $u['privilege'] == 1 ? 'selected' : '' ?>>Admin</option>
+                                    <option value="2" <?= $u['privilege'] == 2 ? 'selected' : '' ?>>Privileged</option>
+                                    <option value="3" <?= $u['privilege'] == 3 ? 'selected' : '' ?>>Moderator</option>
+                                    <option value="4" <?= $u['privilege'] == 4 ? 'selected' : '' ?>>User</option>
+                                    <option value="5" <?= $u['privilege'] == 5 ? 'selected' : '' ?>>Restricted</option>
+                                </select>
+                                <input type="hidden" name="target_usn" value="<?= $u['usn'] ?>">
+                                <input type="hidden" name="action" value="update_privilege">
+                                <button type="submit">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                <?php
+                    $uCount++;
+                endforeach;
+                ?>
             </div>
         </div>
 
