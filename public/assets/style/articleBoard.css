@@ -130,3 +130,100 @@
 .ab-all-articles form button:hover {
     background: #5a0000;
 }
+
+/* ========================================
+   MOBILE RESPONSIVE STYLES
+   ======================================== */
+
+/* Tablets and smaller (768px and down) */
+@media only screen and (max-width: 768px) {
+    .ab-container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 1rem;
+    }
+    
+    .ab-article {
+        width: 100%;
+        height: 300px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .ab-article-content {
+        padding: 1.5rem;
+    }
+    
+    .ab-article-content h2 {
+        font-size: 1.2rem;
+    }
+    
+    .ab-preview {
+        font-size: 0.9rem;
+    }
+    
+    .ab-like-btn {
+        right: 15px;
+        bottom: 60px;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .ab-sidebar {
+        width: 100%;
+        margin-top: 2rem;
+    }
+}
+
+/* Mobile phones (600px and down) */
+@media only screen and (max-width: 600px) {
+    .ab-container {
+        gap: 15px;
+        padding: 0 0.5rem;
+    }
+    
+    .ab-article {
+        height: 250px;
+        margin-bottom: 1rem;
+    }
+    
+    .ab-article-content {
+        padding: 1rem;
+    }
+    
+    .ab-article-content h2 {
+        font-size: 1rem;
+        line-height: 1.2;
+    }
+    
+    .ab-article-content small {
+        font-size: 0.7rem;
+    }
+    
+    .ab-preview {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+    
+    .ab-like-btn {
+        right: 10px;
+        bottom: 50px;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.7rem;
+    }
+    
+    .ab-all-articles form {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .ab-all-articles form select,
+    .ab-all-articles form button {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+    }
+    
+    .read-more {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+}

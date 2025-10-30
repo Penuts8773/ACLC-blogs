@@ -278,22 +278,23 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
+    padding: 0.5rem 1rem;
     background: rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 4px;
     color: white;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
-    width: 120px;
+    min-width: 80px;
     height: 36px;
     backdrop-filter: blur(4px);
     margin: 0;
     box-sizing: border-box;
     text-align: center;
-    line-height: 36px;
+    line-height: 1;
+    flex-shrink: 0;
 }
 
 .article-actions {
@@ -303,7 +304,8 @@
     flex-wrap: wrap;
     position: relative;
     z-index: 2;
-    align-items: center;
+    align-items: stretch;
+    justify-content: flex-start;
 }
 
 .approve-btn,
@@ -328,4 +330,235 @@
 
 .approve-btn {
     background: #28a745;
+}
+
+/* Form alignment within action buttons */
+.article-actions form {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+}
+
+.article-actions form button {
+    margin: 0;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE STYLES
+   ======================================== */
+
+/* Tablets and smaller (768px and down) */
+@media only screen and (max-width: 768px) {
+    .admin-container {
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .admin-section {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .admin-section-wrapper {
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .half-width {
+        max-width: 100%;
+        min-width: auto;
+    }
+    
+    .articles-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .user-form {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .user-form span {
+        min-width: auto;
+        margin-right: 0;
+        text-align: center;
+    }
+    
+    .user-form div {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    
+    .user-form select {
+        flex: 1;
+        margin-right: 0;
+    }
+    
+    .action-btn,
+    .article-actions button,
+    .article-actions a {
+        min-width: 90px;
+        height: 40px;
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .article-actions {
+        gap: 0.5rem;
+        justify-content: flex-start;
+        align-items: stretch;
+    }
+}
+
+/* Mobile phones (600px and down) */
+@media only screen and (max-width: 600px) {
+    .admin-container {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+    
+    .admin-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 6px;
+    }
+    
+    .admin-section h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+    .article-search,
+    .user-search,
+    .draft-search {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+    
+    .articles-container {
+        gap: 0.75rem;
+    }
+    
+    .user-form {
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+    
+    .user-form span {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+    }
+    
+    .user-form select,
+    .user-form button {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .user-form div {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .user-form select,
+    .user-form button {
+        width: 100%;
+    }
+    
+    .action-btn,
+    .article-actions button,
+    .article-actions a {
+        min-width: 80px;
+        height: 44px; /* Larger touch target */
+        font-size: 0.75rem;
+        padding: 0.5rem;
+        flex: 1;
+    }
+    
+    .article-actions {
+        flex-wrap: nowrap;
+        gap: 0.5rem;
+        align-items: stretch;
+        justify-content: space-between;
+    }
+    
+    .article-actions form {
+        flex: 1;
+    }
+    
+    .article-actions .action-btn,
+    .article-actions button,
+    .article-actions a {
+        width: 100%;
+        min-width: 70px;
+    }
+    
+    .show-more,
+    .show-less {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .draft-badge {
+        top: 8px;
+        right: 8px;
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+    
+    .drafts-section {
+        border-width: 1px;
+    }
+    
+    .no-content {
+        padding: 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Very small screens (480px and down) */
+@media only screen and (max-width: 480px) {
+    .admin-container {
+        padding: 0.25rem;
+    }
+    
+    .admin-section {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .admin-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    .article-search,
+    .user-search,
+    .draft-search {
+        padding: 10px;
+        font-size: 16px;
+    }
+    
+    .user-form span {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+    }
+    
+    .action-btn,
+    .article-actions button,
+    .article-actions a {
+        height: 40px;
+        font-size: 0.7rem;
+        padding: 0.4rem;
+    }
+    
+    .draft-badge {
+        font-size: 9px;
+        padding: 3px 6px;
+    }
 }
