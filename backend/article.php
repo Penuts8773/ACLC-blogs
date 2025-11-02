@@ -111,3 +111,68 @@ function canEditComment($comment, $user) {
     
     return $user['usn'] == $comment['user_id'];
 }
+
+function getRelatedArticles(PDO $pdo, int $articleId, int $limit = 4): array
+{
+    // Get current article category (may be null)
+    $stmt = $pdo->prepare("SELECT category_id FROM articles WHERE id = :id");
+    $stmt->execute([':id' => $articleId]);
+    $categoryId = $stmt->fetchColumn();
+    $categoryId = $categoryId !== false ? (int)$categoryId : null;
+
+    // First try tag-based relevance: count shared tags, add a small boost for same category
+    $sql = "
+        SELECT a.*, COUNT(at.tag_id) AS tag_matches,
+               (a.category_id = :category_id) AS same_category,
+               (COUNT(at.tag_id) + (a.category_id = :category_id)) AS score
+        FROM article_tags at
+        JOIN articles a ON a.id = at.article_id
+        WHERE at.tag_id IN (
+            SELECT tag_id FROM article_tags WHERE article_id = :article_id
+        )
+          AND a.id != :article_id
+        GROUP BY a.id
+        ORDER BY score DESC, tag_matches DESC, a.created_at DESC
+        LIMIT :limit
+    ";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':category_id', $categoryId, PDO::PARAM_INT);
+    $stmt->bindValue(':article_id', $articleId, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!empty($results)) {
+        return $results;
+    }
+
+    // Fallback: articles from same category (if any)
+    if ($categoryId) {
+        $stmt = $pdo->prepare("
+            SELECT * FROM articles
+            WHERE category_id = :category_id AND id != :article_id
+            ORDER BY created_at DESC
+            LIMIT :limit
+        ");
+        $stmt->bindValue(':category_id', $categoryId, PDO::PARAM_INT);
+        $stmt->bindValue(':article_id', $articleId, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            return $results;
+        }
+    }
+
+    // Final fallback: most recent articles excluding current
+    $stmt = $pdo->prepare("
+        SELECT * FROM articles
+        WHERE id != :article_id
+        ORDER BY created_at DESC
+        LIMIT :limit
+    ");
+    $stmt->bindValue(':article_id', $articleId, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}

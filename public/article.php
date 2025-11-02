@@ -32,7 +32,12 @@ $mostPopular = getMostPopularArticles($pdo, 3); // Get 4 for better grid layout
 $blocks = getArticleBlocks($pdo, $articleId);
 $comments = getArticleComments($pdo, $articleId);
 
+// Related articles by tags/categories
+$related = getRelatedArticles($pdo, (int)$articleId, 4);
+?>
 
+
+<?php
 function renderComment($comment, $currentUser) {
     $isOwner = isset($currentUser) && $currentUser['usn'] == $comment['user_id'];
     $isAdminOrMod = isset($currentUser) && in_array($currentUser['privilege'], [1, 3]);
@@ -255,6 +260,21 @@ function showArticle($article, $title, $pdo)
                         showListArticle($article, $pdo);
                     } ?>
                 </div>
+
+            <!-- Related Articles -->
+            <div class="articleRelated slide-up">
+                <h2 class="section-title">🔗 Related Articles</h2>
+                <?php if (!empty($related)): ?>
+                    <div class="article-popular-articles-grid">
+                        <?php foreach ($related as $relArticle): ?>
+                            <?php showArticle($relArticle, "", $pdo); ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <p class='no-article'>No related articles found.</p>
+                <?php endif; ?>
+            </div>
+
         </div>
     </div>
 
