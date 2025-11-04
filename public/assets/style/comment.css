@@ -118,11 +118,15 @@
     }
 
     .comment-form textarea {
-        font-size: 0.9rem;
+        font-size: 0.75rem;
     }
 
     .comment {
         padding: 8px;
+    }
+
+    .comment-btn {
+        font-size: 0.75rem;
     }
 
     #comment-content {
@@ -144,8 +148,12 @@
         padding: 0.5rem;
     }
 
+    .comment-btn {
+        font-size: 0.75rem;
+    }
+
     .comment-form textarea {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
     }
 
     .comment {
@@ -172,8 +180,12 @@
         padding: 0.3rem;
     }
 
+    .comment-btn {
+        font-size: 0.75rem;
+    }
+
     .comment-form textarea {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
 
     .comment {

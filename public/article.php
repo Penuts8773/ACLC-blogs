@@ -194,9 +194,9 @@ function showArticle($article, $title, $pdo)
             <!-- Comment Form -->
             <?php if (isset($_SESSION['user']) && $_SESSION['user']['privilege'] != 5): ?>
             <form id="comment-form" class="comment-form">
-                <textarea name="comment" rows="3" placeholder="Write a comment..." required></textarea>
+                <textarea class="comment-txtarea" name="comment" rows="3" placeholder="Write a comment..." required></textarea>
                 <input type="hidden" name="article_id" value="<?= $article['id'] ?>">
-                <button type="submit">Post Comment</button>
+                <button class="comment-btn" type="submit">Post Comment</button>
             </form>
             <?php elseif (isset($_SESSION['user']) && $_SESSION['user']['privilege'] == 5): ?>
                 <p class="login-prompt">
@@ -212,7 +212,7 @@ function showArticle($article, $title, $pdo)
         <!-- Sidebar -->
         <div class="article-article-section-side slide-up">
             <!-- Related Articles -->
-            <div class="articleRelated slide-up">
+            <div class="articleRelated">
                 <h2 class="section-title">🔗 Related Articles</h2>
                 <?php if (!empty($related)): ?>
                     <div class="article-popular-articles-grid">
