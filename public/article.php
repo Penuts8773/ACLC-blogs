@@ -211,6 +211,19 @@ function showArticle($article, $title, $pdo)
 
         <!-- Sidebar -->
         <div class="article-article-section-side slide-up">
+            <!-- Related Articles -->
+            <div class="articleRelated slide-up">
+                <h2 class="section-title">🔗 Related Articles</h2>
+                <?php if (!empty($related)): ?>
+                    <div class="article-popular-articles-grid">
+                        <?php foreach ($related as $relArticle): ?>
+                            <?php showArticle($relArticle, "", $pdo); ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <p class='no-article'>No related articles found.</p>
+                <?php endif; ?>
+            </div>
             <!-- Most Popular Articles -->
             <div class="article.popular-articles-section">
                 <h2 class="section-title">🔥 Most Popular Articles</h2>            
@@ -261,19 +274,7 @@ function showArticle($article, $title, $pdo)
                     } ?>
                 </div>
 
-            <!-- Related Articles -->
-            <div class="articleRelated slide-up">
-                <h2 class="section-title">🔗 Related Articles</h2>
-                <?php if (!empty($related)): ?>
-                    <div class="article-popular-articles-grid">
-                        <?php foreach ($related as $relArticle): ?>
-                            <?php showArticle($relArticle, "", $pdo); ?>
-                        <?php endforeach; ?>
-                    </div>
-                <?php else: ?>
-                    <p class='no-article'>No related articles found.</p>
-                <?php endif; ?>
-            </div>
+            
 
         </div>
     </div>
