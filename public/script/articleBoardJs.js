@@ -34,3 +34,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+function searchBoardArticles() {
+    const input = document.getElementById('articleSearch');
+    const filter = input.value.toLowerCase();
+    const articles = document.querySelectorAll('.ab-article');
+    
+    articles.forEach(article => {
+        const title = article.querySelector('h2').textContent;
+        const author = article.querySelector('small').textContent;
+        
+        if (title.toLowerCase().includes(filter) || 
+            author.toLowerCase().includes(filter)) {
+            article.style.display = "";
+        } else {
+            article.style.display = "none";
+        }
+    });
+}

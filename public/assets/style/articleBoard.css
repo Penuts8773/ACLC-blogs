@@ -90,6 +90,15 @@
     gap: 105px;
 }
 
+.article-search {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
 .ab-all-articles form {
     display: flex;
     align-items: center;

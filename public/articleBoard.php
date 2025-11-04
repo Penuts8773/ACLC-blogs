@@ -75,6 +75,10 @@ function showArticle($article, $title, $pdo)
 <div class="ab-container slide-up">
     <div class="ab-all-articles slide-up">
         <h2>All Articles</h2>
+        
+        <!-- Search Bar -->
+        <input type="text" id="articleSearch" class="article-search" placeholder="Search articles by title or author..." onkeyup="searchBoardArticles()">
+        
         <form method="get">
             <label>Sort by: </label>
             <select name="sort_by">
