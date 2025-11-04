@@ -78,16 +78,33 @@ function getAllArticles($pdo) {
 /**
  * Get comments for an article with user information
  */
-function getArticleComments($pdo, $articleId) {
-    $stmt = $pdo->prepare("
+function getArticleComments($pdo, $articleId, $limit = null) {
+    $sql = "
         SELECT c.*, u.name, u.usn AS user_id, u.privilege AS user_privilege
         FROM article_comments c
         JOIN user u ON c.user_id = u.usn
         WHERE c.article_id = ?
         ORDER BY c.created_at DESC
-    ");
+    ";
+    
+    if ($limit !== null) {
+        $sql .= " LIMIT " . (int)$limit;
+    }
+    
+    $stmt = $pdo->prepare($sql);
     $stmt->execute([$articleId]);
     return $stmt->fetchAll();
+}
+
+/**
+ * Get total comment count for an article
+ */
+function getArticleCommentCount($pdo, $articleId) {
+    $stmt = $pdo->prepare("
+        SELECT COUNT(*) FROM article_comments WHERE article_id = ?
+    ");
+    $stmt->execute([$articleId]);
+    return $stmt->fetchColumn();
 }
 
 /**

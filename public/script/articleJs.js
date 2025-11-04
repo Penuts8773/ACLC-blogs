@@ -167,3 +167,158 @@
                 }
             });
         }
+
+        // Load all comments function
+        async function loadAllComments() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const articleId = urlParams.get('id');
+            
+            try {
+                const response = await fetch(`../backend/comment.php?article_id=${articleId}&all=true`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const container = document.getElementById('comments-container');
+                    const button = document.getElementById('show-all-comments-btn');
+                    
+                    // Replace container content with all comments
+                    container.innerHTML = '';
+                    result.comments.forEach(comment => {
+                        const commentHtml = createCommentHtml(comment);
+                        container.insertAdjacentHTML('beforeend', commentHtml);
+                    });
+                    
+                    // Remove the button
+                    if (button) {
+                        button.remove();
+                    }
+                    
+                    // Re-attach event listeners to edit forms
+                    attachEditFormListeners();
+                } else {
+                    alert('Error loading comments: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error loading comments. Please try again.');
+            }
+        }
+
+        // Helper function to create comment HTML
+        function createCommentHtml(comment) {
+            const isOwner = comment.is_owner || false;
+            const isAdminOrMod = comment.can_restrict || false;
+            
+            let html = `
+                <div class='comment' id='comment-${comment.id}'>
+                    <div class="comment-user">
+                        <img src="assets/images/user-icon.png" alt="User Icon" class="user-icon">
+                        <strong>${escapeHtml(comment.name)}</strong>
+                    </div>
+                    <p class='comment-content'>${escapeHtml(comment.content).replace(/\n/g, '<br>')}</p>
+                    <div class="comment-meta">
+                        <small>
+                            ${escapeHtml(comment.created_at)}
+                            ${comment.modified_at ? '<span class="edit-indicator">(edited)</span>' : ''}
+                        </small>
+            `;
+            
+            if (isOwner) {
+                html += `
+                        <div class='comment-actions'>
+                            <a class='comment-edit' onclick='editComment(${comment.id})'>Edit</a>
+                            <a class='comment-edit' onclick='deleteComment(${comment.id})'>Delete</a>
+                        </div>
+                        <form class='edit-form' style='display:none;'>
+                            <textarea required>${escapeHtml(comment.content)}</textarea>
+                            <div class="form-buttons">
+                                <button type='submit' class="save-btn action-btn">Save</button>
+                                <button type='button' class="cancel-btn action-btn" onclick='cancelEdit(${comment.id})'>Cancel</button>
+                            </div>
+                        </form>
+                `;
+            }
+            
+            if (isAdminOrMod && ![1, 2, 5].includes(comment.user_privilege)) {
+                html += `
+                        <form method="post" action="restrictUser.php" style="display:inline;">
+                            <input type="hidden" name="user_id" value="${escapeHtml(comment.user_id)}">
+                            <button type="submit" class="restrict-btn" onclick="return confirm('Restrict this user from commenting?');">
+                                Restrict User
+                            </button>
+                        </form>
+                `;
+            }
+            
+            html += `
+                    </div>
+                </div>
+            `;
+            
+            return html;
+        }
+
+        // Helper function to escape HTML
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Re-attach event listeners to edit forms
+        function attachEditFormListeners() {
+            document.querySelectorAll('.edit-form').forEach(form => {
+                const textarea = form.querySelector('textarea');
+
+                textarea.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        form.requestSubmit();
+                    }
+                });
+                
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const commentDiv = this.closest('.comment');
+                    const id = commentDiv.id.split('-')[1];
+                    const content = this.querySelector('textarea').value;
+                    
+                    showConfirmModal('Save changes to this comment?', async () => {
+                        try {
+                            const response = await fetch('../backend/comment.php', {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    comment_id: parseInt(id),
+                                    content: content
+                                })
+                            });
+                            
+                            const result = await response.json();
+                            
+                            if (result.success) {
+                                const contentElement = commentDiv.querySelector('.comment-content');
+                                contentElement.innerHTML = content.replace(/\n/g, '<br>');
+                                cancelEdit(id);
+                                
+                                if (!commentDiv.querySelector('.edit-indicator')) {
+                                    const timeElement = commentDiv.querySelector('small');
+                                    timeElement.innerHTML += ' <span class="edit-indicator">(edited)</span>';
+                                }
+                            } else {
+                                alert('Error updating comment: ' + result.error);
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('Error updating comment. Please try again.');
+                        }
+                    });
+                });
+            });
+        }

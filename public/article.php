@@ -30,7 +30,11 @@ $mostLiked = getMostLikedArticles($pdo);
 $mostCommented = getMostCommentedArticle($pdo);
 $mostPopular = getMostPopularArticles($pdo, 3); // Get 4 for better grid layout
 $blocks = getArticleBlocks($pdo, $articleId);
-$comments = getArticleComments($pdo, $articleId);
+
+// Get comments with limit
+$commentLimit = 5;
+$comments = getArticleComments($pdo, $articleId, $commentLimit);
+$totalComments = getArticleCommentCount($pdo, $articleId);
 
 // Related articles by tags/categories
 $related = getRelatedArticles($pdo, (int)$articleId, 4);
@@ -181,14 +185,21 @@ function showArticle($article, $title, $pdo)
             <!-- Comments Section -->
             <div class="comment-section" id="comments">
                 <h3>Comments</h3>
-                <?php foreach ($comments as $comment): ?>
-                    <?php renderComment($comment, $_SESSION['user'] ?? null); ?>
-                <?php endforeach; ?>
+                <div id="comments-container">
+                    <?php foreach ($comments as $comment): ?>
+                        <?php renderComment($comment, $_SESSION['user'] ?? null); ?>
+                    <?php endforeach; ?>
+                    
+                    <?php if (empty($comments)): ?>
+                        <p class="no-comments">No comments yet. Be the first to comment!</p>
+                    <?php endif; ?>
+                </div>
                 
-                <?php if (empty($comments)): ?>
-                    <p class="no-comments">No comments yet. Be the first to comment!</p>
+                <?php if ($totalComments > $commentLimit): ?>
+                    <button id="show-all-comments-btn" class="show-all-btn" onclick="loadAllComments()">
+                        Show All Comments (<?= $totalComments ?>)
+                    </button>
                 <?php endif; ?>
-                
             </div>
 
             <!-- Comment Form -->

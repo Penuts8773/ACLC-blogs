@@ -1,17 +1,23 @@
 <?php
 require_once 'db.php';
+require_once 'article.php';
 
 header('Content-Type: application/json');
 
-// Ensure user is authenticated
+// Handle GET requests (fetch all comments) without authentication
+$method = $_SERVER['REQUEST_METHOD'];
+
+if ($method === 'GET') {
+    handleGetAllComments($pdo);
+    exit;
+}
+
+// Ensure user is authenticated for POST, PUT, DELETE
 if (!isset($_SESSION['user']) || $_SESSION['user']['privilege'] == 5) {
     http_response_code(403);
     echo json_encode(['success' => false, 'error' => 'Unauthorized']);
     exit;
 }
-
-// Get request data
-$method = $_SERVER['REQUEST_METHOD'];
 $data = null;
 
 if (in_array($method, ['PUT', 'DELETE'])) {
@@ -23,6 +29,46 @@ if (in_array($method, ['PUT', 'DELETE'])) {
         echo json_encode(['success' => false, 'error' => 'Invalid JSON']);
         exit;
     }
+}
+
+/**
+ * Handle getting all comments for an article
+ */
+function handleGetAllComments($pdo) {
+    if (!isset($_GET['article_id'])) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Article ID is required']);
+        return;
+    }
+    
+    $articleId = (int)$_GET['article_id'];
+    $currentUser = $_SESSION['user'] ?? null;
+    
+    // Get all comments without limit
+    $comments = getArticleComments($pdo, $articleId);
+    
+    // Add ownership and permission flags
+    $formattedComments = array_map(function($comment) use ($currentUser) {
+        $isOwner = $currentUser && $currentUser['usn'] == $comment['user_id'];
+        $isAdminOrMod = $currentUser && in_array($currentUser['privilege'], [1, 3]);
+        
+        return [
+            'id' => $comment['id'],
+            'name' => $comment['name'],
+            'content' => $comment['content'],
+            'created_at' => $comment['created_at'],
+            'modified_at' => $comment['modified_at'],
+            'user_id' => $comment['user_id'],
+            'user_privilege' => $comment['user_privilege'],
+            'is_owner' => $isOwner,
+            'can_restrict' => $isAdminOrMod
+        ];
+    }, $comments);
+    
+    echo json_encode([
+        'success' => true,
+        'comments' => $formattedComments
+    ]);
 }
 
 /**
