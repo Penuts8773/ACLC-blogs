@@ -43,9 +43,11 @@ function searchBoardArticles() {
     articles.forEach(article => {
         const title = article.querySelector('h2').textContent;
         const author = article.querySelector('small').textContent;
+        const tags = article.getAttribute('data-tags') || '';
         
         if (title.toLowerCase().includes(filter) || 
-            author.toLowerCase().includes(filter)) {
+            author.toLowerCase().includes(filter) ||
+            tags.toLowerCase().includes(filter)) {
             article.style.display = "";
         } else {
             article.style.display = "none";

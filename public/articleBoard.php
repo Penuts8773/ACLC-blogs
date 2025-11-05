@@ -77,7 +77,7 @@ function showArticle($article, $title, $pdo)
         <h2>All Articles</h2>
         
         <!-- Search Bar -->
-        <input type="text" id="articleSearch" class="article-search" placeholder="Search articles by title or author..." onkeyup="searchBoardArticles()">
+        <input type="text" id="articleSearch" class="article-search" placeholder="Search articles by title, author, or tags..." onkeyup="searchBoardArticles()">
         
         <form method="get">
             <label>Sort by: </label>
@@ -132,8 +132,19 @@ function showArticle($article, $title, $pdo)
                         }
                     }
                 }
+                
+                // Get tags for this article
+                $tagsStmt = $pdo->prepare("
+                    SELECT t.name 
+                    FROM tags t
+                    JOIN article_tags at ON t.id = at.tag_id
+                    WHERE at.article_id = ?
+                ");
+                $tagsStmt->execute([$a['id']]);
+                $tags = $tagsStmt->fetchAll(PDO::FETCH_COLUMN);
+                $tagsString = !empty($tags) ? implode(', ', $tags) : '';
             ?>
-            <div class="ab-article" style="background-image: url('<?= htmlspecialchars($thumbnail) ?>');">
+            <div class="ab-article" style="background-image: url('<?= htmlspecialchars($thumbnail) ?>');" data-tags="<?= htmlspecialchars($tagsString) ?>">
                 <div class="ab-article-content">
                     <h2><?= htmlspecialchars($a['title']) ?></h2>
                     <p class="ab-preview"><?= htmlspecialchars($preview) ?></p>
