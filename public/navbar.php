@@ -20,11 +20,11 @@
         <button id="create-button" onclick="confirmNavigation('articleCreation.php')">
             Create Article
         </button>
-        <button id="search-button" onclick="window.location.href='articleBoard.php'">
-            <img src="assets/images/search_icon.svg">
-        </button>
     <?php endif; ?>
-      <button id="burger-btn" class="burger-btn" aria-label="Toggle menu">
+      <button id="search-button" onclick="window.location.href='articleBoard.php'">
+            <img id="search-icon" src="assets/images/search_icon.svg">
+      </button>
+      <button id= "burger-btn" class="burger-btn" aria-label="Toggle menu">
         &#9776; <!-- burger icon -->
       </button>
       <div id="dropdown-menu" class="dropdown-content slideDown">
