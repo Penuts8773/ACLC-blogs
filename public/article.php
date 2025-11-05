@@ -184,7 +184,7 @@ function showArticle($article, $title, $pdo)
 
             <!-- Comments Section -->
             <div class="comment-section" id="comments">
-                <h3>Comments</h3>
+                <h3>Comments (<?= $totalComments ?>)</h3>
                 <div id="comments-container">
                     <?php foreach ($comments as $comment): ?>
                         <?php renderComment($comment, $_SESSION['user'] ?? null); ?>

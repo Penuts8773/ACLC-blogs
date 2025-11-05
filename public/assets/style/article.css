@@ -13,7 +13,6 @@
 
 .articleList {
     display: flex;
-    
     flex-direction: column;
     width: 300px;
     overflow-y: auto;
@@ -29,8 +28,7 @@
     flex-direction: column;
     align-items: center;
     width: 1000px;
-    margin: 0px; /* Remove margins */
-    height: 100%; /* Use full height */
+    margin: 0px; 
 }
 
 .article-section-latest h2 {
@@ -649,7 +647,6 @@
 }
 
 .popular-article {
-    position: relative;
     background-size: cover;
     background-position: center;
     border-radius: 12px;
@@ -865,6 +862,7 @@
         width: 100%;
         margin: 0;
         height: auto;
+        justify-content: center;
     }
     .popular-articles-section {
         order: 3;
@@ -877,6 +875,8 @@
     .article-section-like, .article-section-comment {
         grid-template-columns: 1fr;
         grid-template-rows: auto;
+        width: 75%;
+        margin: 0 auto;
     }
     
 
@@ -905,10 +905,6 @@
     .article-section-like,
     .article-section-comment {
         margin-bottom: 20px; /* Add spacing between sections */
-    }
-    .popular-articles-grid {
-        margin-top: 50px; /* Add spacing between sections */
-        
     }
 
     .articleList {
@@ -1042,6 +1038,10 @@
         padding: 0.75rem;
     }
 
+    .article-article-section-side h2 {
+        font-size: 0.9rem;
+        justify-self: center;
+    }
 
 /* Improve article grid responsiveness */
 .article-popular-articles-grid {
@@ -1080,6 +1080,8 @@
     gap: 0.5rem;
     flex-wrap: wrap;
 }
+
+
 
 /* Improve article meta responsiveness */
 .article-meta {

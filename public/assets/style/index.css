@@ -417,9 +417,6 @@ small {
     .modal {
         padding: 1.5rem;
     }
-
-
-
     
 
     
@@ -428,7 +425,11 @@ small {
 /* Medium devices (tablets, 768px and down) */
 @media only screen and (max-width: 768px) {
     .container {
-        padding: 1rem 1.5rem;
+        padding: 2rem 1.5rem;
+    }
+
+    .container h2, .article-section-side h2 {
+        font-size: 0.9rem;
     }
 
     .tags-container {
@@ -445,7 +446,7 @@ small {
     }
 
     .article-section-side {
-        width: 100%;
+        width: 80%;
         margin: 0;
     }
 
@@ -454,8 +455,8 @@ small {
     }
 }
 
-/* Large devices (desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
+/* Large devices (desktops) */
+@media only screen and (max-width: 769px) {
     .container {
         padding: 2rem 3rem;
     }
@@ -472,5 +473,6 @@ small {
     .tags-container {
         gap: 10px;
     }
+
 }
 
