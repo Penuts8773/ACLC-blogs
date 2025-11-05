@@ -45,10 +45,16 @@ $related = getRelatedArticles($pdo, (int)$articleId, 4);
 function renderComment($comment, $currentUser) {
     $isOwner = isset($currentUser) && $currentUser['usn'] == $comment['user_id'];
     $isAdminOrMod = isset($currentUser) && in_array($currentUser['privilege'], [1, 3]);
+    $commentUserIsAdminOrMod = in_array($comment['user_privilege'], [1, 3]);
     ?>
     <div class='comment' id='comment-<?= $comment['id'] ?>'>
         <div class="comment-user">
-            <img src="assets/images/user-icon.png" alt="User Icon" class="user-icon">
+            <div class="user-icon-container">
+                <img src="assets/images/user-icon.png" alt="User Icon" class="user-icon">
+                <?php if ($commentUserIsAdminOrMod): ?>
+                    <img src="assets/images/verified.gif" alt="Admin/Mod Badge" class="badge-overlay">
+                <?php endif; ?>
+            </div>
             <strong><?= htmlspecialchars($comment['name']) ?></strong>
         </div>
         <p class='comment-content'><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
