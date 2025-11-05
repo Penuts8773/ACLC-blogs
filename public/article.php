@@ -52,6 +52,13 @@ function renderComment($comment, $currentUser) {
             <strong><?= htmlspecialchars($comment['name']) ?></strong>
         </div>
         <p class='comment-content'><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
+        <form class='edit-form' style='display:none;'>
+                    <textarea required><?= htmlspecialchars($comment['content']) ?></textarea>
+                    <div class="form-buttons">
+                        <button type='submit' class="save-btn action-btn">Save</button>
+                        <button type='button' class="cancel-btn action-btn" onclick='cancelEdit(<?= $comment['id'] ?>)'>Cancel</button>
+                    </div>
+                </form>
         <div class="comment-meta">
             <small>
                 <?= htmlspecialchars($comment['created_at']) ?>
@@ -64,13 +71,7 @@ function renderComment($comment, $currentUser) {
                     <a class='comment-edit' onclick='editComment(<?= $comment['id'] ?>)'>Edit</a>
                     <a class='comment-edit' onclick='deleteComment(<?= $comment['id'] ?>)'>Delete</a>
                 </div>
-                <form class='edit-form' style='display:none;'>
-                    <textarea required><?= htmlspecialchars($comment['content']) ?></textarea>
-                    <div class="form-buttons">
-                        <button type='submit' class="save-btn action-btn">Save</button>
-                        <button type='button' class="cancel-btn action-btn" onclick='cancelEdit(<?= $comment['id'] ?>)'>Cancel</button>
-                    </div>
-                </form>
+                
             <?php endif; ?>
 
             <!-- Restrict User Button for Admins/Moderators -->
