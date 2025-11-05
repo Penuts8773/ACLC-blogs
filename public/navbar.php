@@ -9,9 +9,9 @@
 </head>
 <body>
   <div class="navbar">
-  <div class="nav-logo">
+  <div onclick="window.location.href='index.php'" class="nav-logo">
     <img src="assets/images/aclc-logo.png" alt="ACLC Logo" id="aclc-logo">
-    <a href="index.php">Blogs</a>
+    <a>Blogs</a>
   </div>
   
   <div class="nav-user-menu">
@@ -19,6 +19,9 @@
       <?php if (isset($_SESSION['user']) && $_SESSION['user']['privilege'] < 3): ?>
         <button id="create-button" onclick="confirmNavigation('articleCreation.php')">
             Create Article
+        </button>
+        <button id="search-button" onclick="window.location.href='articleBoard.php'">
+            <img src="assets/images/search_icon.svg">
         </button>
     <?php endif; ?>
       <button id="burger-btn" class="burger-btn" aria-label="Toggle menu">
