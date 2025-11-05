@@ -155,11 +155,11 @@ function showArticle($article, $title, $pdo)
             <h1><?= htmlspecialchars($article['title']) ?></h1>
             
             <div class="article-meta">
-                <p class="author-meta">By <?= htmlspecialchars($article['author_name']) ?> | <?= htmlspecialchars($article['created_at']) ?></p>
+                <p class="author-meta">By <?= htmlspecialchars($article['author_name']) ?> | <?= date("F j, Y, g:i a", strtotime($article['created_at'])) ?></p>
                 
                 <?php if ($article['modified_at'] && $article['last_editor_name']): ?>
                     <p class="edit-info">
-                        Last edited by <?= htmlspecialchars($article['last_editor_name']) ?>
+                        Last edited by <?= htmlspecialchars($article['last_editor_name']) ?> | <?= date("F j, Y, g:i a", strtotime($article['modified_at'])) ?>
                     </p>
                 <?php endif; ?>
                 
