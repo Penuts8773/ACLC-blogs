@@ -71,7 +71,7 @@ function showLatestArticle($article, $pdo, $isMain = false)
 
     $class = $isMain ? "latest-article-main" : "latest-article-small";
 
-    echo "<div class='$class' style='background-image: url(\"$thumb\")'>";
+    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='$class' style='background-image: url(\"$thumb\")'>";
     echo "  <div class='latest-article-content'>";
     echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
     echo "    <small>" . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
@@ -120,7 +120,7 @@ function showPopularArticle($article, $pdo)
     echo "    <h3>" . htmlspecialchars($article['title']) . "</h3>";
     echo "    <p class='popular-preview'>$preview</p>";
     echo "    <div class='popularity-stats'>";
-    echo "      <small>👍 " . ($article['like_count'] ?? 0) . " | 💬 " . ($article['comment_count'] ?? 0) . " | Score: " . ($article['popularity_score'] ?? 0) . "</small>";
+    echo "      <small>👍 " . ($article['like_count'] ?? 0) . " | 💬 " . ($article['comment_count'] ?? 0) . "</small>";
     echo "    </div>";
     echo "  </div>";
     echo "</div>";

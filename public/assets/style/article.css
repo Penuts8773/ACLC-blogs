@@ -277,6 +277,7 @@
     hyphens: auto;
     padding: 1rem;
     width: 100%;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
