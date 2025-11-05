@@ -67,8 +67,8 @@
 
 .badge-overlay {
     position: absolute;
-    top: -25px;
-    right: -5px;
+    top: -40px;
+    right: -15px;
     width: 70px;
     height: auto;
 }
@@ -192,6 +192,7 @@
         width: 35px;
         height: 35px;
     }
+
 }
 
 @media (max-width: 768px) {
@@ -223,6 +224,12 @@
     .comment .user-icon {
         width: 30px;
         height: 30px;
+    }
+    .badge-overlay {
+        top: -25px;
+        right: -5px;
+        width: 40px;
+        height: auto;
     }
 }
 
@@ -265,5 +272,11 @@
     .show-all-btn {
         font-size: 0.75rem;
         padding: 0.5rem 1rem;
+    }
+    .badge-overlay {
+        top: -25px;
+        right: -5px;
+        width: 40px;
+        height: auto;
     }
 }
