@@ -42,12 +42,21 @@ $related = getRelatedArticles($pdo, (int)$articleId, 4);
 
 
 <?php
-function renderComment($comment, $currentUser) {
-    $isOwner = isset($currentUser) && $currentUser['usn'] == $comment['user_id'];
-    $isAdminOrMod = isset($currentUser) && in_array($currentUser['privilege'], [1, 3]);
-    $commentUserIsAdminOrMod = in_array($comment['user_privilege'], [1, 3]);
+function renderComment($comment, $currentUser = null) {
+    if (!$currentUser && session_status() === PHP_SESSION_ACTIVE) {
+        $currentUser = $_SESSION['user'] ?? null;
+    }
+
+    $isOwner = $currentUser && isset($currentUser['usn']) && $currentUser['usn'] == $comment['user_id'];
+    $isAdminOrMod = $currentUser && isset($currentUser['privilege']) && in_array($currentUser['privilege'], [1, 3]);
+    $commentUserIsAdminOrMod = in_array($comment['user_privilege'] ?? 4, [1, 3]);
+    $isHidden = !empty($comment['hidden']);
+
+    $showContent = !$isHidden || $isOwner || $isAdminOrMod;
+    $displayContent = $showContent ? $comment['content'] : '[This comment has been hidden by a moderator]';
+    $pClass = 'comment-content' . ($showContent ? '' : ' hidden-content');
     ?>
-    <div class='comment' id='comment-<?= $comment['id'] ?>'>
+    <div class='comment <?= $isHidden ? 'hidden-comment' : '' ?>' id='comment-<?= (int)$comment['id'] ?>'>
         <div class="comment-user">
             <div class="user-icon-container">
                 <img src="assets/images/user-icon.png" alt="User Icon" class="user-icon">
@@ -57,40 +66,47 @@ function renderComment($comment, $currentUser) {
             </div>
             <strong><?= htmlspecialchars($comment['name']) ?></strong>
         </div>
-        <p class='comment-content'><?= nl2br(htmlspecialchars($comment['content'])) ?></p>
-        <form class='edit-form' style='display:none;'>
-                    <textarea required><?= htmlspecialchars($comment['content']) ?></textarea>
-                    <div class="form-buttons">
-                        <button type='submit' class="save-btn action-btn">Save</button>
-                        <button type='button' class="cancel-btn action-btn" onclick='cancelEdit(<?= $comment['id'] ?>)'>Cancel</button>
-                    </div>
-                </form>
+
+        <p class='<?= $pClass ?>'><?= $showContent ? nl2br(htmlspecialchars($displayContent)) : htmlspecialchars($displayContent) ?></p>
+
+        <?php if ($isOwner): ?>
+            <form class='edit-form' style='display:none;' data-comment-id='<?= (int)$comment['id'] ?>'>
+                <textarea name="edit_comment" class="edit-textarea" rows="4" required><?= htmlspecialchars($comment['content']) ?></textarea>
+                <div class="form-buttons">
+                    <button type='submit' class="save-btn action-btn">Save</button>
+                    <button type='button' class="cancel-btn action-btn" onclick='cancelEdit(<?= (int)$comment['id'] ?>)'>Cancel</button>
+                </div>
+            </form>
+        <?php endif; ?>
+
         <div class="comment-meta">
             <small>
                 <?= htmlspecialchars($comment['created_at']) ?>
-                <?php if ($comment['modified_at']): ?>
+                <?php if (!empty($comment['modified_at'])): ?>
                     <span class="edit-indicator">(edited)</span>
                 <?php endif; ?>
+                <?php if ($isHidden): ?>
+                    <span class="hidden-indicator">(hidden)</span>
+                <?php endif; ?>
             </small>
+
             <?php if ($isOwner): ?>
                 <div class='comment-actions'>
-                    <a class='comment-edit' onclick='editComment(<?= $comment['id'] ?>)'>Edit</a>
-                    <a class='comment-edit' onclick='deleteComment(<?= $comment['id'] ?>)'>Delete</a>
+                    <a class='comment-edit' onclick='editComment(<?= (int)$comment['id'] ?>)'>Edit</a>
+                    <a class='comment-edit' onclick='deleteComment(<?= (int)$comment['id'] ?>)'>Delete</a>
                 </div>
-                
             <?php endif; ?>
 
-            <!-- Restrict User Button for Admins/Moderators -->
-            <?php
-            // Show for admins/mods, except if commenter is already banned or is admin/teacher
-            if ($isAdminOrMod && !in_array($comment['user_privilege'], [1, 2, 5])):
-            ?>
-                <form method="post" action="restrictUser.php" style="display:inline;">
-                    <input type="hidden" name="user_id" value="<?= htmlspecialchars($comment['user_id']) ?>">
-                    <button type="submit" class="restrict-btn" onclick="return confirm('Restrict this user from commenting?');">
-                        Restrict User
+            <?php if ($isAdminOrMod && !in_array($comment['user_privilege'] ?? 0, [1, 2])): ?>
+                <div class="admin-actions">
+                    <form method="post" action="restrictUser.php" style="display:inline;">
+                        <input type="hidden" name="user_id" value="<?= htmlspecialchars($comment['user_id']) ?>">
+                        <button type="submit" class="restrict-btn" onclick="return confirm('Restrict this user from commenting?');">Restrict User</button>
+                    </form>
+                    <button class="hide-btn" onclick="toggleCommentVisibility(<?= (int)$comment['id'] ?>, <?= $isHidden ? 'false' : 'true' ?>)">
+                        <?= $isHidden ? 'Unhide' : 'Hide' ?> Comment
                     </button>
-                </form>
+                </div>
             <?php endif; ?>
         </div>
     </div>
@@ -192,7 +208,8 @@ function showArticle($article, $title, $pdo)
             <!-- Comments Section -->
             <div class="comment-section" id="comments">
                 <h3>Comments (<?= $totalComments ?>)</h3>
-                <div id="comments-container">
+                <div id="comments-container" data-article-id="<?= (int)$articleId ?>">
+                    <input type="hidden" name="article_id" value="<?= (int)$articleId ?>">
                     <?php foreach ($comments as $comment): ?>
                         <?php renderComment($comment, $_SESSION['user'] ?? null); ?>
                     <?php endforeach; ?>
@@ -202,11 +219,7 @@ function showArticle($article, $title, $pdo)
                     <?php endif; ?>
                 </div>
                 
-                <?php if ($totalComments > $commentLimit): ?>
-                    <button id="show-all-comments-btn" class="show-all-btn" onclick="loadAllComments()">
-                        Show All Comments (<?= $totalComments ?>)
-                    </button>
-                <?php endif; ?>
+                <button id="show-all-comments-btn" class="show-all-btn" data-article-id="<?= (int)$articleId ?>">Show all comments</button>
             </div>
 
             <!-- Comment Form -->

@@ -791,24 +791,6 @@
     font-size: 0.65rem;
 }
 
-.restrict-btn {
-    background: rgba(255,255,255,0.2);
-    color: white;
-    border: 1px solid white;
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-}
-
-.restrict-btn:hover {
-    background: white;
-    color: black;
-}
-
 /* Responsive design for popular articles */
 @media (max-width: 768px) {
     .popular-articles-grid {

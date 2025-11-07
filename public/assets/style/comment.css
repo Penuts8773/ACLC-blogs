@@ -46,6 +46,40 @@
     border-radius: 8px;
 }
 
+/* Force comments to align to the left of the main column */
+.comment-section,
+#comments-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* left align children */
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Each comment uses the available column width but stays left-aligned */
+.comment {
+    width: 100%;
+    max-width: 900px; /* tune to your main column width */
+    margin-left: 0;
+    margin-right: auto; /* prevents centering */
+    box-sizing: border-box;
+}
+
+/* Keep internal pieces left-aligned */
+.comment .comment-user,
+.comment .comment-content,
+.comment .comment-meta {
+    text-align: left;
+}
+
+/* If the page layout applies centering to the comment container, override it */
+.article-container .comment-section,
+.article-body .comment-section {
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
 .comment-user {
     display: flex;
     align-items: center;
@@ -79,7 +113,7 @@
     border-radius: 50%;
 }
 
-#comment-content {
+#comment-content, .comment-content {
     margin: 0 0 10px 0;
     padding-left: 70px;
     font-size: 1rem;
@@ -117,7 +151,8 @@
     
 }
 
-.edit-form textarea {
+.edit-form textarea,
+.edit-form .edit-textarea {
     width: 100%;
     padding: 0.5rem;
     border: 1px solid #ddd;
@@ -141,6 +176,35 @@
 .edit-form button:hover {
     background: #5a0000;
 }
+
+/* Edit form inside each comment */
+.comment .edit-form {
+    display: block; /* JS controls visibility */
+    padding-left: 70px; /* align with comment text */
+    margin-top: 8px;
+}
+
+.comment .edit-form .edit-textarea {
+    width: calc(100% - 70px);
+    margin: 0;
+    padding: 0.5rem;
+    border: 1px solid #353535;
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 80px;
+    font-size: 1rem;
+    line-height: 1.2;
+    box-sizing: border-box;
+}
+
+/* keep form buttons aligned */
+.comment .edit-form .form-buttons {
+    margin-top: 6px;
+    padding-left: 0;
+    display: flex;
+    gap: 8px;
+}
+
 /* Show All Comments Button */
 .show-all-btn {
     display: block;
@@ -159,6 +223,98 @@
     background: #5a0000;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Hidden Comments Styles */
+.hidden-comment {
+    opacity: 0.8;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+}
+
+.hidden-comment .comment-content.hidden-content {
+    font-style: italic;
+    color: #666;
+}
+
+/* Remove the display: none rule to allow content visibility for authorized users */
+.hidden-comment .comment-content {
+    color: #333;
+}
+
+.hidden-indicator {
+    color: #ff4444;
+    font-style: italic;
+    margin-left: 5px;
+}
+
+/* Keep admin actions visible and clear */
+.admin-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+/* unified admin action buttons (Hide / Restrict) */
+.hide-btn,
+.restrict-btn {
+    background: rgba(255,255,255,0.12);
+    color: #222;
+    border: 1px solid #8a8a8a;
+    padding: 0.25rem 0.6rem; /* smaller */
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-decoration: none;
+    font-size: 0.78rem; /* slightly smaller */
+    line-height: 1;
+    min-width: 84px;
+    text-align: center;
+    margin-top: 0.25rem;
+}
+
+.hide-btn:hover,
+.restrict-btn:hover {
+    background: #fff;
+    color: #000;
+    transform: translateY(-1px);
+}
+
+/* Ensure admin action buttons (Hide / Restrict) are identical and compact */
+.admin-actions .hide-btn,
+.admin-actions .restrict-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.18rem 0.6rem; /* compact padding */
+    height: 30px;             /* consistent height */
+    line-height: 1;
+    font-size: 0.78rem;
+    border-radius: 6px;
+    border: 1px solid #8a8a8a;
+    background: rgba(255,255,255,0.12);
+    color: #222;
+    cursor: pointer;
+    box-sizing: border-box;
+    min-width: 0;             /* override previous min-width */
+    width: auto;              /* let padding determine width */
+    text-align: center;
+}
+
+/* Ensure form submit buttons inside admin-actions get same appearance */
+.admin-actions form button,
+.admin-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover effect */
+.admin-actions .hide-btn:hover,
+.admin-actions .restrict-btn:hover {
+    background: #fff;
+    color: #000;
+    transform: translateY(-1px);
 }
 
 /* Responsive Design Adjustments */
