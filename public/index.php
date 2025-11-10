@@ -74,7 +74,30 @@ function showLatestArticle($article, $pdo, $isMain = false)
     echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='$class' style='background-image: url(\"$thumb\")'>";
     echo "  <div class='latest-article-content'>";
     echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
-    echo "    <small>" . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
+    echo "    <small>" . date("F d, Y", strtotime($article['created_at'])) . "</small>";
+    echo "    <p class='latest-preview'>$preview</p>";
+    echo "  </div>";
+    echo "</div>";
+}
+
+function showDetailedArticle($article, $pdo)
+{
+    if (!$article) {
+        echo "<p class='no-article'>No articles available.</p>";
+        return;
+    }
+
+    $blocks  = getArticleBlocks($pdo, $article['id']);
+    $content = getArticleThumbnailAndPreview($blocks);
+    $thumb   = htmlspecialchars($content['thumbnail']);
+    $preview = htmlspecialchars($content['preview']);
+
+    $class = "latest-article-detailed";
+
+    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='$class' style='background-image: url(\"$thumb\")'>";
+    echo "  <div class='latest-article-content'>";
+    echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
+    echo "    <small>" . date("F d, Y", strtotime($article['created_at'])) . "</small>";
     echo "    <p class='latest-preview'>$preview</p>";
     echo "    <button onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='latest-read-more'>Read More</button>";
     echo "  </div>";
@@ -120,7 +143,7 @@ function showPopularArticle($article, $pdo)
     echo "    <h3>" . htmlspecialchars($article['title']) . "</h3>";
     echo "    <p class='popular-preview'>$preview</p>";
     echo "    <div class='popularity-stats'>";
-    echo "      <small>👍 " . ($article['like_count'] ?? 0) . " | 💬 " . ($article['comment_count'] ?? 0) . "</small>";
+    echo "      <small>👍 " . ($article['like_count'] ?? 0) . " | 💬 " . ($article['comment_count'] ?? 0)  . " | 👁️ " . ($article['views'] ?? 0)."</small>";
     echo "    </div>";
     echo "  </div>";
     echo "</div>";

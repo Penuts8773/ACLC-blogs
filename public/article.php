@@ -24,6 +24,17 @@ if (!$article) {
     exit;
 }
 
+$cookieKey = "viewed_article_" . $articleId;
+
+// Only increment view if cookie does NOT exist
+if (!isset($_COOKIE[$cookieKey])) {
+
+    // Increment view count in DB
+    incrementArticleViews($pdo, $articleId);
+
+    // Set cookie that expires in 1 hour (you can adjust to your needs)
+    setcookie($cookieKey, '1', time() + 3600, "/");
+}
 // Get related data
 $articles = getAllArticles($pdo);
 $mostLiked = getMostLikedArticles($pdo);
@@ -35,7 +46,12 @@ $blocks = getArticleBlocks($pdo, $articleId);
 $commentLimit = 5;
 $comments = getArticleComments($pdo, $articleId, $commentLimit);
 $totalComments = getArticleCommentCount($pdo, $articleId);
-
+$totalViews = getArticleViewCount($pdo, $articleId);
+if($totalViews > 1){
+    $totalViews .= " views";
+} else {
+    $totalViews .= " view";
+}
 // Related articles by tags/categories
 $related = getRelatedArticles($pdo, (int)$articleId, 4);
 ?>
@@ -178,11 +194,11 @@ function showArticle($article, $title, $pdo)
             <h1><?= htmlspecialchars($article['title']) ?></h1>
             
             <div class="article-meta">
-                <p class="author-meta">By <?= htmlspecialchars($article['author_name']) ?> | <?= date("F j, Y, g:i a", strtotime($article['created_at'])) ?></p>
+                <p class="author-meta">By <?= htmlspecialchars($article['author_name']) ?> | <?= date("F j, Y, g:i a", strtotime($article['created_at'])) ?> | <?= $totalViews ?></p>
                 
                 <?php if ($article['modified_at'] && $article['last_editor_name']): ?>
                     <p class="edit-info">
-                        Last edited by <?= htmlspecialchars($article['last_editor_name']) ?> | <?= date("F j, Y, g:i a", strtotime($article['modified_at'])) ?>
+                        Last updated <?= date("F j, Y, g:i a", strtotime($article['modified_at'])) ?>
                     </p>
                 <?php endif; ?>
                 

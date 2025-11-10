@@ -65,7 +65,7 @@ function getMostPopularArticles($pdo, $limit = 3) {
         SELECT a.*, u.name AS author_name,
                COALESCE(like_counts.like_count, 0) as like_count,
                COALESCE(comment_counts.comment_count, 0) as comment_count,
-               (COALESCE(like_counts.like_count, 0) * 2 + COALESCE(comment_counts.comment_count, 0)) as popularity_score
+               (COALESCE(like_counts.like_count, 0) * 2 + COALESCE(comment_counts.comment_count, 0)+ COALESCE(a.views, 0) * 1) as popularity_score
         FROM articles a 
         JOIN user u ON a.user_id = u.usn 
         LEFT JOIN (

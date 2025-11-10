@@ -129,6 +129,18 @@ function canEditComment($comment, $user) {
     return $user['usn'] == $comment['user_id'];
 }
 
+function incrementArticleViews($pdo, $articleId) {
+    $stmt = $pdo->prepare("UPDATE articles SET views = views + 1 WHERE id = ?");
+    $stmt->execute([$articleId]);
+}
+
+function getArticleViewCount($pdo, $articleId) {
+    $stmt = $pdo->prepare("SELECT views FROM articles WHERE id = ?");
+    $stmt->execute([$articleId]);
+    return (int) $stmt->fetchColumn();
+}
+
+
 function getRelatedArticles(PDO $pdo, int $articleId, int $limit = 4): array
 {
     // Get current article category (may be null)
