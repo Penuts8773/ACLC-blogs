@@ -75,6 +75,24 @@ function getAllArticles($pdo) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function slugify($string) {
+    $slug = strtolower($string);
+    $slug = preg_replace('/[^a-z0-9]+/i', '-', $slug);
+    return trim($slug, '-');
+}
+
+function getArticleIdBySlug($pdo, $slug) {
+    // Convert slug back to spaced words
+    $title = str_replace('-', ' ', $slug);
+
+    // Match title ignoring case
+    $stmt = $pdo->prepare("SELECT id FROM articles WHERE LOWER(title) = LOWER(?) LIMIT 1");
+    $stmt->execute([$title]);
+    return $stmt->fetchColumn();
+}
+
+
+
 /**
  * Get comments for an article with user information
  */

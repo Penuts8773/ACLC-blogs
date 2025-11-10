@@ -10,8 +10,14 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Validate article ID
-$articleId = $_GET['id'] ?? null;
+$slug = $_GET['a'] ?? null;
+
+if (!$slug) {
+    header("Location: articleBoard.php");
+    exit;
+}
+
+$articleId = getArticleIdBySlug($pdo, $slug);
 if (!$articleId || !is_numeric($articleId)) {
     header('Location: articleBoard.php');
     exit;
@@ -140,7 +146,7 @@ function showListArticle($article, $pdo)
     }
 
     echo "<div class='article-list-item'>";
-    echo "  <a href='article.php?id=" . urlencode($article['id']) . "'>" . htmlspecialchars($article['title']) . "</a>";
+    echo "  <a href='article.php?a=" . urlencode($article['title']) . "'>" . htmlspecialchars($article['title']) . "</a>";
     echo "  <small>By " . htmlspecialchars($_SESSION['user']['name'] ?? '') . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
     echo "</div>";
 }
@@ -164,7 +170,7 @@ function showArticle($article, $title, $pdo)
     ? htmlspecialchars($content['preview']) 
     : "No description available.";
 
-    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='article' style='background-image: url(\"$thumb\")'>";
+    echo "<div onclick='window.location.href=\"article.php?a=" . urlencode($article['title']) . "\"' class='article' style='background-image: url(\"$thumb\")'>";
     echo "  <div  class='article-content'>";
     echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
     echo "    <p class='preview'>$preview</p>";

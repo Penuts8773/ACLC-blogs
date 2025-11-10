@@ -13,8 +13,3 @@ Thumbs.db
 .vscode/
 *.log
 
-# Ignore Composer dependencies
-
-backend/config.php
-
-backend/config.php

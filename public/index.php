@@ -41,7 +41,7 @@ function showArticle($article, $title, $pdo)
     ? htmlspecialchars($content['preview']) 
     : "No description available.";
 
-    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='article' style='background-image: url(\"$thumb\")'>";
+    echo "<div onclick='window.location.href=\"article.php?a=" . urlencode($article['title']) . "\"' class='article' style='background-image: url(\"$thumb\")'>";
     echo "  <div  class='article-content'>";
     echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
     echo "    <p class='preview'>$preview</p>";
@@ -71,7 +71,7 @@ function showLatestArticle($article, $pdo, $isMain = false)
 
     $class = $isMain ? "latest-article-main" : "latest-article-small";
 
-    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='$class' style='background-image: url(\"$thumb\")'>";
+    echo "<div onclick='window.location.href=\"article.php?a=" . urlencode($article['title']) . "\"' class='$class' style='background-image: url(\"$thumb\")'>";
     echo "  <div class='latest-article-content'>";
     echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
     echo "    <small>" . date("F d, Y", strtotime($article['created_at'])) . "</small>";
@@ -94,12 +94,12 @@ function showDetailedArticle($article, $pdo)
 
     $class = "latest-article-detailed";
 
-    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='$class' style='background-image: url(\"$thumb\")'>";
+    echo "<div onclick='window.location.href=\"article.php?a=" . urlencode($article['title']) . "\"' class='$class' style='background-image: url(\"$thumb\")'>";
     echo "  <div class='latest-article-content'>";
     echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
     echo "    <small>" . date("F d, Y", strtotime($article['created_at'])) . "</small>";
     echo "    <p class='latest-preview'>$preview</p>";
-    echo "    <button onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='latest-read-more'>Read More</button>";
+    echo "    <button onclick='window.location.href=\"article.php?a=" . urlencode($article['title']) . "\"' class='latest-read-more'>Read More</button>";
     echo "  </div>";
     echo "</div>";
 }
@@ -115,7 +115,7 @@ function showListArticle($article, $pdo)
     }
 
     echo "<div class='article-list-item'>";
-    echo "  <a href='article.php?id=" . urlencode($article['id']) . "'>" . htmlspecialchars($article['title']) . "</a>";
+    echo "  <a href='article.php?a=" . urlencode($article['title']) . "'>" . htmlspecialchars($article['title']) . "</a>";
     echo "  <small>By " . htmlspecialchars($article['name'] ?? 'Unknown') . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
     echo "</div>";
 }
@@ -138,7 +138,7 @@ function showPopularArticle($article, $pdo)
     ? htmlspecialchars($content['preview']) 
     : "No description available.";
 
-    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='popular-article' style='background-image: url(\"$thumb\")'>";
+    echo "<div onclick='window.location.href=\"article.php?a=" . urlencode($article['title']) . "\"' class='popular-article' style='background-image: url(\"$thumb\")'>";
     echo "  <div class='popular-article-content'>";
     echo "    <h3>" . htmlspecialchars($article['title']) . "</h3>";
     echo "    <p class='popular-preview'>$preview</p>";

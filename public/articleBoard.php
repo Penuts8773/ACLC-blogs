@@ -28,7 +28,7 @@ function showListArticle($article, $pdo)
     }
 
     echo "<div class='article-list-item'>";
-    echo "  <a href='article.php?id=" . urlencode($article['id']) . "'>" . htmlspecialchars($article['title']) . "</a>";
+    echo "  <a href='article.php?a=" . urlencode($article['title']) . "'>" . htmlspecialchars($article['title']) . "</a>";
     echo "  <small>By " . htmlspecialchars($_SESSION['user']['name'] ?? '') . " on " . date("F j, Y, g:i a", strtotime($article['created_at'])) . "</small>";
     echo "</div>";
 }
@@ -52,7 +52,7 @@ function showArticle($article, $title, $pdo)
     ? htmlspecialchars($content['preview']) 
     : "No description available.";
 
-    echo "<div onclick='window.location.href=\"article.php?id=" . urlencode($article['id']) . "\"' class='article' style='background-image: url(\"$thumb\")'>";
+    echo "<div onclick='window.location.href=\"article.php?a=" . urlencode($article['title']) . "\"' class='article' style='background-image: url(\"$thumb\")'>";
     echo "  <div  class='article-content'>";
     echo "    <h2>" . htmlspecialchars($article['title']) . "</h2>";
     echo "    <p class='preview'>$preview</p>";
@@ -156,7 +156,7 @@ function showArticle($article, $title, $pdo)
                         </button> |
                         💬 <?= $a['comment_count'] ?>
                     </small>
-                    <button onclick="window.location.href='article.php?id=<?= $a['id'] ?>'" class="read-more">Read More</button>
+                    <button onclick="window.location.href='article.php?a=<?= $a['title'] ?>'" class="read-more">Read More</button>
                 </div>
             </div>
         <?php endforeach; ?>
