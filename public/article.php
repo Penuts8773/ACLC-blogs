@@ -182,7 +182,10 @@ function showArticle($article, $title, $pdo)
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <base href="/aclctaytay/blogs/public/">
+    <base href="<?= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') 
+               . '://' . $_SERVER['HTTP_HOST'] 
+               . dirname($_SERVER['SCRIPT_NAME']) . '/' ?>">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($article['title']) ?></title>
