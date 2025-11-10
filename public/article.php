@@ -28,9 +28,9 @@ $article = getArticleWithNames($pdo, (int)$articleId);
 $blocks  = getArticleBlocks($pdo, $article['id']);
 $content = getArticleThumbnailAndPreview($blocks);
 $thumb   = htmlspecialchars($content['thumbnail']);
-if (!str_starts_with($thumb, 'http')) {
-    $thumb = $urlBase . $image;
-}
+$urlBase = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http')
+         . '://' . $_SERVER['HTTP_HOST'] 
+         . '/public/';
 
 if (!$article) {
     header('Location: articleBoard.php');
@@ -39,6 +39,10 @@ if (!$article) {
 $title       = htmlspecialchars($article['title']);
 $description = htmlspecialchars($content['preview'] ?? substr(strip_tags($article['body']), 0, 150));
 $image       = $thumb; // From your content extractor
+if (!str_starts_with($image, 'http')) {
+    $image = $urlBase . ltrim($image, '/');
+}
+
 $url         = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http')
              . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
