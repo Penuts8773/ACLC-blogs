@@ -28,8 +28,8 @@ $article = getArticleWithNames($pdo, (int)$articleId);
 $blocks  = getArticleBlocks($pdo, $article['id']);
 $content = getArticleThumbnailAndPreview($blocks);
 $thumb   = htmlspecialchars($content['thumbnail']);
-if (!str_starts_with($image, 'http')) {
-    $image = $urlBase . $image;
+if (!str_starts_with($thumb, 'http')) {
+    $thumb = $urlBase . $image;
 }
 
 if (!$article) {
