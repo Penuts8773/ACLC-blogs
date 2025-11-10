@@ -25,10 +25,22 @@ if (!$articleId || !is_numeric($articleId)) {
 
 // Get article data
 $article = getArticleWithNames($pdo, (int)$articleId);
+$blocks  = getArticleBlocks($pdo, $article['id']);
+$content = getArticleThumbnailAndPreview($blocks);
+$thumb   = htmlspecialchars($content['thumbnail']);
+if (!str_starts_with($image, 'http')) {
+    $image = $urlBase . $image;
+}
+
 if (!$article) {
     header('Location: articleBoard.php');
     exit;
 }
+$title       = htmlspecialchars($article['title']);
+$description = htmlspecialchars($content['preview'] ?? substr(strip_tags($article['body']), 0, 150));
+$image       = $thumb; // From your content extractor
+$url         = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http')
+             . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 $cookieKey = "viewed_article_" . $articleId;
 
@@ -182,6 +194,18 @@ function showArticle($article, $title, $pdo)
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta property="og:type" content="article" />
+<meta property="og:title" content="<?= $title ?>" />
+<meta property="og:description" content="<?= $description ?>" />
+<meta property="og:image" content="<?= $image ?>" />
+<meta property="og:url" content="<?= $url ?>" />
+<meta property="og:site_name" content="ACLC College of Taytay Blogs" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<?= $title ?>">
+<meta name="twitter:description" content="<?= $description ?>">
+<meta name="twitter:image" content="<?= $image ?>">
     <base href="<?= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') 
                . '://' . $_SERVER['HTTP_HOST'] 
                . dirname($_SERVER['SCRIPT_NAME']) . '/' ?>">
