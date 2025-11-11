@@ -17,6 +17,7 @@ include 'components/modal.php';
     <div class="login-container">
         <form class="login-form" method="post" action="../backend/auth.php">
             <h2>Welcome Back</h2>
+            <h5>If you are using USN, remove the last two 0 for it to work. (eg. 12301161400 to 123011614)</h5>
             <?php if (isset($_GET['error'])): ?>
                 <div class="login-error">Invalid credentials. Please try again.</div>
             <?php endif; ?>
