@@ -3,7 +3,6 @@ require_once '../backend/db.php';
 require_once '../backend/article.php';
 require_once '../backend/blog.php';
 require_once '../backend/controllers/ArticleController.php';
-include 'components/modal.php';
 
 // Initialize session
 if (session_status() === PHP_SESSION_NONE) {
